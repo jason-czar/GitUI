@@ -53,26 +53,47 @@ export const useRepositoryImport = () => {
                 branch: selectedRepo.default_branch,
             });
 
-            // Setup dependencies and detect port
-            console.log(`GitUI: Setting up dependencies for ${selectedRepo.full_name}`);
+            // AI-powered project setup and optimization
+            console.log(`GitUI: Running AI project setup for ${selectedRepo.full_name}`);
             let finalPreviewUrl = previewUrl;
             try {
-                const setupResult = await clientApi.sandbox.setupDependencies.mutate({
+                const aiSetupResult = await clientApi.sandbox.aiProjectSetup.mutate({
                     sandboxId,
                 });
                 
-                if (setupResult.success && setupResult.detectedPort && setupResult.detectedPort !== 3000) {
+                if (aiSetupResult.success && aiSetupResult.detectedPort && aiSetupResult.detectedPort !== 3000) {
                     // Update preview URL with detected port
-                    finalPreviewUrl = previewUrl.replace(':3000', `:${setupResult.detectedPort}`);
-                    console.log(`GitUI: Updated preview URL to use port ${setupResult.detectedPort}: ${finalPreviewUrl}`);
+                    finalPreviewUrl = previewUrl.replace(':3000', `:${aiSetupResult.detectedPort}`);
+                    console.log(`GitUI: AI setup complete - Updated preview URL to use port ${aiSetupResult.detectedPort}: ${finalPreviewUrl}`);
                 }
                 
-                if (setupResult.installedDependencies && setupResult.installedDependencies.length > 0) {
-                    console.log(`GitUI: Installed dependencies: ${setupResult.installedDependencies.join(', ')}`);
+                console.log(`GitUI: AI Analysis - Project Type: ${aiSetupResult.projectAnalysis.framework}`);
+                console.log(`GitUI: AI Setup - ${aiSetupResult.message}`);
+                
+                if (aiSetupResult.changes.dependencies.installed.length > 0) {
+                    console.log(`GitUI: AI installed dependencies: ${aiSetupResult.changes.dependencies.installed.join(', ')}`);
                 }
+                
+                if (aiSetupResult.changes.configuration.changes.length > 0) {
+                    console.log(`GitUI: AI configuration changes: ${aiSetupResult.changes.configuration.changes.join(', ')}`);
+                }
+                
             } catch (error) {
-                console.warn('GitUI: Failed to setup dependencies, continuing with default configuration:', error);
-                // Don't fail the import if dependency setup fails
+                console.warn('GitUI: AI setup failed, falling back to basic setup:', error);
+                
+                // Fallback to basic dependency setup
+                try {
+                    const setupResult = await clientApi.sandbox.setupDependencies.mutate({
+                        sandboxId,
+                    });
+                    
+                    if (setupResult.success && setupResult.detectedPort && setupResult.detectedPort !== 3000) {
+                        finalPreviewUrl = previewUrl.replace(':3000', `:${setupResult.detectedPort}`);
+                        console.log(`GitUI: Fallback setup - Updated preview URL to use port ${setupResult.detectedPort}: ${finalPreviewUrl}`);
+                    }
+                } catch (fallbackError) {
+                    console.warn('GitUI: Both AI and fallback setup failed, continuing with defaults:', fallbackError);
+                }
             }
 
             // Create project linked to repository

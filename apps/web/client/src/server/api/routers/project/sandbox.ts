@@ -145,6 +145,412 @@ async function detectRunningPort(provider: any): Promise<number | null> {
     return null;
 }
 
+// AI-powered project analysis and setup functions
+interface ProjectAnalysis {
+    type: 'react' | 'vue' | 'svelte' | 'angular' | 'vanilla' | 'node' | 'unknown';
+    framework: string;
+    hasTypeScript: boolean;
+    hasTailwind: boolean;
+    buildTool: 'vite' | 'webpack' | 'parcel' | 'rollup' | 'none';
+    packageManager: 'npm' | 'yarn' | 'pnpm' | 'bun';
+    entryPoint: string | null;
+    missingDependencies: string[];
+    issues: string[];
+    recommendations: string[];
+}
+
+async function analyzeProject(provider: any): Promise<ProjectAnalysis> {
+    console.log('GitUI: Analyzing project structure...');
+    
+    // Read package.json
+    let packageJson: any = {};
+    try {
+        const packageFile = await provider.readFile({ args: { path: './package.json' } });
+        if (packageFile?.file?.type === 'text') {
+            packageJson = JSON.parse(packageFile.file.content);
+        }
+    } catch (error) {
+        console.log('GitUI: No package.json found');
+    }
+    
+    // Analyze file structure
+    const files = await provider.listFiles({ args: { path: './' } });
+    const fileNames = files.files.map((f: any) => f.name);
+    
+    // Detect project type and framework
+    const deps = { ...packageJson.dependencies, ...packageJson.devDependencies };
+    let type: ProjectAnalysis['type'] = 'unknown';
+    let framework = 'Unknown';
+    
+    if (deps.react || fileNames.some(f => f.includes('jsx') || f.includes('tsx'))) {
+        type = 'react';
+        if (deps.next) framework = 'Next.js';
+        else if (deps.gatsby) framework = 'Gatsby';
+        else if (deps['react-scripts']) framework = 'Create React App';
+        else framework = 'React';
+    } else if (deps.vue || fileNames.some(f => f.endsWith('.vue'))) {
+        type = 'vue';
+        framework = deps.nuxt ? 'Nuxt.js' : 'Vue.js';
+    } else if (deps.svelte || fileNames.some(f => f.endsWith('.svelte'))) {
+        type = 'svelte';
+        framework = deps['@sveltejs/kit'] ? 'SvelteKit' : 'Svelte';
+    } else if (deps['@angular/core']) {
+        type = 'angular';
+        framework = 'Angular';
+    } else if (deps.express || deps.fastify || deps.koa) {
+        type = 'node';
+        framework = 'Node.js';
+    } else if (fileNames.some(f => f.endsWith('.html'))) {
+        type = 'vanilla';
+        framework = 'Vanilla JavaScript';
+    }
+    
+    // Detect build tool
+    let buildTool: ProjectAnalysis['buildTool'] = 'none';
+    if (deps.vite || fileNames.includes('vite.config.js') || fileNames.includes('vite.config.ts')) {
+        buildTool = 'vite';
+    } else if (deps.webpack || fileNames.includes('webpack.config.js')) {
+        buildTool = 'webpack';
+    } else if (deps.parcel) {
+        buildTool = 'parcel';
+    } else if (deps.rollup) {
+        buildTool = 'rollup';
+    }
+    
+    // Detect package manager
+    let packageManager: ProjectAnalysis['packageManager'] = 'npm';
+    if (fileNames.includes('bun.lockb')) packageManager = 'bun';
+    else if (fileNames.includes('pnpm-lock.yaml')) packageManager = 'pnpm';
+    else if (fileNames.includes('yarn.lock')) packageManager = 'yarn';
+    
+    // Check for TypeScript and Tailwind
+    const hasTypeScript = !!(deps.typescript || fileNames.some(f => f.endsWith('.ts') || f.endsWith('.tsx')));
+    const hasTailwind = !!(deps.tailwindcss || fileNames.includes('tailwind.config.js'));
+    
+    // Find entry point
+    let entryPoint: string | null = null;
+    const possibleEntries = ['index.html', 'src/index.html', 'public/index.html', 'index.js', 'src/index.js', 'src/main.js', 'src/App.js'];
+    for (const entry of possibleEntries) {
+        try {
+            await provider.readFile({ args: { path: `./${entry}` } });
+            entryPoint = entry;
+            break;
+        } catch {
+            // File doesn't exist
+        }
+    }
+    
+    // Identify missing dependencies and issues
+    const missingDependencies: string[] = [];
+    const issues: string[] = [];
+    const recommendations: string[] = [];
+    
+    if (type === 'react' && !deps.react) {
+        missingDependencies.push('react', 'react-dom');
+        issues.push('React project missing React dependencies');
+    }
+    
+    if (hasTypeScript && !deps.typescript) {
+        missingDependencies.push('typescript', '@types/node');
+        if (type === 'react') missingDependencies.push('@types/react', '@types/react-dom');
+    }
+    
+    if (buildTool === 'none' && type !== 'vanilla') {
+        recommendations.push('Consider adding a build tool like Vite for better development experience');
+    }
+    
+    if (!entryPoint) {
+        issues.push('No entry point found - may need to create index.html');
+        recommendations.push('Create an index.html file in the root or public directory');
+    }
+    
+    return {
+        type,
+        framework,
+        hasTypeScript,
+        hasTailwind,
+        buildTool,
+        packageManager,
+        entryPoint,
+        missingDependencies,
+        issues,
+        recommendations,
+    };
+}
+
+async function installMissingDependencies(provider: any, analysis: ProjectAnalysis) {
+    if (analysis.missingDependencies.length === 0) {
+        return { installed: [], message: 'No missing dependencies' };
+    }
+    
+    console.log(`GitUI: Installing missing dependencies: ${analysis.missingDependencies.join(', ')}`);
+    
+    const installCmd = analysis.packageManager === 'npm' ? 'npm install' :
+                      analysis.packageManager === 'yarn' ? 'yarn add' :
+                      analysis.packageManager === 'pnpm' ? 'pnpm add' :
+                      'bun add';
+    
+    const command = `${installCmd} ${analysis.missingDependencies.join(' ')}`;
+    
+    try {
+        await provider.runCommand({ args: { command } });
+        return { installed: analysis.missingDependencies, message: 'Dependencies installed successfully' };
+    } catch (error) {
+        return { installed: [], message: `Failed to install dependencies: ${error}` };
+    }
+}
+
+async function generateConfigFiles(provider: any, analysis: ProjectAnalysis) {
+    const changes: string[] = [];
+    
+    // Generate Vite config for React projects without build tool
+    if (analysis.type === 'react' && analysis.buildTool === 'none') {
+        const viteConfig = `import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    port: 5000,
+    host: true
+  }
+})`;
+        
+        try {
+            await provider.writeFile({ 
+                args: { 
+                    path: './vite.config.js', 
+                    content: viteConfig 
+                } 
+            });
+            changes.push('Created vite.config.js');
+        } catch (error) {
+            console.warn('Failed to create vite.config.js:', error);
+        }
+    }
+    
+    // Generate TypeScript config if needed
+    if (analysis.hasTypeScript) {
+        const tsConfig = {
+            compilerOptions: {
+                target: 'ES2020',
+                lib: ['ES2020', 'DOM', 'DOM.Iterable'],
+                module: 'ESNext',
+                skipLibCheck: true,
+                moduleResolution: 'bundler',
+                allowImportingTsExtensions: true,
+                resolveJsonModule: true,
+                isolatedModules: true,
+                noEmit: true,
+                jsx: analysis.type === 'react' ? 'react-jsx' : 'preserve',
+                strict: true,
+                noUnusedLocals: true,
+                noUnusedParameters: true,
+                noFallthroughCasesInSwitch: true
+            },
+            include: ['src'],
+            references: [{ path: './tsconfig.node.json' }]
+        };
+        
+        try {
+            await provider.writeFile({ 
+                args: { 
+                    path: './tsconfig.json', 
+                    content: JSON.stringify(tsConfig, null, 2) 
+                } 
+            });
+            changes.push('Created tsconfig.json');
+        } catch (error) {
+            console.warn('Failed to create tsconfig.json:', error);
+        }
+    }
+    
+    return { changes, message: `Generated ${changes.length} configuration files` };
+}
+
+async function optimizeBuildScripts(provider: any, analysis: ProjectAnalysis) {
+    try {
+        const packageFile = await provider.readFile({ args: { path: './package.json' } });
+        if (!packageFile?.file || packageFile.file.type !== 'text') {
+            return { changes: [], message: 'No package.json found' };
+        }
+        
+        const packageJson = JSON.parse(packageFile.file.content);
+        const changes: string[] = [];
+        
+        // Ensure proper scripts exist
+        if (!packageJson.scripts) packageJson.scripts = {};
+        
+        if (analysis.type === 'react' && analysis.buildTool === 'vite') {
+            if (!packageJson.scripts.dev) {
+                packageJson.scripts.dev = 'vite';
+                changes.push('Added dev script');
+            }
+            if (!packageJson.scripts.build) {
+                packageJson.scripts.build = 'vite build';
+                changes.push('Added build script');
+            }
+            if (!packageJson.scripts.preview) {
+                packageJson.scripts.preview = 'vite preview';
+                changes.push('Added preview script');
+            }
+        }
+        
+        // Add missing dependencies to package.json
+        if (analysis.missingDependencies.length > 0) {
+            if (!packageJson.dependencies) packageJson.dependencies = {};
+            if (!packageJson.devDependencies) packageJson.devDependencies = {};
+            
+            for (const dep of analysis.missingDependencies) {
+                if (dep.includes('@types/') || dep === 'typescript') {
+                    packageJson.devDependencies[dep] = 'latest';
+                } else {
+                    packageJson.dependencies[dep] = 'latest';
+                }
+            }
+            changes.push('Updated dependencies in package.json');
+        }
+        
+        if (changes.length > 0) {
+            await provider.writeFile({ 
+                args: { 
+                    path: './package.json', 
+                    content: JSON.stringify(packageJson, null, 2) 
+                } 
+            });
+        }
+        
+        return { changes, message: `Made ${changes.length} script optimizations` };
+    } catch (error) {
+        return { changes: [], message: `Failed to optimize scripts: ${error}` };
+    }
+}
+
+async function setupEntryPoints(provider: any, analysis: ProjectAnalysis) {
+    const changes: string[] = [];
+    
+    // Create index.html if missing
+    if (!analysis.entryPoint && analysis.type !== 'node') {
+        const htmlContent = analysis.type === 'react' ? 
+            `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.${analysis.hasTypeScript ? 'tsx' : 'jsx'}"></script>
+  </body>
+</html>` :
+            `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web App</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>`;
+        
+        try {
+            await provider.writeFile({ 
+                args: { 
+                    path: './index.html', 
+                    content: htmlContent 
+                } 
+            });
+            changes.push('Created index.html');
+        } catch (error) {
+            console.warn('Failed to create index.html:', error);
+        }
+    }
+    
+    // Create main entry file for React if missing
+    if (analysis.type === 'react') {
+        const mainFile = `src/main.${analysis.hasTypeScript ? 'tsx' : 'jsx'}`;
+        try {
+            await provider.readFile({ args: { path: `./${mainFile}` } });
+        } catch {
+            // File doesn't exist, create it
+            const mainContent = analysis.hasTypeScript ? 
+                `import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.tsx'
+import './index.css'
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)` :
+                `import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import './index.css'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)`;
+            
+            try {
+                await provider.runCommand({ args: { command: 'mkdir -p src' } });
+                await provider.writeFile({ 
+                    args: { 
+                        path: `./${mainFile}`, 
+                        content: mainContent 
+                    } 
+                });
+                changes.push(`Created ${mainFile}`);
+            } catch (error) {
+                console.warn(`Failed to create ${mainFile}:`, error);
+            }
+        }
+    }
+    
+    return { changes, message: `Setup ${changes.length} entry points` };
+}
+
+async function startDevelopmentServer(provider: any, analysis: ProjectAnalysis) {
+    console.log('GitUI: Starting development server...');
+    
+    const devCommand = analysis.packageManager === 'npm' ? 'npm run dev' :
+                      analysis.packageManager === 'yarn' ? 'yarn dev' :
+                      analysis.packageManager === 'pnpm' ? 'pnpm dev' :
+                      'bun dev';
+    
+    try {
+        await provider.runBackgroundCommand({ args: { command: devCommand } });
+        
+        // Wait for server to start
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        
+        // Detect actual port
+        const port = await detectRunningPort(provider) || 5000;
+        
+        return { 
+            success: true, 
+            port, 
+            command: devCommand,
+            message: `Development server started on port ${port}` 
+        };
+    } catch (error) {
+        return { 
+            success: false, 
+            port: 3000, 
+            command: devCommand,
+            message: `Failed to start server: ${error}` 
+        };
+    }
+}
+
 export const sandboxRouter = createTRPCRouter({
     start: protectedProcedure
         .input(
@@ -483,6 +889,71 @@ export const sandboxRouter = createTRPCRouter({
                 throw new TRPCError({
                     code: 'INTERNAL_SERVER_ERROR',
                     message: `Failed to setup dependencies: ${error instanceof Error ? error.message : 'Unknown error'}`,
+                    cause: error,
+                });
+            } finally {
+                await provider.destroy();
+            }
+        }),
+    aiProjectSetup: protectedProcedure
+        .input(
+            z.object({
+                sandboxId: z.string(),
+            }),
+        )
+        .mutation(async ({ input, ctx }) => {
+            const userId = ctx.user.id;
+            const provider = await getProvider({
+                sandboxId: input.sandboxId,
+                userId,
+            });
+
+            try {
+                console.log(`GitUI: Starting AI-powered project setup for sandbox ${input.sandboxId}`);
+                
+                // Step 1: Analyze project structure and type
+                const projectAnalysis = await analyzeProject(provider);
+                console.log(`GitUI: Project analysis complete:`, projectAnalysis);
+                
+                // Step 2: Install missing dependencies
+                const dependencyResults = await installMissingDependencies(provider, projectAnalysis);
+                console.log(`GitUI: Dependency installation:`, dependencyResults);
+                
+                // Step 3: Generate/fix configuration files
+                const configResults = await generateConfigFiles(provider, projectAnalysis);
+                console.log(`GitUI: Configuration setup:`, configResults);
+                
+                // Step 4: Fix build scripts and package.json
+                const scriptResults = await optimizeBuildScripts(provider, projectAnalysis);
+                console.log(`GitUI: Build script optimization:`, scriptResults);
+                
+                // Step 5: Create/fix entry points and routing
+                const entryResults = await setupEntryPoints(provider, projectAnalysis);
+                console.log(`GitUI: Entry point setup:`, entryResults);
+                
+                // Step 6: Start development server and detect port
+                const serverResults = await startDevelopmentServer(provider, projectAnalysis);
+                console.log(`GitUI: Development server:`, serverResults);
+                
+                return {
+                    success: true,
+                    projectAnalysis,
+                    changes: {
+                        dependencies: dependencyResults,
+                        configuration: configResults,
+                        scripts: scriptResults,
+                        entryPoints: entryResults,
+                        server: serverResults,
+                    },
+                    detectedPort: serverResults.port,
+                    message: `AI setup complete for ${projectAnalysis.type} project`,
+                };
+                
+            } catch (error) {
+                console.error('GitUI: AI project setup failed:', error);
+                throw new TRPCError({
+                    code: 'INTERNAL_SERVER_ERROR',
+                    message: `AI project setup failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
                     cause: error,
                 });
             } finally {
