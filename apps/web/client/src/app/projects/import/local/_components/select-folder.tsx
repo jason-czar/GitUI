@@ -43,7 +43,8 @@ export const NewSelectFolder = () => {
         if (packageJsonFile) {
             try {
                 const packageJson = JSON.parse(packageJsonFile.content as string);
-                return packageJson.name || null;
+                // Fallback to folder name if package.json name is not available
+                return packageJson.name ?? null;
             } catch (error) {
                 console.warn('Error parsing package.json for name:', error);
             }
@@ -146,7 +147,7 @@ export const NewSelectFolder = () => {
                 throw new Error('No valid files found in the selected folder');
             }
 
-            const projectName = extractProjectName(processedFiles);
+            const projectName = extractProjectName(processedFiles) ?? folderPath ?? 'Untitled Project';
 
             if (!projectName) {
                 setError('No project name found in the selected folder');
@@ -156,6 +157,11 @@ export const NewSelectFolder = () => {
             // Validate the project
             const validationResult = await validateReactProject(processedFiles);
             setValidation(validationResult);
+
+            // Clear any previous errors if validation is successful
+            if (validationResult.isValid) {
+                setError('');
+            }
 
             setProjectData({
                 name: projectName,
@@ -171,10 +177,10 @@ export const NewSelectFolder = () => {
     };
 
     const handleFileInputChange = useCallback(
-        async (event: React.ChangeEvent<HTMLInputElement>) => {
+        (event: React.ChangeEvent<HTMLInputElement>) => {
             const files = event.target.files;
             if (files && files.length > 0) {
-                await processProjectFiles(files);
+                void processProjectFiles(files);
             }
         },
         [],
