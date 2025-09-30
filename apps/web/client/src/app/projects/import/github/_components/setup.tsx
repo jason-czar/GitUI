@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardTitle } from '@onlook/ui/card';
 import { Icons } from '@onlook/ui/icons';
 import { Input } from '@onlook/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@onlook/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@onlook/ui/tabs';
 import { motion } from 'motion/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { StepContent, StepFooter, StepHeader } from '../../steps';
@@ -25,6 +26,9 @@ export const SetupGithub = () => {
     const [isSearchExpanded, setIsSearchExpanded] = useState(false);
     const [canScrollUp, setCanScrollUp] = useState(false);
     const [canScrollDown, setCanScrollDown] = useState(false);
+    const [githubUrl, setGithubUrl] = useState('');
+    const [urlError, setUrlError] = useState('');
+    const [importMethod, setImportMethod] = useState<'browse' | 'url'>('browse');
     const searchInputRef = useRef<HTMLInputElement>(null);
     const searchContainerRef = useRef<HTMLDivElement>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -42,6 +46,62 @@ export const SetupGithub = () => {
     const handleRepositorySelect = (value: string) => {
         const repository = githubData.repositories.find((repo: any) => repo.full_name === value);
         setSelectedRepo(repository || null);
+    };
+
+    // Parse GitHub URL to extract owner and repo name
+    const parseGitHubUrl = (url: string) => {
+        try {
+            const cleanUrl = url.trim();
+            const patterns = [
+                /^https?:\/\/github\.com\/([^\/]+)\/([^\/]+)(?:\.git)?(?:\/.*)?$/,
+                /^git@github\.com:([^\/]+)\/([^\/]+)(?:\.git)?$/,
+                /^([^\/]+)\/([^\/]+)$/
+            ];
+
+            for (const pattern of patterns) {
+                const match = cleanUrl.match(pattern);
+                if (match) {
+                    return {
+                        owner: match[1],
+                        repo: match[2].replace(/\.git$/, '')
+                    };
+                }
+            }
+            return null;
+        } catch {
+            return null;
+        }
+    };
+
+    // Handle GitHub URL input
+    const handleGitHubUrlChange = (url: string) => {
+        setGithubUrl(url);
+        setUrlError('');
+        
+        if (!url.trim()) {
+            setSelectedRepo(null);
+            return;
+        }
+
+        const parsed = parseGitHubUrl(url);
+        if (!parsed) {
+            setUrlError('Invalid GitHub URL format. Expected: https://github.com/owner/repo');
+            setSelectedRepo(null);
+            return;
+        }
+
+        // Create a mock repository object for URL-based selection
+        const mockRepo = {
+            id: `${parsed.owner}/${parsed.repo}`,
+            name: parsed.repo,
+            full_name: `${parsed.owner}/${parsed.repo}`,
+            owner: { login: parsed.owner },
+            private: false, // We don't know this from URL alone
+            description: null,
+            html_url: url.includes('github.com') ? url : `https://github.com/${parsed.owner}/${parsed.repo}`
+        };
+
+        setSelectedRepo(mockRepo as any);
     };
 
     // Handle search toggle
@@ -111,10 +171,17 @@ export const SetupGithub = () => {
                     className="w-full"
                 >
                     <div className="flex flex-col gap-6">
-                        <div className="flex flex-col gap-2">
-                            <label className="text-sm font-medium text-foreground-primary">
-                                Organization (Optional)
-                            </label>
+                        <Tabs value={importMethod} onValueChange={(value) => setImportMethod(value as 'browse' | 'url')} className="w-full">
+                            <TabsList className="grid w-full grid-cols-2">
+                                <TabsTrigger value="browse">Browse Repositories</TabsTrigger>
+                                <TabsTrigger value="url">Import from URL</TabsTrigger>
+                            </TabsList>
+                            
+                            <TabsContent value="browse" className="space-y-6 mt-6">
+                                <div className="flex flex-col gap-2">
+                                    <label className="text-sm font-medium text-foreground-primary">
+                                        Organization (Optional)
+                                    </label>
                             <Select
                                 value={selectedOrg?.login || 'all'}
                                 onValueChange={handleOrganizationSelect}
@@ -297,13 +364,44 @@ export const SetupGithub = () => {
                                 </CardContent>
                             </Card>
 
-                            {selectedRepo && (
-                                <div className="text-sm text-foreground-secondary">
-                                    Selected:{' '}
-                                    <span className="font-medium">{selectedRepo.full_name}</span>
+                                {selectedRepo && importMethod === 'browse' && (
+                                    <div className="text-sm text-foreground-secondary">
+                                        Selected:{' '}
+                                        <span className="font-medium">{selectedRepo.full_name}</span>
+                                    </div>
+                                )}
+                            </div>
+                            </TabsContent>
+                            
+                            <TabsContent value="url" className="space-y-6 mt-6">
+                                <div className="flex flex-col gap-3">
+                                    <label className="text-sm font-medium text-foreground-primary">
+                                        GitHub Repository URL
+                                    </label>
+                                    <Input
+                                        value={githubUrl}
+                                        onChange={(e) => handleGitHubUrlChange(e.target.value)}
+                                        placeholder="https://github.com/owner/repository"
+                                        className={urlError ? 'border-red-500' : ''}
+                                    />
+                                    {urlError && (
+                                        <p className="text-sm text-red-500">{urlError}</p>
+                                    )}
+                                    <p className="text-xs text-foreground-secondary">
+                                        Supported formats:
+                                        <br />• https://github.com/owner/repo
+                                        <br />• git@github.com:owner/repo.git
+                                        <br />• owner/repo
+                                    </p>
+                                    {selectedRepo && importMethod === 'url' && (
+                                        <div className="text-sm text-foreground-secondary">
+                                            Selected:{' '}
+                                            <span className="font-medium">{selectedRepo.full_name}</span>
+                                        </div>
+                                    )}
                                 </div>
-                            )}
-                        </div>
+                            </TabsContent>
+                        </Tabs>
                     </div>
                 </motion.div>
             </StepContent>
