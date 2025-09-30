@@ -15,7 +15,7 @@ interface ImageListProps {
 export const ImageList = memo(({ images, currentFolder }: ImageListProps) => {
     const { uploadOperations, error } = useImagesContext();
     const { handleClickAddButton, handleUploadFile, uploadState } = uploadOperations;
-    
+
     const { handleDragEnter, handleDragLeave, handleDragOver, handleDrop, isDragging } =
         useImageDragDrop(currentFolder);
 
@@ -63,6 +63,7 @@ export const ImageList = memo(({ images, currentFolder }: ImageListProps) => {
                         multiple
                         disabled={uploadState.isUploading}
                     />
+
                     {images.map((image) => (
                         <ImageItem key={image.originPath} image={image} />
                     ))}

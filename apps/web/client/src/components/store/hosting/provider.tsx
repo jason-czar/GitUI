@@ -23,7 +23,10 @@ interface HostingContextValue {
 
     // Operations
     publish: (params: PublishParams) => Promise<{ success: boolean } | null>;
-    unpublish: (projectId: string, type: DeploymentType) => Promise<{ deploymentId: string } | null>;
+    unpublish: (
+        projectId: string,
+        type: DeploymentType,
+    ) => Promise<{ deploymentId: string } | null>;
     cancel: (type: DeploymentType) => Promise<void>;
 
     // Utilities
@@ -47,33 +50,45 @@ export const HostingProvider = ({ children }: HostingProviderProps) => {
     });
 
     // API hooks for all deployment types
-    const previewQuery = api.publish.deployment.getByType.useQuery({
-        projectId: editorEngine.projectId,
-        type: DeploymentType.PREVIEW,
-    }, {
-        refetchInterval: subscriptionStates[DeploymentType.PREVIEW] ? 1000 : false,
-    });
+    const previewQuery = api.publish.deployment.getByType.useQuery(
+        {
+            projectId: editorEngine.projectId,
+            type: DeploymentType.PREVIEW,
+        },
+        {
+            refetchInterval: subscriptionStates[DeploymentType.PREVIEW] ? 1000 : false,
+        },
+    );
 
-    const customQuery = api.publish.deployment.getByType.useQuery({
-        projectId: editorEngine.projectId,
-        type: DeploymentType.CUSTOM,
-    }, {
-        refetchInterval: subscriptionStates[DeploymentType.CUSTOM] ? 1000 : false,
-    });
+    const customQuery = api.publish.deployment.getByType.useQuery(
+        {
+            projectId: editorEngine.projectId,
+            type: DeploymentType.CUSTOM,
+        },
+        {
+            refetchInterval: subscriptionStates[DeploymentType.CUSTOM] ? 1000 : false,
+        },
+    );
 
-    const unpublishPreviewQuery = api.publish.deployment.getByType.useQuery({
-        projectId: editorEngine.projectId,
-        type: DeploymentType.UNPUBLISH_PREVIEW,
-    }, {
-        refetchInterval: subscriptionStates[DeploymentType.UNPUBLISH_PREVIEW] ? 1000 : false,
-    });
+    const unpublishPreviewQuery = api.publish.deployment.getByType.useQuery(
+        {
+            projectId: editorEngine.projectId,
+            type: DeploymentType.UNPUBLISH_PREVIEW,
+        },
+        {
+            refetchInterval: subscriptionStates[DeploymentType.UNPUBLISH_PREVIEW] ? 1000 : false,
+        },
+    );
 
-    const unpublishCustomQuery = api.publish.deployment.getByType.useQuery({
-        projectId: editorEngine.projectId,
-        type: DeploymentType.UNPUBLISH_CUSTOM,
-    }, {
-        refetchInterval: subscriptionStates[DeploymentType.UNPUBLISH_CUSTOM] ? 1000 : false,
-    });
+    const unpublishCustomQuery = api.publish.deployment.getByType.useQuery(
+        {
+            projectId: editorEngine.projectId,
+            type: DeploymentType.UNPUBLISH_CUSTOM,
+        },
+        {
+            refetchInterval: subscriptionStates[DeploymentType.UNPUBLISH_CUSTOM] ? 1000 : false,
+        },
+    );
 
     // Mutations
     const { mutateAsync: runCreateDeployment } = api.publish.deployment.create.useMutation();
@@ -83,17 +98,27 @@ export const HostingProvider = ({ children }: HostingProviderProps) => {
     const { mutateAsync: runCancel } = api.publish.deployment.cancel.useMutation();
 
     // Organize deployments by type
-    const deployments = useMemo(() => ({
-        [DeploymentType.PREVIEW]: previewQuery.data,
-        [DeploymentType.CUSTOM]: customQuery.data,
-        [DeploymentType.UNPUBLISH_PREVIEW]: unpublishPreviewQuery.data,
-        [DeploymentType.UNPUBLISH_CUSTOM]: unpublishCustomQuery.data,
-    }), [previewQuery.data, customQuery.data, unpublishPreviewQuery.data, unpublishCustomQuery.data]);
+    const deployments = useMemo(
+        () => ({
+            [DeploymentType.PREVIEW]: previewQuery.data,
+            [DeploymentType.CUSTOM]: customQuery.data,
+            [DeploymentType.UNPUBLISH_PREVIEW]: unpublishPreviewQuery.data,
+            [DeploymentType.UNPUBLISH_CUSTOM]: unpublishCustomQuery.data,
+        }),
+        [
+            previewQuery.data,
+            customQuery.data,
+            unpublishPreviewQuery.data,
+            unpublishCustomQuery.data,
+        ],
+    );
 
     // Check if any deployment is in progress
     const isDeploying = (type: DeploymentType): boolean => {
-        return deployments[type]?.status === DeploymentStatus.IN_PROGRESS ||
-            deployments[type]?.status === DeploymentStatus.PENDING;
+        return (
+            deployments[type]?.status === DeploymentStatus.IN_PROGRESS ||
+            deployments[type]?.status === DeploymentStatus.PENDING
+        );
     };
 
     // Stop polling when deployments complete, start polling when in progress
@@ -103,12 +128,12 @@ export const HostingProvider = ({ children }: HostingProviderProps) => {
                 deployment?.status === DeploymentStatus.IN_PROGRESS ||
                 deployment?.status === DeploymentStatus.PENDING
             ) {
-                setSubscriptionStates(prev => ({
+                setSubscriptionStates((prev) => ({
                     ...prev,
                     [type as DeploymentType]: true,
                 }));
             } else {
-                setSubscriptionStates(prev => ({
+                setSubscriptionStates((prev) => ({
                     ...prev,
                     [type as DeploymentType]: false,
                 }));
@@ -120,7 +145,7 @@ export const HostingProvider = ({ children }: HostingProviderProps) => {
     const publish = async (params: PublishParams): Promise<{ success: boolean } | null> => {
         let deployment: Deployment | null = null;
         try {
-            setSubscriptionStates(prev => ({
+            setSubscriptionStates((prev) => ({
                 ...prev,
                 [params.type]: true,
             }));
@@ -164,7 +189,7 @@ export const HostingProvider = ({ children }: HostingProviderProps) => {
     // Unpublish function
     const unpublish = async (projectId: string, type: DeploymentType) => {
         try {
-            setSubscriptionStates(prev => ({
+            setSubscriptionStates((prev) => ({
                 ...prev,
                 [type]: true,
             }));
@@ -229,7 +254,7 @@ export const HostingProvider = ({ children }: HostingProviderProps) => {
             preview: deployments.preview ?? null,
             custom: deployments.custom ?? null,
             unpublish_preview: deployments.unpublish_preview ?? null,
-            unpublish_custom: deployments.unpublish_custom ?? null
+            unpublish_custom: deployments.unpublish_custom ?? null,
         },
         isDeploying,
         publish,
@@ -239,11 +264,7 @@ export const HostingProvider = ({ children }: HostingProviderProps) => {
         cancel,
     };
 
-    return (
-        <HostingContext.Provider value={value}>
-            {children}
-        </HostingContext.Provider>
-    );
+    return <HostingContext.Provider value={value}>{children}</HostingContext.Provider>;
 };
 
 export const useHostingContext = () => {
@@ -252,4 +273,4 @@ export const useHostingContext = () => {
         throw new Error('useHostingContext must be used within HostingProvider');
     }
     return context;
-}; 
+};

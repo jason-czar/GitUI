@@ -29,9 +29,7 @@ export const RecentProjectsMenu = observer(() => {
         excludeProjectId: currentProjectId,
     });
 
-    const recentProjects = projects
-        ?.filter(project => project.id !== currentProjectId)
-        || [];
+    const recentProjects = projects?.filter((project) => project.id !== currentProjectId) || [];
 
     const handleProjectClick = async (projectId: string) => {
         setLoadingProjectId(projectId);
@@ -47,7 +45,7 @@ export const RecentProjectsMenu = observer(() => {
                         {t(transKeys.projects.actions.recentProjects)}
                     </div>
                 </DropdownMenuSubTrigger>
-                <DropdownMenuSubContent className='ml-2'>
+                <DropdownMenuSubContent className="ml-2">
                     <DropdownMenuItem disabled>
                         <div className="flex flex-row center items-center">
                             <Icons.LoadingSpinner className="mr-2 w-4 h-4 animate-spin" />
@@ -68,7 +66,7 @@ export const RecentProjectsMenu = observer(() => {
                         {t(transKeys.projects.actions.recentProjects)}
                     </div>
                 </DropdownMenuSubTrigger>
-                <DropdownMenuSubContent className='ml-2'>
+                <DropdownMenuSubContent className="ml-2">
                     <DropdownMenuItem disabled>
                         <div className="flex flex-row center items-center text-muted-foreground">
                             <Icons.Cube className="mr-2" />
@@ -76,7 +74,10 @@ export const RecentProjectsMenu = observer(() => {
                         </div>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => router.push(Routes.PROJECTS)} className="cursor-pointer">
+                    <DropdownMenuItem
+                        onClick={() => router.push(Routes.PROJECTS)}
+                        className="cursor-pointer"
+                    >
                         <div className="flex flex-row center items-center">
                             <Icons.Tokens className="mr-2" />
                             {t(transKeys.projects.actions.goToAllProjects)}
@@ -109,9 +110,7 @@ export const RecentProjectsMenu = observer(() => {
                             ) : (
                                 <Icons.Cube className="mr-2" />
                             )}
-                            <span className="truncate max-w-[120px]">
-                                {project.name}
-                            </span>
+                            <span className="truncate max-w-[120px]">{project.name}</span>
                         </div>
                     </DropdownMenuItem>
                 ))}

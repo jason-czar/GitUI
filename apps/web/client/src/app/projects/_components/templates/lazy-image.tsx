@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { motion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { motion } from 'motion/react';
+import { useEffect, useRef, useState } from 'react';
 
 interface LazyImageProps {
     src: string | null;
@@ -16,11 +16,11 @@ interface LazyImageProps {
 export function LazyImage({
     src,
     alt,
-    className = "",
-    placeholderClassName = "",
+    className = '',
+    placeholderClassName = '',
     onLoad,
     onError,
-    cardStyle = false
+    cardStyle = false,
 }: LazyImageProps) {
     const [isLoaded, setIsLoaded] = useState(false);
     const [isInView, setIsInView] = useState(false);
@@ -37,8 +37,8 @@ export function LazyImage({
                 }
             },
             {
-                rootMargin: "50px"
-            }
+                rootMargin: '50px',
+            },
         );
 
         if (containerRef.current) {
@@ -60,9 +60,7 @@ export function LazyImage({
 
     const renderImageContent = () => (
         <>
-            <div
-                className={`absolute inset-0 bg-secondary ${placeholderClassName}`}
-            />
+            <div className={`absolute inset-0 bg-secondary ${placeholderClassName}`} />
 
             {!isLoaded && !hasError && (
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-foreground/10 to-transparent animate-shimmer" />
@@ -73,14 +71,18 @@ export function LazyImage({
                     ref={imgRef}
                     src={src}
                     alt={alt}
-                    className={cardStyle ? "absolute inset-0 w-full h-full object-cover" : `absolute inset-0 w-full h-full object-cover ${className}`}
+                    className={
+                        cardStyle
+                            ? 'absolute inset-0 w-full h-full object-cover'
+                            : `absolute inset-0 w-full h-full object-cover ${className}`
+                    }
                     onLoad={handleLoad}
                     onError={handleError}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: isLoaded ? 1 : 0 }}
                     transition={{
                         duration: 0.3,
-                        ease: [0.25, 0.46, 0.45, 0.94]
+                        ease: [0.25, 0.46, 0.45, 0.94],
                     }}
                 />
             )}

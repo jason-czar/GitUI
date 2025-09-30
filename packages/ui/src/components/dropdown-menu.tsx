@@ -38,6 +38,7 @@ function DropdownMenuContent({
             {...props}
         />
     );
+
     // If portalled=false, render directly to keep within parent stacking context
     if (!portalled) return content;
     return <DropdownMenuPrimitive.Portal>{content}</DropdownMenuPrimitive.Portal>;
@@ -130,9 +131,7 @@ function DropdownMenuLabel({
     className,
     inset,
     ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.Label> & {
-    inset?: boolean;
-}) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Label> & { inset?: boolean }) {
     return (
         <DropdownMenuPrimitive.Label
             data-slot="dropdown-menu-label"
@@ -175,9 +174,7 @@ function DropdownMenuSubTrigger({
     inset,
     children,
     ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.SubTrigger> & {
-    inset?: boolean;
-}) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.SubTrigger> & { inset?: boolean }) {
     return (
         <DropdownMenuPrimitive.SubTrigger
             data-slot="dropdown-menu-sub-trigger"

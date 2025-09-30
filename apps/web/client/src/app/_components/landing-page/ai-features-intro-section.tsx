@@ -11,7 +11,9 @@ export function AiFeaturesIntroSection() {
                     Visual Design Control Supercharged with AI
                 </p>
                 <p className="text-foreground-secondary text-lg max-w-xl mx-auto text-balance">
-                    Get the precision of visual editing with the speed of AI generation. Design with complete creative control while AI handles the heavy lifting - from maintaining brand consistency to generating responsive layouts that match your exact vision.
+                    Get the precision of visual editing with the speed of AI generation. Design with
+                    complete creative control while AI handles the heavy lifting - from maintaining
+                    brand consistency to generating responsive layouts that match your exact vision.
                 </p>
             </div>
         </div>

@@ -20,14 +20,16 @@ const isProduction = env.NODE_ENV === 'production';
 
 export const metadata: Metadata = {
     title: 'Onlook – Cursor for Designers',
-    description: 'The power of Cursor for your own website. Onlook lets you edit your React website and write your changes back to code in real-time. Iterate and experiment with AI.',
+    description:
+        'The power of Cursor for your own website. Onlook lets you edit your React website and write your changes back to code in real-time. Iterate and experiment with AI.',
     icons: [{ rel: 'icon', url: '/favicon.ico' }],
     openGraph: {
         url: 'https://onlook.com/',
         type: 'website',
         siteName: 'Onlook',
         title: 'Onlook – Cursor for Designers',
-        description: 'The power of Cursor for your own website. Onlook lets you edit your React website and write your changes back to code in real-time. Iterate and experiment with AI.',
+        description:
+            'The power of Cursor for your own website. Onlook lets you edit your React website and write your changes back to code in real-time. Iterate and experiment with AI.',
         images: [
             {
                 url: 'https://framerusercontent.com/images/ScnnNT7JpmUya7afqGAets8.png',
@@ -39,7 +41,8 @@ export const metadata: Metadata = {
         site: '@onlookdev',
         creator: '@onlookdev',
         title: 'Onlook – Cursor for Designers',
-        description: 'The power of Cursor for your own website. Onlook lets you edit your React website and write your changes back to code in real-time. Iterate and experiment with AI.',
+        description:
+            'The power of Cursor for your own website. Onlook lets you edit your React website and write your changes back to code in real-time. Iterate and experiment with AI.',
         images: [
             {
                 url: 'https://framerusercontent.com/images/ScnnNT7JpmUya7afqGAets8.png',
@@ -62,10 +65,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <link rel="canonical" href="https://onlook.com/" />
                 <meta name="robots" content="index, follow" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
+
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
                 />
+
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
@@ -74,7 +79,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <body>
                 {isProduction && (
                     <>
-                        <Script src="https://z.onlook.com/cdn-cgi/zaraz/i.js" strategy="lazyOnload" />
+                        <Script
+                            src="https://z.onlook.com/cdn-cgi/zaraz/i.js"
+                            strategy="lazyOnload"
+                        />
+
                         <RB2BLoader />
                     </>
                 )}

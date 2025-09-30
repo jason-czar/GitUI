@@ -72,7 +72,7 @@ export const TextSelected = ({ availableWidth = 0 }: { availableWidth?: number }
     });
     const { isOpen, onOpenChange } = useDropdownControl({
         id: 'text-selected-overflow-dropdown',
-        isOverflow: true
+        isOverflow: true,
     });
 
     const visibleGroups = TEXT_SELECTED_GROUPS.slice(0, visibleCount);

@@ -42,10 +42,10 @@ const defaultFaqs = [
 
 export function FAQSection({
     faqs = defaultFaqs,
-    title = "Frequently\nasked questions",
-    buttonText = "Read our FAQs",
+    title = 'Frequently\nasked questions',
+    buttonText = 'Read our FAQs',
     buttonHref = Routes.FAQ,
-    className = ""
+    className = '',
 }: FAQSectionProps) {
     return (
         <div className={`w-full py-48 px-8 bg-background-onlook/80 ${className}`} id="faq">
@@ -59,7 +59,12 @@ export function FAQSection({
                             </React.Fragment>
                         ))}
                     </h3>
-                    <ButtonLink href={buttonHref} rightIcon={<Icons.ArrowRight className="w-5 h-5" />}>{buttonText}</ButtonLink>
+                    <ButtonLink
+                        href={buttonHref}
+                        rightIcon={<Icons.ArrowRight className="w-5 h-5" />}
+                    >
+                        {buttonText}
+                    </ButtonLink>
                 </div>
                 <div className="flex-1 flex flex-col gap-6">
                     <FAQDropdown faqs={faqs} />
@@ -67,4 +72,4 @@ export function FAQSection({
             </div>
         </div>
     );
-}    
+}

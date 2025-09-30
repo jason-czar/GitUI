@@ -17,6 +17,10 @@ export const createDefaultProject = ({
         previewImgPath: null,
         previewImgBucket: null,
         updatedPreviewImgAt: null,
+        
+        // GitUI: Repository connection
+        repositoryId: null,
+        
         ...overrides,
 
         // deprecated

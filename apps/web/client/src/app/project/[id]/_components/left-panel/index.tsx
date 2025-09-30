@@ -16,36 +16,35 @@ import { ZoomControls } from './zoom-controls';
 const tabs: {
     value: LeftPanelTabValue;
     icon: React.ReactNode;
-    label: any,
-    disabled?: boolean
-}[] =
-    [
-        {
-            value: LeftPanelTabValue.LAYERS,
-            icon: <Icons.Layers className="w-5 h-5" />,
-            label: transKeys.editor.panels.layers.tabs.layers,
-        },
-        {
-            value: LeftPanelTabValue.BRAND,
-            icon: <Icons.Brand className="w-5 h-5" />,
-            label: transKeys.editor.panels.layers.tabs.brand,
-        },
-        {
-            value: LeftPanelTabValue.PAGES,
-            icon: <Icons.File className="w-5 h-5" />,
-            label: transKeys.editor.panels.layers.tabs.pages,
-        },
-        {
-            value: LeftPanelTabValue.IMAGES,
-            icon: <Icons.Image className="w-5 h-5" />,
-            label: transKeys.editor.panels.layers.tabs.images,
-        },
-        {
-            value: LeftPanelTabValue.BRANCHES,
-            icon: <Icons.Branch className="w-5 h-5" />,
-            label: transKeys.editor.panels.layers.tabs.branches,
-        },
-    ];
+    label: any;
+    disabled?: boolean;
+}[] = [
+    {
+        value: LeftPanelTabValue.LAYERS,
+        icon: <Icons.Layers className="w-5 h-5" />,
+        label: transKeys.editor.panels.layers.tabs.layers,
+    },
+    {
+        value: LeftPanelTabValue.BRAND,
+        icon: <Icons.Brand className="w-5 h-5" />,
+        label: transKeys.editor.panels.layers.tabs.brand,
+    },
+    {
+        value: LeftPanelTabValue.PAGES,
+        icon: <Icons.File className="w-5 h-5" />,
+        label: transKeys.editor.panels.layers.tabs.pages,
+    },
+    {
+        value: LeftPanelTabValue.IMAGES,
+        icon: <Icons.Image className="w-5 h-5" />,
+        label: transKeys.editor.panels.layers.tabs.images,
+    },
+    {
+        value: LeftPanelTabValue.BRANCHES,
+        icon: <Icons.Branch className="w-5 h-5" />,
+        label: transKeys.editor.panels.layers.tabs.branches,
+    },
+];
 
 export const LeftPanel = observer(() => {
     const editorEngine = useEditorEngine();
@@ -115,7 +114,8 @@ export const LeftPanel = observer(() => {
                             selectedTab === tab.value && isLocked
                                 ? 'bg-accent text-foreground border-[0.5px] border-foreground/20 '
                                 : 'text-muted-foreground hover:text-foreground hover:bg-accent/50',
-                            tab.disabled && 'opacity-50 cursor-not-allowed hover:bg-transparent hover:text-muted-foreground',
+                            tab.disabled &&
+                                'opacity-50 cursor-not-allowed hover:bg-transparent hover:text-muted-foreground',
                         )}
                         disabled={tab.disabled}
                         onClick={() => !tab.disabled && handleClick(tab.value)}

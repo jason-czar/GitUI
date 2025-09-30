@@ -34,9 +34,7 @@ export const Main = observer(() => {
                 return;
             }
 
-            const canvasContainer = document.getElementById(
-                EditorAttributes.CANVAS_CONTAINER_ID,
-            );
+            const canvasContainer = document.getElementById(EditorAttributes.CANVAS_CONTAINER_ID);
             if (canvasContainer?.contains(event.target as Node | null)) {
                 return;
             }
@@ -44,7 +42,33 @@ export const Main = observer(() => {
             event.stopPropagation();
         }
 
+        // GitUI: Auto-accept CodeSandbox preview dialogs
+        function handleDialogAutoAccept() {
+            // Look for CodeSandbox confirmation dialogs and auto-click "Yes"
+            const checkForDialog = () => {
+                const buttons = document.querySelectorAll('button');
+                buttons.forEach((button) => {
+                    const text = button.textContent?.toLowerCase();
+                    if (text?.includes('yes') && text?.includes('proceed')) {
+                        button.click();
+                    }
+                });
+            };
+
+            // Check periodically for dialogs
+            const intervalId = setInterval(checkForDialog, 500);
+
+            // Clean up after 10 seconds
+            setTimeout(() => {
+                clearInterval(intervalId);
+            }, 10000);
+        }
+
         window.addEventListener('wheel', handleGlobalWheel, { passive: false });
+
+        // Start auto-accept dialog handler
+        handleDialogAutoAccept();
+
         return () => {
             window.removeEventListener('wheel', handleGlobalWheel);
         };
@@ -55,11 +79,14 @@ export const Main = observer(() => {
             <div className="h-screen w-screen flex items-center justify-center gap-2 flex-col">
                 <div className="flex flex-row items-center justify-center gap-2">
                     <Icons.ExclamationTriangle className="h-6 w-6 text-foreground-primary" />
+
                     <div className="text-xl">Error starting project: {error}</div>
                 </div>
-                <Button onClick={() => {
-                    router.push('/');
-                }}>
+                <Button
+                    onClick={() => {
+                        router.push('/');
+                    }}
+                >
                     Go to home
                 </Button>
             </div>
@@ -70,6 +97,7 @@ export const Main = observer(() => {
         return (
             <div className="h-screen w-screen flex items-center justify-center gap-2">
                 <Icons.LoadingSpinner className="h-6 w-6 animate-spin text-foreground-primary" />
+
                 <div className="text-xl">Loading project...</div>
             </div>
         );
@@ -85,10 +113,7 @@ export const Main = observer(() => {
                 </div>
 
                 {/* Left Panel */}
-                <div
-                    ref={leftPanelRef}
-                    className="absolute top-10 left-0 h-[calc(100%-40px)] z-50"
-                >
+                <div ref={leftPanelRef} className="absolute top-10 left-0 h-[calc(100%-40px)] z-50">
                     <LeftPanel />
                 </div>
                 {/* EditorBar anchored between panels */}

@@ -150,12 +150,16 @@ export const sandboxRouter = createTRPCRouter({
             }),
         )
         .mutation(async ({ input }) => {
-            const MAX_RETRY_ATTEMPTS = 3;
+            const MAX_RETRY_ATTEMPTS = 2; // GitUI: Reduced retries since we have better error handling
             const DEFAULT_PORT = 3000;
             let lastError: Error | null = null;
 
+            console.log(`GitUI: Starting GitHub sandbox creation for ${input.repoUrl} (branch: ${input.branch})`);
+
             for (let attempt = 1; attempt <= MAX_RETRY_ATTEMPTS; attempt++) {
                 try {
+                    console.log(`GitUI: Attempt ${attempt}/${MAX_RETRY_ATTEMPTS}`);
+                    
                     const CodesandboxProvider = await getStaticCodeProvider(CodeProvider.CodeSandbox);
                     const sandbox = await CodesandboxProvider.createProjectFromGit({
                         repoUrl: input.repoUrl,
@@ -164,22 +168,42 @@ export const sandboxRouter = createTRPCRouter({
 
                     const previewUrl = getSandboxPreviewUrl(sandbox.id, DEFAULT_PORT);
 
+                    console.log(`GitUI: Successfully created sandbox ${sandbox.id}`);
                     return {
                         sandboxId: sandbox.id,
                         previewUrl,
                     };
                 } catch (error) {
                     lastError = error instanceof Error ? error : new Error(String(error));
+                    console.warn(`GitUI: Attempt ${attempt} failed:`, lastError.message);
+
+                    // GitUI: Don't retry on certain types of errors
+                    const errorMessage = lastError.message.toLowerCase();
+                    if (errorMessage.includes('branch') && errorMessage.includes('not found')) {
+                        console.log('GitUI: Branch not found - not retrying');
+                        break;
+                    }
+                    if (errorMessage.includes('access denied') || errorMessage.includes('permission')) {
+                        console.log('GitUI: Access denied - not retrying');
+                        break;
+                    }
 
                     if (attempt < MAX_RETRY_ATTEMPTS) {
-                        await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+                        const delay = Math.pow(2, attempt) * 1000;
+                        console.log(`GitUI: Waiting ${delay}ms before retry...`);
+                        await new Promise(resolve => setTimeout(resolve, delay));
                     }
                 }
             }
 
+            // GitUI: Enhanced error reporting
+            const errorCode = lastError?.message.includes('timeout') ? 'TIMEOUT' : 
+                             lastError?.message.includes('branch') ? 'BAD_REQUEST' :
+                             lastError?.message.includes('access') ? 'FORBIDDEN' : 'INTERNAL_SERVER_ERROR';
+
             throw new TRPCError({
-                code: 'INTERNAL_SERVER_ERROR',
-                message: `Failed to create GitHub sandbox after ${MAX_RETRY_ATTEMPTS} attempts: ${lastError?.message}`,
+                code: errorCode,
+                message: `GitUI: Failed to import repository after ${MAX_RETRY_ATTEMPTS} attempts. ${lastError?.message || 'Unknown error'}`,
                 cause: lastError,
             });
         }),

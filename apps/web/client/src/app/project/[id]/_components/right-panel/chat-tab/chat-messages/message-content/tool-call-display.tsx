@@ -5,12 +5,15 @@ import {
     type SEARCH_REPLACE_EDIT_FILE_TOOL_PARAMETERS,
     SEARCH_REPLACE_MULTI_EDIT_FILE_TOOL_NAME,
     type SEARCH_REPLACE_MULTI_EDIT_FILE_TOOL_PARAMETERS,
-    TERMINAL_COMMAND_TOOL_NAME, TERMINAL_COMMAND_TOOL_PARAMETERS, TODO_WRITE_TOOL_NAME,
-    type TODO_WRITE_TOOL_PARAMETERS, TYPECHECK_TOOL_NAME,
+    TERMINAL_COMMAND_TOOL_NAME,
+    TERMINAL_COMMAND_TOOL_PARAMETERS,
+    TODO_WRITE_TOOL_NAME,
+    type TODO_WRITE_TOOL_PARAMETERS,
+    TYPECHECK_TOOL_NAME,
     WEB_SEARCH_TOOL_NAME,
     type WEB_SEARCH_TOOL_PARAMETERS,
     WRITE_FILE_TOOL_NAME,
-    type WRITE_FILE_TOOL_PARAMETERS
+    type WRITE_FILE_TOOL_PARAMETERS,
 } from '@onlook/ai';
 import type { WebSearchResult } from '@onlook/models';
 import { Icons } from '@onlook/ui/icons/index';
@@ -28,25 +31,22 @@ export const ToolCallDisplay = ({
     isLastPart,
     toolPart,
     isStream,
-    applied
+    applied,
 }: {
-    messageId: string,
-    isLastPart: boolean,
-    toolPart: ToolUIPart,
-    isStream: boolean,
-    applied: boolean
+    messageId: string;
+    isLastPart: boolean;
+    toolPart: ToolUIPart;
+    isStream: boolean;
+    applied: boolean;
 }) => {
     const toolName = toolPart.type.split('-')[1];
     const loading = isStream && isLastPart;
 
-    if (isStream || (toolPart.state !== 'output-available' && toolPart.state !== 'input-available')) {
-        return (
-            <ToolCallSimple
-                toolPart={toolPart}
-                key={toolPart.toolCallId}
-                loading={loading}
-            />
-        );
+    if (
+        isStream ||
+        (toolPart.state !== 'output-available' && toolPart.state !== 'input-available')
+    ) {
+        return <ToolCallSimple toolPart={toolPart} key={toolPart.toolCallId} loading={loading} />;
     }
 
     if (toolName === TERMINAL_COMMAND_TOOL_NAME) {
@@ -54,11 +54,7 @@ export const ToolCallDisplay = ({
         const result = toolPart.output as { output?: string; error?: string } | null;
         if (!args?.command) {
             return (
-                <ToolCallSimple
-                    toolPart={toolPart}
-                    key={toolPart.toolCallId}
-                    loading={loading}
-                />
+                <ToolCallSimple toolPart={toolPart} key={toolPart.toolCallId} loading={loading} />
             );
         }
         return (
@@ -66,8 +62,12 @@ export const ToolCallDisplay = ({
                 key={toolPart.toolCallId}
                 content={args.command}
                 isStream={isStream}
-                defaultStdOut={toolPart.state === 'output-available' ? result?.output ?? null : null}
-                defaultStdErr={toolPart.state === 'output-available' ? result?.error ?? null : null}
+                defaultStdOut={
+                    toolPart.state === 'output-available' ? (result?.output ?? null) : null
+                }
+                defaultStdErr={
+                    toolPart.state === 'output-available' ? (result?.error ?? null) : null
+                }
             />
         );
     }
@@ -79,10 +79,18 @@ export const ToolCallDisplay = ({
             return (
                 <SearchSourcesDisplay
                     query={String(args.query)}
-                    results={Array.isArray(searchResult.result) ? (searchResult.result as unknown[]).map((result: unknown) => ({
-                        title: String((result as { title?: string; url?: string }).title ?? (result as { url?: string }).url ?? ''),
-                        url: String((result as { url?: string }).url ?? '')
-                    })) : []}
+                    results={
+                        Array.isArray(searchResult.result)
+                            ? (searchResult.result as unknown[]).map((result: unknown) => ({
+                                  title: String(
+                                      (result as { title?: string; url?: string }).title ??
+                                          (result as { url?: string }).url ??
+                                          '',
+                                  ),
+                                  url: String((result as { url?: string }).url ?? ''),
+                              }))
+                            : []
+                    }
                 />
             );
         }
@@ -95,11 +103,7 @@ export const ToolCallDisplay = ({
         const branchId = args?.branchId;
         if (!filePath || !codeContent) {
             return (
-                <ToolCallSimple
-                    toolPart={toolPart}
-                    key={toolPart.toolCallId}
-                    loading={loading}
-                />
+                <ToolCallSimple toolPart={toolPart} key={toolPart.toolCallId} loading={loading} />
             );
         }
         return (
@@ -123,11 +127,7 @@ export const ToolCallDisplay = ({
         const branchId = args?.branchId;
         if (!filePath || !codeContent) {
             return (
-                <ToolCallSimple
-                    toolPart={toolPart}
-                    key={toolPart.toolCallId}
-                    loading={loading}
-                />
+                <ToolCallSimple toolPart={toolPart} key={toolPart.toolCallId} loading={loading} />
             );
         }
         return (
@@ -145,17 +145,15 @@ export const ToolCallDisplay = ({
     }
 
     if (toolName === SEARCH_REPLACE_EDIT_FILE_TOOL_NAME) {
-        const args = toolPart.input as z.infer<typeof SEARCH_REPLACE_EDIT_FILE_TOOL_PARAMETERS> | null;
+        const args = toolPart.input as z.infer<
+            typeof SEARCH_REPLACE_EDIT_FILE_TOOL_PARAMETERS
+        > | null;
         const filePath = args?.file_path;
         const codeContent = args?.new_string;
         const branchId = args?.branchId;
         if (!filePath || !codeContent) {
             return (
-                <ToolCallSimple
-                    toolPart={toolPart}
-                    key={toolPart.toolCallId}
-                    loading={loading}
-                />
+                <ToolCallSimple toolPart={toolPart} key={toolPart.toolCallId} loading={loading} />
             );
         }
         return (
@@ -173,17 +171,15 @@ export const ToolCallDisplay = ({
     }
 
     if (toolName === SEARCH_REPLACE_MULTI_EDIT_FILE_TOOL_NAME) {
-        const args = toolPart.input as z.infer<typeof SEARCH_REPLACE_MULTI_EDIT_FILE_TOOL_PARAMETERS> | null;
+        const args = toolPart.input as z.infer<
+            typeof SEARCH_REPLACE_MULTI_EDIT_FILE_TOOL_PARAMETERS
+        > | null;
         const filePath = args?.file_path;
         const codeContent = args?.edits?.map((edit) => edit.new_string).join('\n...\n');
         const branchId = args?.branchId;
         if (!filePath || !codeContent) {
             return (
-                <ToolCallSimple
-                    toolPart={toolPart}
-                    key={toolPart.toolCallId}
-                    loading={loading}
-                />
+                <ToolCallSimple toolPart={toolPart} key={toolPart.toolCallId} loading={loading} />
             );
         }
         return (
@@ -205,11 +201,7 @@ export const ToolCallDisplay = ({
         const todos = args?.todos;
         if (!todos || todos.length === 0) {
             return (
-                <ToolCallSimple
-                    toolPart={toolPart}
-                    key={toolPart.toolCallId}
-                    loading={loading}
-                />
+                <ToolCallSimple toolPart={toolPart} key={toolPart.toolCallId} loading={loading} />
             );
         }
         return (
@@ -217,13 +209,21 @@ export const ToolCallDisplay = ({
                 {todos.map((todo) => (
                     <div className="flex items-center gap-2 text-sm" key={todo.content}>
                         <div className="flex items-center justify-center w-4 h-4 min-w-4">
-                            {todo.status === 'completed' ? <Icons.SquareCheck className="w-4 h-4" /> : <Icons.Square className="w-4 h-4" />}
+                            {todo.status === 'completed' ? (
+                                <Icons.SquareCheck className="w-4 h-4" />
+                            ) : (
+                                <Icons.Square className="w-4 h-4" />
+                            )}
                         </div>
-                        <p className={cn(
-                            todo.status === 'completed' ? 'line-through text-green-500' : '',
-                            todo.status === 'in_progress' ? 'text-yellow-500' : '',
-                            todo.status === 'pending' ? 'text-gray-500' : '',
-                        )}>{todo.content}</p>
+                        <p
+                            className={cn(
+                                todo.status === 'completed' ? 'line-through text-green-500' : '',
+                                todo.status === 'in_progress' ? 'text-yellow-500' : '',
+                                todo.status === 'pending' ? 'text-gray-500' : '',
+                            )}
+                        >
+                            {todo.content}
+                        </p>
                     </div>
                 ))}
             </div>
@@ -244,11 +244,5 @@ export const ToolCallDisplay = ({
         );
     }
 
-    return (
-        <ToolCallSimple
-            toolPart={toolPart}
-            key={toolPart.toolCallId}
-            loading={loading}
-        />
-    );
-}
+    return <ToolCallSimple toolPart={toolPart} key={toolPart.toolCallId} loading={loading} />;
+};

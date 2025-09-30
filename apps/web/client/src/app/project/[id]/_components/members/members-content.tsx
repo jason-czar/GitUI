@@ -17,10 +17,13 @@ export const MembersContent = () => {
     });
 
     if (loadingMembers && loadingInvitations) {
-        return <div className="h-32 gap-2 p-3 text-muted-foreground text-sm flex items-center justify-center">
-            <Icons.LoadingSpinner className="h-6 w-6 animate-spin text-foreground-primary" />
-            <div className="text-sm">Loading members...</div>
-        </div>;
+        return (
+            <div className="h-32 gap-2 p-3 text-muted-foreground text-sm flex items-center justify-center">
+                <Icons.LoadingSpinner className="h-6 w-6 animate-spin text-foreground-primary" />
+
+                <div className="text-sm">Loading members...</div>
+            </div>
+        );
     }
 
     return (

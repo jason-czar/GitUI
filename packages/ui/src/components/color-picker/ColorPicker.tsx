@@ -63,6 +63,7 @@ const InputsRow = ({
                             return true;
                         }}
                     />
+
                     <Input
                         value={Math.round(hslColor['s'] * 100).toString()}
                         onChangeValue={(valueString) => {
@@ -76,6 +77,7 @@ const InputsRow = ({
                             return true;
                         }}
                     />
+
                     <Input
                         value={Math.round(hslColor['l'] * 100).toString()}
                         onChangeValue={(valueString) => {
@@ -102,6 +104,7 @@ const InputsRow = ({
                             return true;
                         }}
                     />
+
                     <Input
                         value={Math.round(color['s'] * 100).toString()}
                         onChangeValue={(valueString) => {
@@ -112,6 +115,7 @@ const InputsRow = ({
                             return true;
                         }}
                     />
+
                     <Input
                         value={Math.round(color['v'] * 100).toString()}
                         onChangeValue={(valueString) => {
@@ -138,6 +142,7 @@ const InputsRow = ({
                             return true;
                         }}
                     />
+
                     <Input
                         value={Math.round(rgbColor['g'] * 255).toString()}
                         onChangeValue={(valueString) => {
@@ -151,6 +156,7 @@ const InputsRow = ({
                             return true;
                         }}
                     />
+
                     <Input
                         value={Math.round(rgbColor['b'] * 255).toString()}
                         onChangeValue={(valueString) => {
@@ -190,6 +196,7 @@ const InputsRow = ({
                     }}
                     className="pr-3"
                 />
+
                 <span
                     className="absolute right-[5px] top-1/2 transform -translate-y-1/2 text-foreground-tertiary"
                     style={{ userSelect: 'none' }}
@@ -297,6 +304,7 @@ export const ColorPicker: React.FC<{
                     onMouseDown?.(updatedColor);
                 }}
             />
+
             <div className="z-50 flex justify-between items-center">
                 <EyeDropperBox>
                     <EyeDropperButton
@@ -337,6 +345,7 @@ export const ColorPicker: React.FC<{
                             onMouseDown?.(new Color({ ...localColor, h: mod(h, 1) }));
                         }}
                     />
+
                     <ColorSlider
                         direction="right"
                         length={165}

@@ -11,12 +11,18 @@ export function ColorSwatchGroup({ label, colorClasses }: ColorSwatchGroupProps)
             <div className="text-foreground-tertiary text-xs mb-1">{label}</div>
             <div className="grid grid-cols-6 gap-0.5 mb-1 cursor-pointer">
                 {colorClasses.slice(0, 6).map((cls, i) => (
-                    <div key={cls + i} className={`w-8 h-8 rounded-md border-[1px] border-foreground-primary/20 hover:border-foreground-primary/50 ${cls}`} />
+                    <div
+                        key={cls + i}
+                        className={`w-8 h-8 rounded-md border-[1px] border-foreground-primary/20 hover:border-foreground-primary/50 ${cls}`}
+                    />
                 ))}
             </div>
             <div className="grid grid-cols-6 gap-0.5 cursor-pointer">
                 {colorClasses.slice(6, 11).map((cls, i) => (
-                    <div key={cls + i} className={`w-8 h-8 rounded-md border-[1px] border-foreground-primary/20 hover:border-foreground-primary/50 ${cls}`} />
+                    <div
+                        key={cls + i}
+                        className={`w-8 h-8 rounded-md border-[1px] border-foreground-primary/20 hover:border-foreground-primary/50 ${cls}`}
+                    />
                 ))}
                 {/* 12th swatch: plus icon */}
                 <div className="w-8 h-8 rounded-md bg-black border border-foreground-tertiary/50 border-dashed flex items-center group justify-center cursor-pointer hover:bg-foreground-tertiary/20 hover:border-foreground-tertiary/80">
@@ -25,4 +31,4 @@ export function ColorSwatchGroup({ label, colorClasses }: ColorSwatchGroupProps)
             </div>
         </div>
     );
-} 
+}

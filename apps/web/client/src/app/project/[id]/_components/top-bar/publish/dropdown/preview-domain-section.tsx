@@ -15,8 +15,11 @@ export const PreviewDomainSection = observer(() => {
     const editorEngine = useEditorEngine();
     const [isLoading, setIsLoading] = useState(false);
     const { data: project } = api.project.get.useQuery({ projectId: editorEngine.projectId });
-    const { data: previewDomain, refetch: refetchPreviewDomain } = api.domain.preview.get.useQuery({ projectId: editorEngine.projectId });
-    const { mutateAsync: createPreviewDomain, isPending: isCreatingDomain } = api.domain.preview.create.useMutation();
+    const { data: previewDomain, refetch: refetchPreviewDomain } = api.domain.preview.get.useQuery({
+        projectId: editorEngine.projectId,
+    });
+    const { mutateAsync: createPreviewDomain, isPending: isCreatingDomain } =
+        api.domain.preview.create.useMutation();
     const { deployment, publish: runPublish, isDeploying } = useHostingType(DeploymentType.PREVIEW);
 
     const createBaseDomain = async (): Promise<void> => {
@@ -40,7 +43,7 @@ export const PreviewDomainSection = observer(() => {
         try {
             await runPublish({
                 projectId: editorEngine.projectId,
-                sandboxId: editorEngine.branches.activeBranch.sandbox.id
+                sandboxId: editorEngine.branches.activeBranch.sandbox.id,
             });
         } catch (error) {
             console.error(error);
@@ -65,9 +68,7 @@ export const PreviewDomainSection = observer(() => {
         return (
             <>
                 <div className="flex items-center w-full">
-                    <h3 className="">
-                        Base Domain
-                    </h3>
+                    <h3 className="">Base Domain</h3>
                     {deployment && deployment?.status === DeploymentStatus.COMPLETED && (
                         <div className="ml-auto flex items-center gap-2">
                             <p className="text-green-300">Live</p>
@@ -103,7 +104,11 @@ export const PreviewDomainSection = observer(() => {
                     <h3 className="">Publish</h3>
                 </div>
 
-                <Button disabled={isCreatingDomain} onClick={createBaseDomain} className="w-full rounded-md p-3">
+                <Button
+                    disabled={isCreatingDomain}
+                    onClick={createBaseDomain}
+                    className="w-full rounded-md p-3"
+                >
                     {isCreatingDomain ? 'Creating domain...' : 'Publish my site'}
                 </Button>
             </>
@@ -118,14 +123,15 @@ export const PreviewDomainSection = observer(() => {
         return (
             <div className="w-full flex flex-col gap-2">
                 <UrlSection url={previewDomain.url} isCopyable={true} />
-                {deployment?.status === DeploymentStatus.FAILED || deployment?.status === DeploymentStatus.CANCELLED ? (
+                {deployment?.status === DeploymentStatus.FAILED ||
+                deployment?.status === DeploymentStatus.CANCELLED ? (
                     <div className="w-full flex flex-col gap-2">
-                        {deployment?.error && <p className="text-red-500 max-h-20 overflow-y-auto">{stripAnsi(deployment?.error)}</p>}
-                        <Button
-                            variant="outline"
-                            className="w-full rounded-md p-3"
-                            onClick={retry}
-                        >
+                        {deployment?.error && (
+                            <p className="text-red-500 max-h-20 overflow-y-auto">
+                                {stripAnsi(deployment?.error)}
+                            </p>
+                        )}
+                        <Button variant="outline" className="w-full rounded-md p-3" onClick={retry}>
                             Try Updating Again
                         </Button>
                     </div>
@@ -136,7 +142,9 @@ export const PreviewDomainSection = observer(() => {
                         className="w-full rounded-md p-3"
                         disabled={isDeploying || isLoading}
                     >
-                        {isLoading && <Icons.LoadingSpinner className="w-4 h-4 mr-2 animate-spin" />}
+                        {isLoading && (
+                            <Icons.LoadingSpinner className="w-4 h-4 mr-2 animate-spin" />
+                        )}
                         Update
                     </Button>
                 )}
@@ -146,9 +154,7 @@ export const PreviewDomainSection = observer(() => {
 
     return (
         <div className="p-4 flex flex-col items-center gap-2">
-            {previewDomain?.url
-                ? renderDomain()
-                : renderNoDomain()}
+            {previewDomain?.url ? renderDomain() : renderNoDomain()}
         </div>
     );
 });

@@ -15,7 +15,8 @@ import { cn } from '@onlook/ui/utils';
 import { useFolderContext } from '../../providers/folder-provider';
 
 export const FolderCreateModal = observer(() => {
-    const { createState, handleCreateFolderInputChange, onCreateFolder, handleCreateModalToggle } = useFolderContext();
+    const { createState, handleCreateFolderInputChange, onCreateFolder, handleCreateModalToggle } =
+        useFolderContext();
     const [inputValue, setInputValue] = useState(createState.newFolderName);
 
     useEffect(() => {
@@ -65,7 +66,7 @@ export const FolderCreateModal = observer(() => {
                         Enter a name for the new folder {getLocationText()}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
-                
+
                 <div className="py-4">
                     <Input
                         value={inputValue}
@@ -73,27 +74,28 @@ export const FolderCreateModal = observer(() => {
                         onKeyDown={handleKeyDown}
                         placeholder="Folder name"
                         className={cn(
-                            createState.error && 'border-red-500 focus-visible:ring-red-500'
+                            createState.error && 'border-red-500 focus-visible:ring-red-500',
                         )}
                         disabled={createState.isLoading}
                         autoFocus
                     />
+
                     {createState.error && (
                         <p className="text-sm text-red-500 mt-2">{createState.error}</p>
                     )}
                 </div>
 
                 <AlertDialogFooter>
-                    <Button 
-                        variant={'ghost'} 
-                        onClick={handleClose} 
+                    <Button
+                        variant={'ghost'}
+                        onClick={handleClose}
                         disabled={createState.isLoading}
                     >
                         Cancel
                     </Button>
-                    <Button 
-                        variant={'default'} 
-                        onClick={handleCreate} 
+                    <Button
+                        variant={'default'}
+                        onClick={handleCreate}
                         disabled={createState.isLoading || !inputValue.trim()}
                     >
                         {createState.isLoading ? (
@@ -109,4 +111,4 @@ export const FolderCreateModal = observer(() => {
             </AlertDialogContent>
         </AlertDialog>
     );
-}); 
+});

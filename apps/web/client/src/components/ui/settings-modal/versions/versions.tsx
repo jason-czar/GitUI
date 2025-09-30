@@ -66,9 +66,7 @@ export const Versions = observer(() => {
         <div className="flex flex-col text-sm">
             <div className="flex flex-row items-center justify-between gap-2 px-6 py-6">
                 <h2 className="text-lg">Versions</h2>
-                {isLoadingCommits && (
-                    <Icons.LoadingSpinner className="h-4 w-4 animate-spin" />
-                )}
+                {isLoadingCommits && <Icons.LoadingSpinner className="h-4 w-4 animate-spin" />}
                 {commits && commits.length > 0 ? (
                     <Button
                         variant="outline"
@@ -111,6 +109,7 @@ export const Versions = observer(() => {
                                                         autoRename={commit.oid === commitToRename}
                                                         onRename={() => setCommitToRename(null)}
                                                     />
+
                                                     {index < dateCommits.length - 1 && (
                                                         <Separator className="bg-border mx-6 w-[calc(100%-theme(spacing.12))]" />
                                                     )}

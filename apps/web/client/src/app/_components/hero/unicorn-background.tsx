@@ -10,12 +10,12 @@ export function UnicornBackground() {
                 className="absolute inset-0 w-full h-[calc(100vh+80px)] z-0"
                 style={{
                     pointerEvents: 'none',
-                    willChange: "opacity",
-                    transform: "translateZ(0)"
+                    willChange: 'opacity',
+                    transform: 'translateZ(0)',
                 }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, ease: "easeOut", delay: 1 }}
+                transition={{ duration: 0.8, ease: 'easeOut', delay: 1 }}
             >
                 <UnicornScene
                     projectId="Gr1LmwbKSeJOXhpYEdit"

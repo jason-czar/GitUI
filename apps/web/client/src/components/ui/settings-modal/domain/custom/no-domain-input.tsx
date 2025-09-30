@@ -6,7 +6,16 @@ import { useDomainVerification, VerificationState } from './use-domain-verificat
 
 export const NoDomainInput = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const { domainInput, setDomainInput, customDomain, verification, verificationState, ownedDomains, createVerificationRequest, removeVerificationRequest } = useDomainVerification();
+    const {
+        domainInput,
+        setDomainInput,
+        customDomain,
+        verification,
+        verificationState,
+        ownedDomains,
+        createVerificationRequest,
+        removeVerificationRequest,
+    } = useDomainVerification();
 
     function getInputButtonText() {
         switch (verificationState) {
@@ -41,10 +50,12 @@ export const NoDomainInput = () => {
                 <div className="w-1/3">
                     <p className="text-regularPlus text-muted-foreground">Custom URL</p>
                     <p className="text-small text-muted-foreground">
-                        {`Input your domain  ${verificationState === VerificationState.INPUTTING_DOMAIN && ownedDomains.length > 0
-                            ? 'or use previous'
-                            : ''
-                            }`}
+                        {`Input your domain  ${
+                            verificationState === VerificationState.INPUTTING_DOMAIN &&
+                            ownedDomains.length > 0
+                                ? 'or use previous'
+                                : ''
+                        }`}
                     </p>
                 </div>
                 <div className="flex flex-col gap-4 flex-1">
@@ -61,6 +72,7 @@ export const NoDomainInput = () => {
                                 }
                             }}
                         />
+
                         <Button
                             onClick={handleButtonClick}
                             variant="secondary"
@@ -103,10 +115,7 @@ export const ExistingDomains = () => {
                 </p>
             )}
             {ownedDomains.map((domain) => (
-                <div
-                    key={domain}
-                    className="flex items-center text-small text-muted-foreground"
-                >
+                <div key={domain} className="flex items-center text-small text-muted-foreground">
                     <p>{domain}</p>
                     <Button
                         variant="outline"

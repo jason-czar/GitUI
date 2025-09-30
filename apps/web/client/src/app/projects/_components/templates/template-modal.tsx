@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useAuthContext } from '@/app/auth/auth-context';
 import { api } from '@/trpc/react';
@@ -11,16 +11,16 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuSeparator,
-    DropdownMenuTrigger
+    DropdownMenuTrigger,
 } from '@onlook/ui/dropdown-menu';
 import { Icons } from '@onlook/ui/icons';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@onlook/ui/tooltip';
 import localforage from 'localforage';
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { LazyImage } from "./lazy-image";
+import { LazyImage } from './lazy-image';
 
 interface TemplateModalProps {
     isOpen: boolean;
@@ -50,7 +50,10 @@ export function TemplateModal({
     user,
 }: TemplateModalProps) {
     const { mutateAsync: forkTemplate } = api.project.forkTemplate.useMutation();
-    const { data: branches } = api.branch.getByProjectId.useQuery({ projectId: templateProject.id, onlyDefault: true });
+    const { data: branches } = api.branch.getByProjectId.useQuery({
+        projectId: templateProject.id,
+        onlyDefault: true,
+    });
     const { setIsAuthModalOpen } = useAuthContext();
     const [isCreatingProject, setIsCreatingProject] = useState(false);
     const router = useRouter();
@@ -84,7 +87,8 @@ export function TemplateModal({
 
             if (errorMessage.includes('502') || errorMessage.includes('sandbox')) {
                 toast.error('Sandbox service temporarily unavailable', {
-                    description: 'Please try again in a few moments. Our servers may be experiencing high load.',
+                    description:
+                        'Please try again in a few moments. Our servers may be experiencing high load.',
                 });
             } else {
                 toast.error('Failed to create project from template', {
@@ -104,7 +108,7 @@ export function TemplateModal({
 
         const sandboxUrl = getSandboxPreviewUrl(branches[0].sandbox.id, 3000);
         window.open(sandboxUrl, '_blank');
-    }
+    };
 
     const handleEditTemplate = () => {
         router.push(`${Routes.PROJECT}/${templateProject.id}`);
@@ -152,9 +156,7 @@ export function TemplateModal({
                         </div>
 
                         <div className="w-1/2 p-8 flex flex-col overflow-visible min-h-80">
-                            <h2 className="text-2xl font-semibold text-foreground mb-4">
-                                {title}
-                            </h2>
+                            <h2 className="text-2xl font-semibold text-foreground mb-4">{title}</h2>
 
                             <p className="text-foreground-secondary text-base leading-relaxed mb-8 flex-1">
                                 {description}
@@ -184,16 +186,16 @@ export function TemplateModal({
                                                 variant="outline"
                                                 size="lg"
                                                 onClick={onToggleStar}
-                                                aria-label={isStarred ? "Remove from favorites" : "Add to favorites"}
+                                                aria-label={
+                                                    isStarred
+                                                        ? 'Remove from favorites'
+                                                        : 'Add to favorites'
+                                                }
                                             >
                                                 {isStarred ? (
-                                                    <Icons.BookmarkFilled
-                                                        className="w-5 h-5 text-white"
-                                                    />
+                                                    <Icons.BookmarkFilled className="w-5 h-5 text-white" />
                                                 ) : (
-                                                    <Icons.Bookmark
-                                                        className="w-5 h-5 text-foreground-tertiary"
-                                                    />
+                                                    <Icons.Bookmark className="w-5 h-5 text-foreground-tertiary" />
                                                 )}
                                             </Button>
                                         </TooltipTrigger>
@@ -219,13 +221,13 @@ export function TemplateModal({
                                             Preview
                                         </DropdownMenuItem>
                                         {/* <DropdownMenuItem>
-                                            <Icons.Share className="w-4 h-4 mr-3" />
-                                            Share
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem>
-                                            <Icons.Download className="w-4 h-4 mr-3" />
-                                            Download Code
-                                        </DropdownMenuItem> */}
+                    <Icons.Share className="w-4 h-4 mr-3" />
+                    Share
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                    <Icons.Download className="w-4 h-4 mr-3" />
+                    Download Code
+                    </DropdownMenuItem> */}
                                         <DropdownMenuItem onClick={handleEditTemplate}>
                                             <Icons.Edit className="w-4 h-4 mr-3" />
                                             Edit

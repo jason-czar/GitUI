@@ -50,6 +50,7 @@ export const InputDropdown = ({
                     className="w-[40px] bg-transparent text-sm text-white focus:outline-none text-left"
                     aria-label="Value input"
                 />
+
                 <DropdownMenu modal={false}>
                     <DropdownMenuTrigger className="text-sm text-muted-foreground focus:outline-none cursor-pointer hover:text-white transition-colors">
                         {unit}

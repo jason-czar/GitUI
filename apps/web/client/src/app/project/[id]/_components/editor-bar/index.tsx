@@ -47,6 +47,7 @@ const TAG_TYPES: Record<TAG_CATEGORIES, string[]> = {
         'cite',
         'q',
     ],
+
     [TAG_CATEGORIES.DIV]: ['div'],
     // TODO: Add img and video tag support
     [TAG_CATEGORIES.IMG]: [],
@@ -98,7 +99,9 @@ export const EditorBar = observer(({ availableWidth }: { availableWidth?: number
                 exit={{ opacity: 0, y: 20 }}
                 className={cn(
                     'flex flex-col border-[0.5px] border-border p-1 px-1 bg-background rounded-xl backdrop-blur drop-shadow-xl z-50 overflow-hidden',
-                    editorEngine.state.editorMode === EditorMode.PREVIEW && !windowSelected && 'hidden',
+                    editorEngine.state.editorMode === EditorMode.PREVIEW &&
+                        !windowSelected &&
+                        'hidden',
                 )}
                 transition={{
                     type: 'spring',

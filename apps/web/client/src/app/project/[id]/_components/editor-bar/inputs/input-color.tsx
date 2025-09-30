@@ -42,6 +42,7 @@ export const InputColor = ({ color, elementStyleKey, onColorChange }: InputColor
                                 style={{ backgroundColor: tempColor.toHex() }}
                                 onClick={() => setIsOpen(!isOpen)}
                             />
+
                             <input
                                 type="text"
                                 value={tempColor.toHex6()}

@@ -54,6 +54,7 @@ export default function FeaturesPage() {
                     ctaText={`Start building\nwith Onlook today`}
                     buttonText="Get Started for Free"
                 />
+
                 <FAQSection faqs={featuresFaqs} />
                 <NonProjectSettingsModal />
                 <SubscriptionModal />

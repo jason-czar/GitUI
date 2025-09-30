@@ -14,13 +14,13 @@ interface TemplateCardProps {
 }
 
 export function TemplateCard({
-    title = "Template Name",
-    description = "A brief description of what this template includes and its use case.",
-    image = "/assets/site-version-1.png",
+    title = 'Template Name',
+    description = 'A brief description of what this template includes and its use case.',
+    image = '/assets/site-version-1.png',
     isNew = false,
     isStarred = false,
     onToggleStar,
-    onClick
+    onClick,
 }: TemplateCardProps) {
     const handleClick = () => {
         if (onClick) {
@@ -44,7 +44,7 @@ export function TemplateCard({
         >
             <div className="w-80 h-24 rounded-xl overflow-hidden hover:bg-secondary transition-colors duration-300 bg-background border border-border hover:border-border/80 flex relative">
                 <div className="w-1/3 h-full flex-shrink-0 relative">
-                    {image && image !== "/assets/site-version-1.png" ? (
+                    {image && image !== '/assets/site-version-1.png' ? (
                         <img
                             src={image}
                             alt={`${title} template preview`}
@@ -76,16 +76,14 @@ export function TemplateCard({
                                             onToggleStar();
                                         }}
                                         className="p-1 rounded-full hover:bg-secondary transition-colors flex-shrink-0 mt-[-2px]"
-                                        aria-label={isStarred ? "Remove from favorites" : "Add to favorites"}
+                                        aria-label={
+                                            isStarred ? 'Remove from favorites' : 'Add to favorites'
+                                        }
                                     >
-{isStarred ? (
-                                            <Icons.BookmarkFilled
-                                                className="w-3.5 h-3.5 text-white"
-                                            />
+                                        {isStarred ? (
+                                            <Icons.BookmarkFilled className="w-3.5 h-3.5 text-white" />
                                         ) : (
-                                            <Icons.Bookmark
-                                                className="w-3.5 h-3.5 text-foreground-tertiary hover:text-foreground"
-                                            />
+                                            <Icons.Bookmark className="w-3.5 h-3.5 text-foreground-tertiary hover:text-foreground" />
                                         )}
                                     </button>
                                 </TooltipTrigger>

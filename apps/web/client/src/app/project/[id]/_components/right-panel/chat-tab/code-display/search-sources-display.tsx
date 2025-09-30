@@ -15,10 +15,7 @@ interface SearchSourcesDisplayProps {
     results: SearchResult[];
 }
 
-export const SearchSourcesDisplay = observer(({
-    query,
-    results,
-}: SearchSourcesDisplayProps) => {
+export const SearchSourcesDisplay = observer(({ query, results }: SearchSourcesDisplayProps) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -28,15 +25,14 @@ export const SearchSourcesDisplay = observer(({
                     <div className="flex items-center p-1 cursor-pointer gap-2 text-sm text-foreground-secondary">
                         <Icons.ChevronDown
                             className={cn(
-                                "min-w-4 h-4 w-4 text-foreground-tertiary transition-transform duration-200",
-                                isOpen && "rotate-180"
+                                'min-w-4 h-4 w-4 text-foreground-tertiary transition-transform duration-200',
+                                isOpen && 'rotate-180',
                             )}
                         />
+
                         <div className="flex flex-col">
                             <span>Searched web</span>
-                            <span className="text-foreground-tertiary text-xs">
-                                {query}
-                            </span>
+                            <span className="text-foreground-tertiary text-xs">{query}</span>
                         </div>
                     </div>
                 </CollapsibleTrigger>
@@ -49,7 +45,7 @@ export const SearchSourcesDisplay = observer(({
                                 exit={{ height: 0, opacity: 0 }}
                                 transition={{
                                     height: { duration: 0.2 },
-                                    opacity: { duration: 0.15 }
+                                    opacity: { duration: 0.15 },
                                 }}
                                 className="overflow-hidden"
                             >
@@ -64,7 +60,13 @@ export const SearchSourcesDisplay = observer(({
                                                     className="block px-2 py-1 rounded hover:bg-background-secondary/50 transition-colors"
                                                 >
                                                     <div className="flex items-center text-xs">
-                                                        <span className="text-foreground-secondary hover:text-foreground font-medium truncate flex-shrink-0" style={{ minWidth: '120px', maxWidth: '70%' }}>
+                                                        <span
+                                                            className="text-foreground-secondary hover:text-foreground font-medium truncate flex-shrink-0"
+                                                            style={{
+                                                                minWidth: '120px',
+                                                                maxWidth: '70%',
+                                                            }}
+                                                        >
                                                             {result.title}
                                                         </span>
                                                         <span className="pl-1 text-foreground-tertiary truncate flex-1 min-w-0">

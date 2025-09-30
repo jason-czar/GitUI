@@ -14,11 +14,7 @@ import { cn } from '@onlook/ui/utils';
 import { observer } from 'mobx-react-lite';
 import path from 'path';
 import { useEffect, useMemo, useState } from 'react';
-import {
-    createFileInSandbox,
-    doesFileExist,
-    validateFileName,
-} from '../file-operations';
+import { createFileInSandbox, doesFileExist, validateFileName } from '../file-operations';
 import { getFileTemplate } from '../file-templates';
 
 interface FileModalProps {
@@ -26,10 +22,7 @@ interface FileModalProps {
     onSuccess?: () => void;
 }
 
-export const FileModal = observer(({
-    basePath,
-    onSuccess,
-}: FileModalProps) => {
+export const FileModal = observer(({ basePath, onSuccess }: FileModalProps) => {
     const editorEngine = useEditorEngine();
     const files = editorEngine.activeSandbox.files;
     const open = editorEngine.ide.fileModalOpen;
@@ -85,7 +78,12 @@ export const FileModal = observer(({
             setIsLoading(true);
 
             const content = getFileTemplate(name);
-            await createFileInSandbox(editorEngine.activeSandbox.session.provider, fullPath, content, editorEngine.activeSandbox);
+            await createFileInSandbox(
+                editorEngine.activeSandbox.session.provider,
+                fullPath,
+                content,
+                editorEngine.activeSandbox,
+            );
             toast(`File "${name}" created successfully!`);
 
             setName('');
@@ -103,7 +101,7 @@ export const FileModal = observer(({
     const displayPath = basePath === '' ? '/' : `/${basePath}`;
 
     return (
-        <Dialog open={open} onOpenChange={(isOpen) => editorEngine.ide.fileModalOpen = isOpen}>
+        <Dialog open={open} onOpenChange={(isOpen) => (editorEngine.ide.fileModalOpen = isOpen)}>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
@@ -134,6 +132,7 @@ export const FileModal = observer(({
                             onCompositionStart={() => setIsComposing(true)}
                             onCompositionEnd={() => setIsComposing(false)}
                         />
+
                         {warning && (
                             <p className="text-sm text-yellow-300 flex items-center gap-2">
                                 {warning}
@@ -141,7 +140,10 @@ export const FileModal = observer(({
                         )}
                         {fullPath && !warning && (
                             <p className="text-sm text-muted-foreground">
-                                Full path: <code className="bg-background-secondary px-1 py-0.5 rounded text-xs">{fullPath}</code>
+                                Full path:{' '}
+                                <code className="bg-background-secondary px-1 py-0.5 rounded text-xs">
+                                    {fullPath}
+                                </code>
                             </p>
                         )}
                     </div>
@@ -150,7 +152,7 @@ export const FileModal = observer(({
                 <DialogFooter>
                     <Button
                         variant="ghost"
-                        onClick={() => editorEngine.ide.fileModalOpen = false}
+                        onClick={() => (editorEngine.ide.fileModalOpen = false)}
                         disabled={isLoading}
                     >
                         Cancel
@@ -166,4 +168,4 @@ export const FileModal = observer(({
             </DialogContent>
         </Dialog>
     );
-}); 
+});

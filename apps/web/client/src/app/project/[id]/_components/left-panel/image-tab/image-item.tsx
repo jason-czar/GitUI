@@ -12,13 +12,8 @@ export const ImageItem = observer(({ image }: { image: ImageContentData }) => {
     const editorEngine = useEditorEngine();
     const { onImageDragStart, onImageDragEnd, onImageMouseDown, onImageMouseUp } =
         useImageDragDrop();
-    const {
-        renameOperations,
-        deleteOperations,
-        moveOperations,
-        isOperating,
-    } = useImagesContext();
-    
+    const { renameOperations, deleteOperations, moveOperations, isOperating } = useImagesContext();
+
     const selectedImage = editorEngine.image.selectedImage;
     const isSelectingImage = editorEngine.image.isSelectingImage;
     const previewImage = editorEngine.image.previewImage;
@@ -144,7 +139,8 @@ export const ImageItem = observer(({ image }: { image: ImageContentData }) => {
                 className={cn(
                     'w-full aspect-square flex flex-col justify-center rounded-lg overflow-hidden items-center cursor-move border-[0.5px] border-border',
                     isSelected && 'border-2 border-red-500 p-1.5 rounded-xl cursor-pointer',
-                    previewImage?.originPath === image.originPath && 'border-2 border-red-500 p-1.5 rounded-xl cursor-pointer',
+                    previewImage?.originPath === image.originPath &&
+                        'border-2 border-red-500 p-1.5 rounded-xl cursor-pointer',
                 )}
             >
                 <img
@@ -188,4 +184,3 @@ export const ImageItem = observer(({ image }: { image: ImageContentData }) => {
         </div>
     );
 });
-

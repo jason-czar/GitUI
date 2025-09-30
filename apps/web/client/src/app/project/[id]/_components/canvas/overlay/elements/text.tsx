@@ -44,7 +44,7 @@ const contentHelpers = {
             }
         });
         return content;
-    }
+    },
 };
 
 export const TextEditor = observer(() => {
@@ -72,7 +72,10 @@ export const TextEditor = observer(() => {
 
         const state = EditorState.create({
             schema,
-            plugins: createEditorPlugins(() => onStopRef.current?.(), () => onStopRef.current?.()),
+            plugins: createEditorPlugins(
+                () => onStopRef.current?.(),
+                () => onStopRef.current?.(),
+            ),
         });
 
         const view = new EditorView(editorRef.current, {
@@ -136,13 +139,18 @@ export const TextEditor = observer(() => {
                 const nodes = contentHelpers.createNodesFromContent(content);
                 const paragraph = schema.node('paragraph', null, nodes);
                 const newDoc = schema.node('doc', null, [paragraph]);
-                const tr = view.state.tr.replaceWith(0, view.state.doc.content.size, newDoc.content);
+                const tr = view.state.tr.replaceWith(
+                    0,
+                    view.state.doc.content.size,
+                    newDoc.content,
+                );
 
                 // Try to preserve cursor position if possible
                 const targetPos = Math.min(selection.from, tr.doc.content.size);
-                const newSelection = targetPos < tr.doc.content.size
-                    ? Selection.near(tr.doc.resolve(targetPos))
-                    : Selection.atEnd(tr.doc);
+                const newSelection =
+                    targetPos < tr.doc.content.size
+                        ? Selection.near(tr.doc.resolve(targetPos))
+                        : Selection.atEnd(tr.doc);
                 tr.setSelection(newSelection);
 
                 view.dispatch(tr);

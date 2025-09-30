@@ -22,4 +22,4 @@ export function EditButton({ href, className, children }: EditButtonProps) {
             {children}
         </Button>
     );
-} 
+}

@@ -150,9 +150,7 @@ function MenubarLabel({
     className,
     inset,
     ...props
-}: React.ComponentProps<typeof MenubarPrimitive.Label> & {
-    inset?: boolean;
-}) {
+}: React.ComponentProps<typeof MenubarPrimitive.Label> & { inset?: boolean }) {
     return (
         <MenubarPrimitive.Label
             data-slot="menubar-label"
@@ -195,9 +193,7 @@ function MenubarSubTrigger({
     inset,
     children,
     ...props
-}: React.ComponentProps<typeof MenubarPrimitive.SubTrigger> & {
-    inset?: boolean;
-}) {
+}: React.ComponentProps<typeof MenubarPrimitive.SubTrigger> & { inset?: boolean }) {
     return (
         <MenubarPrimitive.SubTrigger
             data-slot="menubar-sub-trigger"

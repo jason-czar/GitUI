@@ -61,7 +61,7 @@ export const NewSelectFolder = () => {
         const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
         // Find the common root path from all files
-        const allPaths = files.map((file) => (file).webkitRelativePath || file.name);
+        const allPaths = files.map((file) => file.webkitRelativePath || file.name);
 
         if (!allPaths[0]) {
             return processedFiles;
@@ -73,7 +73,7 @@ export const NewSelectFolder = () => {
         for (const file of files) {
             // Get relative path from webkitRelativePath or name
             // Remove the root path from the relative path
-            let relativePath = (file).webkitRelativePath || file.name;
+            let relativePath = file.webkitRelativePath || file.name;
             if (!rootPath) {
                 continue;
             }
@@ -354,9 +354,10 @@ export const NewSelectFolder = () => {
                             w-full h-20 rounded-lg bg-gray-900 border border-gray rounded-lg m-0
                             flex flex-col items-center justify-center gap-4
                             duration-200 cursor-pointer
-                            ${isDragging
-                                ? 'border-blue-400 bg-blue-50'
-                                : 'border-gray-300 bg-gray-50 hover:bg-gray-700'
+                            ${
+                                isDragging
+                                    ? 'border-blue-400 bg-blue-50'
+                                    : 'border-gray-300 bg-gray-50 hover:bg-gray-700'
                             }
                             ${isUploading ? 'pointer-events-none opacity-50' : ''}
                         `}
@@ -369,6 +370,7 @@ export const NewSelectFolder = () => {
                             <div className="text-center">
                                 <div className="flex items-center justify-center gap-2">
                                     <Icons.LoadingSpinner className="w-4 h-4 text-gray-200 animate-spin" />
+
                                     <p className="text-sm font-medium text-gray-200">
                                         Uploading...
                                     </p>
@@ -377,6 +379,7 @@ export const NewSelectFolder = () => {
                         ) : (
                             <div className="flex gap-3">
                                 <Icons.DirectoryOpen className="w-5 h-5 text-gray-200" />
+
                                 <p className="text-sm font-medium text-gray-200">
                                     Click to select your folder
                                 </p>
@@ -406,6 +409,7 @@ export const NewSelectFolder = () => {
                 icon: (
                     <Icons.CheckCircled className="w-5 h-5 text-teal-200 group-hover:opacity-0 transition-opacity duration-200" />
                 ),
+
                 showError: false,
             },
             invalid: {
@@ -415,6 +419,7 @@ export const NewSelectFolder = () => {
                 textColor: 'text-amber-100',
                 subTextColor: 'text-amber-200',
                 icon: <Icons.ExclamationTriangle className="w-5 h-5 text-amber-200" />,
+
                 showError: true,
             },
         };

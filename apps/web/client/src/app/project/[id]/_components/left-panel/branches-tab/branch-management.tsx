@@ -75,14 +75,14 @@ export const BranchManagement = observer(({ branch }: BranchManagementProps) => 
             // If this is the active branch, switch to a different one first
             if (isActiveBranch) {
                 const allBranches = editorEngine.branches.allBranches;
-                const otherBranches = allBranches.filter(b => b.id !== branch.id);
+                const otherBranches = allBranches.filter((b) => b.id !== branch.id);
 
                 if (otherBranches.length === 0) {
                     throw new Error('Cannot delete the last remaining branch');
                 }
 
                 // Find the default branch, or use the first available branch
-                const targetBranch = otherBranches.find(b => b.isDefault) || otherBranches[0];
+                const targetBranch = otherBranches.find((b) => b.isDefault) || otherBranches[0];
 
                 if (!targetBranch) {
                     throw new Error('No target branch available for switching');
@@ -158,7 +158,9 @@ export const BranchManagement = observer(({ branch }: BranchManagementProps) => 
                             className="flex items-start justify-between p-2 bg-background-secondary rounded-md cursor-pointer hover:bg-background-secondary/70 border"
                             onClick={() => setIsRenaming(true)}
                         >
-                            <span className="font-medium break-words min-w-0 flex-1 mr-2 leading-tight">{branch.name}</span>
+                            <span className="font-medium break-words min-w-0 flex-1 mr-2 leading-tight">
+                                {branch.name}
+                            </span>
                             <Icons.Pencil className="w-3 h-3 text-muted-foreground flex-shrink-0 mt-0.5" />
                         </div>
                     )}
@@ -195,8 +197,8 @@ export const BranchManagement = observer(({ branch }: BranchManagementProps) => 
                             disabled={isDeleting || isOnlyBranch}
                             title={
                                 isOnlyBranch
-                                    ? "Cannot delete the last remaining branch"
-                                    : "Delete branch"
+                                    ? 'Cannot delete the last remaining branch'
+                                    : 'Delete branch'
                             }
                         >
                             {isDeleting ? (

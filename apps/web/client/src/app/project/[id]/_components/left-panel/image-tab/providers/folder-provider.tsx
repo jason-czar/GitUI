@@ -4,7 +4,7 @@ import {
     isImageFile,
     validateFolderCreate,
     validateFolderMove,
-    validateFolderRename
+    validateFolderRename,
 } from '@onlook/utility';
 import { observer } from 'mobx-react-lite';
 import { createContext, useCallback, useContext, useState, type ReactNode } from 'react';
@@ -63,7 +63,7 @@ interface FolderContextValue {
 
     // Global state
     isOperating: boolean;
-    getChildFolders: (folder: FolderNode) => { name: string; fullPath: string; }[];
+    getChildFolders: (folder: FolderNode) => { name: string; fullPath: string }[];
     getImagesInFolder: (folder: FolderNode) => string[];
 }
 
@@ -368,39 +368,49 @@ export const FolderProvider = observer(({ children }: FolderProviderProps) => {
         });
     }, []);
 
-    const getChildFolders = useCallback((folder: FolderNode) => {
-        const childFolders = editorEngine.activeSandbox.directories.filter(dir => {
-            if (dir.startsWith(folder.fullPath)) {
-                // Check if this is a direct child (not in a subdirectory)
-                const relativePath = dir.slice(folder.fullPath.length);
-                // Remove leading slash if present
-                const cleanRelativePath = relativePath.startsWith('/') ? relativePath.slice(1) : relativePath;
-                // Only include if it's a direct child (no additional path separators)
-                return !cleanRelativePath.includes('/') && cleanRelativePath.length > 0;
-            }
-            return false;
-        });
-        return childFolders.map(dir => ({
-            name: dir.split('/').pop() ?? '',
-            fullPath: dir,
-        }));
-    }, [editorEngine.activeSandbox.directories]);
+    const getChildFolders = useCallback(
+        (folder: FolderNode) => {
+            const childFolders = editorEngine.activeSandbox.directories.filter((dir) => {
+                if (dir.startsWith(folder.fullPath)) {
+                    // Check if this is a direct child (not in a subdirectory)
+                    const relativePath = dir.slice(folder.fullPath.length);
+                    // Remove leading slash if present
+                    const cleanRelativePath = relativePath.startsWith('/')
+                        ? relativePath.slice(1)
+                        : relativePath;
+                    // Only include if it's a direct child (no additional path separators)
+                    return !cleanRelativePath.includes('/') && cleanRelativePath.length > 0;
+                }
+                return false;
+            });
+            return childFolders.map((dir) => ({
+                name: dir.split('/').pop() ?? '',
+                fullPath: dir,
+            }));
+        },
+        [editorEngine.activeSandbox.directories],
+    );
 
     // Get all folder paths
-    const getImagesInFolder = useCallback((folder: FolderNode) => {
-        // Use the image manager's scanned image paths instead of sandbox files
-        return editorEngine.image.imagePaths.filter(image => {
-            if (image.startsWith(folder.fullPath)) {
-                // Check if this is a direct child (not in a subdirectory)
-                const relativePath = image.slice(folder.fullPath.length);
-                // Remove leading slash if present
-                const cleanRelativePath = relativePath.startsWith('/') ? relativePath.slice(1) : relativePath;
-                // Only include if it's a direct child (no additional path separators)
-                return !cleanRelativePath.includes('/') && cleanRelativePath.length > 0;
-            }
-            return false;
-        });
-    }, [editorEngine.image.imagePaths]);
+    const getImagesInFolder = useCallback(
+        (folder: FolderNode) => {
+            // Use the image manager's scanned image paths instead of sandbox files
+            return editorEngine.image.imagePaths.filter((image) => {
+                if (image.startsWith(folder.fullPath)) {
+                    // Check if this is a direct child (not in a subdirectory)
+                    const relativePath = image.slice(folder.fullPath.length);
+                    // Remove leading slash if present
+                    const cleanRelativePath = relativePath.startsWith('/')
+                        ? relativePath.slice(1)
+                        : relativePath;
+                    // Only include if it's a direct child (no additional path separators)
+                    return !cleanRelativePath.includes('/') && cleanRelativePath.length > 0;
+                }
+                return false;
+            });
+        },
+        [editorEngine.image.imagePaths],
+    );
 
     // Check if any operation is loading
     const isOperating =
@@ -451,4 +461,4 @@ export const useFolderContext = () => {
         throw new Error('useFolderContext must be used within FolderProvider');
     }
     return context;
-}; 
+};

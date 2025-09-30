@@ -1,27 +1,24 @@
 'use client';
 
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-} from "@onlook/ui/dropdown-menu";
-import { Icons } from "@onlook/ui/icons";
-import { cn } from "@onlook/ui/utils";
-import { observer } from "mobx-react-lite";
-import { useState } from "react";
-import { useBoxControl } from "../hooks/use-box-control";
-import { useDropdownControl } from "../hooks/use-dropdown-manager";
-import { HoverOnlyTooltip } from "../hover-tooltip";
-import { InputRange } from "../inputs/input-range";
-import { SpacingInputs } from "../inputs/spacing-inputs";
-import { ToolbarButton } from "../toolbar-button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@onlook/ui/dropdown-menu';
+import { Icons } from '@onlook/ui/icons';
+import { cn } from '@onlook/ui/utils';
+import { observer } from 'mobx-react-lite';
+import { useState } from 'react';
+import { useBoxControl } from '../hooks/use-box-control';
+import { useDropdownControl } from '../hooks/use-dropdown-manager';
+import { HoverOnlyTooltip } from '../hover-tooltip';
+import { InputRange } from '../inputs/input-range';
+import { SpacingInputs } from '../inputs/spacing-inputs';
+import { ToolbarButton } from '../toolbar-button';
 
 export const Radius = observer(() => {
     const [activeTab, setActiveTab] = useState('all');
-    const { boxState, handleBoxChange, handleUnitChange, handleIndividualChange } = useBoxControl('radius');
+    const { boxState, handleBoxChange, handleUnitChange, handleIndividualChange } =
+        useBoxControl('radius');
 
     const { isOpen, onOpenChange } = useDropdownControl({
-        id: 'radius-dropdown'
+        id: 'radius-dropdown',
     });
 
     const getRadiusIcon = () => {
@@ -36,7 +33,11 @@ export const Radius = observer(() => {
         }
 
         // All corners have the same non-zero radius
-        const allSame = topLeft === topRight && topRight === bottomRight && bottomRight === bottomLeft && topLeft;
+        const allSame =
+            topLeft === topRight &&
+            topRight === bottomRight &&
+            bottomRight === bottomLeft &&
+            topLeft;
         if (allSame) {
             return Icons.RadiusFull;
         }
@@ -69,7 +70,6 @@ export const Radius = observer(() => {
         return Icons.RadiusFull;
     };
 
-
     const getRadiusDisplay = () => {
         const topLeft = boxState.borderTopLeftRadius.num ?? 0;
         const topRight = boxState.borderTopRightRadius.num ?? 0;
@@ -86,11 +86,15 @@ export const Radius = observer(() => {
         }
 
         // Get all non-zero values
-        const nonZeroValues = [topLeft, topRight, bottomRight, bottomLeft].filter(val => val !== 0);
+        const nonZeroValues = [topLeft, topRight, bottomRight, bottomLeft].filter(
+            (val) => val !== 0,
+        );
 
         // If all non-zero values are the same
-        if (nonZeroValues.length > 0 && nonZeroValues.every(val => val === nonZeroValues[0])) {
-            return boxState.borderRadius.unit === 'px' ? `${nonZeroValues[0]}` : `${boxState.borderRadius.value}`;
+        if (nonZeroValues.length > 0 && nonZeroValues.every((val) => val === nonZeroValues[0])) {
+            return boxState.borderRadius.unit === 'px'
+                ? `${nonZeroValues[0]}`
+                : `${boxState.borderRadius.value}`;
         }
 
         // If values are different
@@ -102,15 +106,27 @@ export const Radius = observer(() => {
 
     return (
         <DropdownMenu open={isOpen} onOpenChange={onOpenChange} modal={false}>
-            <HoverOnlyTooltip content="Radius" side="bottom" className="mt-1" hideArrow disabled={isOpen}>
+            <HoverOnlyTooltip
+                content="Radius"
+                side="bottom"
+                className="mt-1"
+                hideArrow
+                disabled={isOpen}
+            >
                 <DropdownMenuTrigger asChild>
                     <ToolbarButton
                         isOpen={isOpen}
-                        className={cn('gap-1 flex items-center min-w-9', radiusValue && '!text-foreground-primary [&_*]:!text-foreground-primary')}
+                        className={cn(
+                            'gap-1 flex items-center min-w-9',
+                            radiusValue &&
+                                '!text-foreground-primary [&_*]:!text-foreground-primary',
+                        )}
                     >
                         <RadiusIcon className="h-4 min-h-4 w-4 min-w-4" />
                         {radiusValue && (
-                            <span className="text-small !text-foreground-primary data-[state=open]:!text-foreground-primary">{radiusValue}</span>
+                            <span className="text-small !text-foreground-primary data-[state=open]:!text-foreground-primary">
+                                {radiusValue}
+                            </span>
                         )}
                     </ToolbarButton>
                 </DropdownMenuTrigger>
@@ -123,17 +139,18 @@ export const Radius = observer(() => {
                             'flex-1 text-sm px-4 py-1.5 rounded-md transition-colors cursor-pointer',
                             activeTab === 'all'
                                 ? 'text-foreground-primary bg-background-active/50'
-                                : 'text-muted-foreground hover:bg-background-tertiary/20 hover:text-foreground-hover'
+                                : 'text-muted-foreground hover:bg-background-tertiary/20 hover:text-foreground-hover',
                         )}
                     >
                         All sides
                     </button>
                     <button
                         onClick={() => setActiveTab('individual')}
-                        className={cn('flex-1 text-sm px-4 py-1.5 rounded-md transition-colors cursor-pointer',
+                        className={cn(
+                            'flex-1 text-sm px-4 py-1.5 rounded-md transition-colors cursor-pointer',
                             activeTab === 'individual'
                                 ? 'text-foreground-primary bg-background-active/50'
-                                : 'text-muted-foreground hover:bg-background-tertiary/20 hover:text-foreground-hover'
+                                : 'text-muted-foreground hover:bg-background-tertiary/20 hover:text-foreground-hover',
                         )}
                     >
                         Individual

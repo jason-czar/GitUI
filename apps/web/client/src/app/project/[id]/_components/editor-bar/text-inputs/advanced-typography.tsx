@@ -21,10 +21,10 @@ export const AdvancedTypography = () => {
         handleLineHeightChange,
     } = useTextControl();
 
-    const { isOpen, onOpenChange } = useDropdownControl({ 
-        id: 'advanced-typography-dropdown' 
+    const { isOpen, onOpenChange } = useDropdownControl({
+        id: 'advanced-typography-dropdown',
     });
-    
+
     const handleClose = () => {
         onOpenChange(false);
     };
@@ -37,9 +37,15 @@ export const AdvancedTypography = () => {
     ];
 
     const decorationOptions = [
-        { value: 'underline', icon: <Icons.TextUnderline className="h-4 w-4" /> },
+        {
+            value: 'underline',
+            icon: <Icons.TextUnderline className="h-4 w-4" />,
+        },
         { value: 'overline', icon: <Icons.TextOverline className="h-4 w-4" /> },
-        { value: 'line-through', icon: <Icons.TextStrikeThrough className="h-4 w-4" /> },
+        {
+            value: 'line-through',
+            icon: <Icons.TextStrikeThrough className="h-4 w-4" />,
+        },
         { value: 'none', icon: <Icons.CrossL className="h-4 w-4" /> },
     ];
 
@@ -88,7 +94,11 @@ export const AdvancedTypography = () => {
                         <span className="text-sm text-muted-foreground w-20">Line</span>
                         <div className="flex-1">
                             <InputIcon
-                                value={isNaN(parseFloat(textState.lineHeight)) ? 0 : parseFloat(textState.lineHeight)}
+                                value={
+                                    isNaN(parseFloat(textState.lineHeight))
+                                        ? 0
+                                        : parseFloat(textState.lineHeight)
+                                }
                                 onChange={(value) => handleLineHeightChange(value.toString())}
                             />
                         </div>
@@ -97,7 +107,11 @@ export const AdvancedTypography = () => {
                         <span className="text-sm text-muted-foreground w-20">Letter</span>
                         <div className="flex-1">
                             <InputIcon
-                                value={isNaN(parseFloat(textState.letterSpacing)) ? 0 : parseFloat(textState.letterSpacing)}
+                                value={
+                                    isNaN(parseFloat(textState.letterSpacing))
+                                        ? 0
+                                        : parseFloat(textState.letterSpacing)
+                                }
                                 onChange={(value) => handleLetterSpacingChange(value.toString())}
                             />
                         </div>
@@ -128,4 +142,4 @@ export const AdvancedTypography = () => {
             </DropdownMenuContent>
         </DropdownMenu>
     );
-}
+};

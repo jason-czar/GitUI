@@ -10,9 +10,7 @@ function NavigationMenu({
     children,
     viewport = true,
     ...props
-}: React.ComponentProps<typeof NavigationMenuPrimitive.Root> & {
-    viewport?: boolean;
-}) {
+}: React.ComponentProps<typeof NavigationMenuPrimitive.Root> & { viewport?: boolean }) {
     return (
         <NavigationMenuPrimitive.Root
             data-slot="navigation-menu"

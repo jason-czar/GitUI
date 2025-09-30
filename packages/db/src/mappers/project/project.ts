@@ -30,6 +30,9 @@ export const toDbProject = (project: Project): DbProject => {
         previewImgPath,
         previewImgBucket,
         updatedPreviewImgAt,
+        
+        // GitUI: Repository connection
+        repositoryId: null,
 
         // deprecated
         sandboxId: null,

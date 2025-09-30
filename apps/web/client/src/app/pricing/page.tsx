@@ -12,7 +12,9 @@ export default function PricingPage() {
             <div className="w-full max-w-6xl mx-auto flex flex-col items-center px-8">
                 <div className="text-left mb-12 mt-24 w-full">
                     <h1 className="text-foreground text-5xl font-light mb-4">Pricing</h1>
-                    <p className="text-muted-foreground text-regular">Get started for free. Upgrade as you go.</p>
+                    <p className="text-muted-foreground text-regular">
+                        Get started for free. Upgrade as you go.
+                    </p>
                 </div>
                 <PricingTable />
             </div>

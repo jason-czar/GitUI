@@ -29,8 +29,10 @@ export const SnapGuidelines = observer(() => {
         >
             {snapLines.map((line) => {
                 if (line.orientation === 'horizontal') {
-                    const visualOffset = (SNAP_VISUAL_CONFIG.TOP_BAR_HEIGHT + SNAP_VISUAL_CONFIG.TOP_BAR_MARGIN) / scale;
-                    
+                    const visualOffset =
+                        (SNAP_VISUAL_CONFIG.TOP_BAR_HEIGHT + SNAP_VISUAL_CONFIG.TOP_BAR_MARGIN) /
+                        scale;
+
                     return (
                         <div
                             key={line.id}

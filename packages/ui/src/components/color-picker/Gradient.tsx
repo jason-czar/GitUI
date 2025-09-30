@@ -23,6 +23,7 @@ const FlipIcon = ({ className, ...props }: { className?: string; [key: string]: 
             strokeLinecap="round"
             strokeLinejoin="round"
         />
+
         <path
             d="M10.4688 7.53125L12.5268 5.47319C12.7709 5.22911 12.7709 4.83339 12.5268 4.58931L10.4688 2.53125"
             stroke="currentColor"
@@ -30,6 +31,7 @@ const FlipIcon = ({ className, ...props }: { className?: string; [key: string]: 
             strokeLinecap="round"
             strokeLinejoin="round"
         />
+
         <path
             d="M3.125 10.9688H12.6562"
             stroke="currentColor"
@@ -37,6 +39,7 @@ const FlipIcon = ({ className, ...props }: { className?: string; [key: string]: 
             strokeLinecap="round"
             strokeLinejoin="round"
         />
+
         <path
             d="M2.34375 5.03125H12.0312"
             stroke="currentColor"
@@ -927,6 +930,7 @@ export const Gradient: React.FC<GradientProps> = ({
                                             className="mr-0.5"
                                             onFocus={() => onStopSelect(stop.id)}
                                         />
+
                                         <div className="rounded overflow-hidden flex-1">
                                             <div className="rounded flex items-center gap-[1.5px] flex-1">
                                                 <div className="flex items-center gap-1 bg-background-secondary px-1 py-1 flex-1">

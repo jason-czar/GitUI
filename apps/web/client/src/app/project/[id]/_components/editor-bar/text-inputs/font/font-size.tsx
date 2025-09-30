@@ -16,7 +16,7 @@ export const FontSizeSelector = () => {
     const [inputValue, setInputValue] = useState(textState.fontSize.toString());
 
     const { isOpen, onOpenChange } = useDropdownControl({
-        id: 'font-size-dropdown'
+        id: 'font-size-dropdown',
     });
 
     // Update local input value when textState.fontSize changes externally
@@ -88,10 +88,7 @@ export const FontSizeSelector = () => {
                 disabled={isOpen}
             >
                 <div className="flex items-center gap-0.5">
-                    <ToolbarButton
-                        onClick={() => adjustFontSize(-1)}
-                        className="px-2 min-w-9"
-                    >
+                    <ToolbarButton onClick={() => adjustFontSize(-1)} className="px-2 min-w-9">
                         <Icons.Minus className="h-4 w-4" />
                     </ToolbarButton>
                     <DropdownMenuTrigger asChild>
@@ -112,10 +109,7 @@ export const FontSizeSelector = () => {
                             />
                         </ToolbarButton>
                     </DropdownMenuTrigger>
-                    <ToolbarButton
-                        onClick={() => adjustFontSize(1)}
-                        className="px-2 min-w-9"
-                    >
+                    <ToolbarButton onClick={() => adjustFontSize(1)} className="px-2 min-w-9">
                         <Icons.Plus className="h-4 w-4" />
                     </ToolbarButton>
                 </div>
@@ -129,10 +123,11 @@ export const FontSizeSelector = () => {
                         <button
                             key={size}
                             onClick={() => handleSizeSelect(size)}
-                            className={`cursor-pointer text-muted-foreground data-[highlighted]:bg-background-tertiary/10 border-border/0 data-[highlighted]:border-border justify-center rounded-md border px-2 py-1 text-sm data-[highlighted]:text-white ${size === textState.fontSize
-                                ? 'bg-background-tertiary/20 border-border border text-white'
-                                : ''
-                                }`}
+                            className={`cursor-pointer text-muted-foreground data-[highlighted]:bg-background-tertiary/10 border-border/0 data-[highlighted]:border-border justify-center rounded-md border px-2 py-1 text-sm data-[highlighted]:text-white ${
+                                size === textState.fontSize
+                                    ? 'bg-background-tertiary/20 border-border border text-white'
+                                    : ''
+                            }`}
                         >
                             {size}
                         </button>

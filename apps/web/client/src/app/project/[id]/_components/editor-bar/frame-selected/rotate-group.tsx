@@ -19,4 +19,4 @@ export function RotateGroup({ frameData }: { frameData: FrameData }) {
             </ToolbarButton>
         </HoverOnlyTooltip>
     );
-} 
+}

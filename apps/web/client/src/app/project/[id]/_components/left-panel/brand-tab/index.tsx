@@ -7,17 +7,12 @@ import ColorPanel from './color-panel';
 import FontPanel from './font-panel';
 import SystemFont from './font-panel/system-font';
 
-
-
 interface ColorSquareProps {
     color: string;
 }
 
 const ColorSquare = ({ color }: ColorSquareProps) => (
-    <div
-        className="w-full aspect-square cursor-pointer"
-        style={{ backgroundColor: color }}
-    />
+    <div className="w-full aspect-square cursor-pointer" style={{ backgroundColor: color }} />
 );
 
 export const BrandTab = observer(() => {
@@ -42,20 +37,28 @@ export const BrandTab = observer(() => {
             const projectColors: string[] = [];
 
             // Add colors from custom color groups (user-defined in Tailwind config)
-            Object.values(colorGroups).forEach(group => {
-                group.forEach(color => {
+            Object.values(colorGroups).forEach((group) => {
+                group.forEach((color) => {
                     // Get the default/500 color from each custom color group
-                    if (color.name === '500' || color.name === 'default' || color.name === 'DEFAULT') {
+                    if (
+                        color.name === '500' ||
+                        color.name === 'default' ||
+                        color.name === 'DEFAULT'
+                    ) {
                         projectColors.push(color.lightColor);
                     }
                 });
             });
 
             // Add colors from default color groups (standard Tailwind colors)
-            Object.values(colorDefaults).forEach(group => {
-                group.forEach(color => {
+            Object.values(colorDefaults).forEach((group) => {
+                group.forEach((color) => {
                     // Get the default/500 color from each default color group
-                    if (color.name === '500' || color.name === 'default' || color.name === 'DEFAULT') {
+                    if (
+                        color.name === '500' ||
+                        color.name === 'default' ||
+                        color.name === 'DEFAULT'
+                    ) {
                         projectColors.push(color.lightColor);
                     }
                 });
@@ -83,20 +86,28 @@ export const BrandTab = observer(() => {
                         const projectColors: string[] = [];
 
                         // Add colors from custom color groups (user-defined in Tailwind config)
-                        Object.values(colorGroups).forEach(group => {
-                            group.forEach(color => {
+                        Object.values(colorGroups).forEach((group) => {
+                            group.forEach((color) => {
                                 // Get the default/500 color from each custom color group
-                                if (color.name === '500' || color.name === 'default' || color.name === 'DEFAULT') {
+                                if (
+                                    color.name === '500' ||
+                                    color.name === 'default' ||
+                                    color.name === 'DEFAULT'
+                                ) {
                                     projectColors.push(color.lightColor);
                                 }
                             });
                         });
 
                         // Add colors from default color groups (standard Tailwind colors)
-                        Object.values(colorDefaults).forEach(group => {
-                            group.forEach(color => {
+                        Object.values(colorDefaults).forEach((group) => {
+                            group.forEach((color) => {
                                 // Get the default/500 color from each default color group
-                                if (color.name === '500' || color.name === 'default' || color.name === 'DEFAULT') {
+                                if (
+                                    color.name === '500' ||
+                                    color.name === 'default' ||
+                                    color.name === 'DEFAULT'
+                                ) {
                                     projectColors.push(color.lightColor);
                                 }
                             });
@@ -113,8 +124,8 @@ export const BrandTab = observer(() => {
         // Listen for file changes in the sandbox
         const unsubscribe = editorEngine.activeSandbox.fileEventBus.subscribe('*', (event) => {
             // Check if any of the changed files are Tailwind config files
-            const isTailwindConfigChange = event.paths.some(path =>
-                path.includes('tailwind.config') || path.includes('globals.css')
+            const isTailwindConfigChange = event.paths.some(
+                (path) => path.includes('tailwind.config') || path.includes('globals.css'),
             );
 
             if (isTailwindConfigChange && event.paths[0]) {
@@ -150,18 +161,16 @@ export const BrandTab = observer(() => {
                         className="grid grid-cols-12 gap-0 rounded-lg overflow-hidden h-[40px] max-h-[40px] bg-background-onlook border-[0.5px] border-white/50 hover:border-[0.5px] hover:border-white cursor-pointer hover:border-transparent transition-all duration-200"
                         onClick={() => (editorEngine.state.brandTab = BrandTabValue.COLORS)}
                     >
-                        {brandColors.length > 0 ? (
-                            brandColors.map((color, index) => (
-                                <ColorSquare key={`brand-color-${index}`} color={color} />
-                            ))
-                        ) : (
-                            Array.from({ length: 12 }, (_, index) => (
-                                <div
-                                    key={`loading-color-${index}`}
-                                    className="w-full h-full bg-gradient-to-r from-gray-300 via-gray-400 to-gray-300 bg-[length:200%_100%] animate-shimmer"
-                                />
-                            ))
-                        )}
+                        {brandColors.length > 0
+                            ? brandColors.map((color, index) => (
+                                  <ColorSquare key={`brand-color-${index}`} color={color} />
+                              ))
+                            : Array.from({ length: 12 }, (_, index) => (
+                                  <div
+                                      key={`loading-color-${index}`}
+                                      className="w-full h-full bg-gradient-to-r from-gray-300 via-gray-400 to-gray-300 bg-[length:200%_100%] animate-shimmer"
+                                  />
+                              ))}
                     </div>
                 </div>
 

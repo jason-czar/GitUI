@@ -50,31 +50,33 @@ export function Settings({ project, refetch }: { project: Project; refetch: () =
     };
 
     const handleRenameProject = async () => {
-        await updateProject(
-            {
-                id: project.id,
-                name: projectName,
-                updatedAt: new Date()
-            },
-        );
+        await updateProject({
+            id: project.id,
+            name: projectName,
+            updatedAt: new Date(),
+        });
         // Invalidate queries to refresh UI
         await Promise.all([
             utils.project.list.invalidate(),
-            utils.project.get.invalidate({ projectId: project.id })
+            utils.project.get.invalidate({ projectId: project.id }),
         ]);
 
         // Optimistically update list ordering and title immediately
-        window.dispatchEvent(new CustomEvent('onlook_project_updated', {
-            detail: {
-                id: project.id,
-                name: projectName,
-                metadata: {
-                    updatedAt: new Date().toISOString(),
-                    description: project.metadata?.description,
+        window.dispatchEvent(
+            new CustomEvent('onlook_project_updated', {
+                detail: {
+                    id: project.id,
+                    name: projectName,
+                    metadata: {
+                        updatedAt: new Date().toISOString(),
+                        description: project.metadata?.description,
+                    },
                 },
-            },
-        }));
-        window.dispatchEvent(new CustomEvent('onlook_project_modified', { detail: { id: project.id } }));
+            }),
+        );
+        window.dispatchEvent(
+            new CustomEvent('onlook_project_modified', { detail: { id: project.id } }),
+        );
         setShowRenameDialog(false);
         refetch();
     };
@@ -90,9 +92,7 @@ export function Settings({ project, refetch }: { project: Project; refetch: () =
             }
 
             // Invalidate and refetch both project lists and template lists
-            await Promise.all([
-                utils.project.list.invalidate(),
-            ]);
+            await Promise.all([utils.project.list.invalidate()]);
 
             refetch();
         } catch (error) {
@@ -151,7 +151,9 @@ export function Settings({ project, refetch }: { project: Project; refetch: () =
             <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>{t(transKeys.projects.dialogs.delete.title)}</AlertDialogTitle>
+                        <AlertDialogTitle>
+                            {t(transKeys.projects.dialogs.delete.title)}
+                        </AlertDialogTitle>
                         <AlertDialogDescription>
                             {t(transKeys.projects.dialogs.delete.description)}
                         </AlertDialogDescription>
@@ -176,7 +178,9 @@ export function Settings({ project, refetch }: { project: Project; refetch: () =
             <AlertDialog open={showRenameDialog} onOpenChange={setShowRenameDialog}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>{t(transKeys.projects.dialogs.rename.title)}</AlertDialogTitle>
+                        <AlertDialogTitle>
+                            {t(transKeys.projects.dialogs.rename.title)}
+                        </AlertDialogTitle>
                     </AlertDialogHeader>
                     <div className="flex flex-col w-full gap-2">
                         <Label htmlFor="text">{t(transKeys.projects.dialogs.rename.label)}</Label>
@@ -186,6 +190,7 @@ export function Settings({ project, refetch }: { project: Project; refetch: () =
                             value={projectName || ''}
                             onInput={(e) => setProjectName(e.currentTarget.value)}
                         />
+
                         <p
                             className={cn(
                                 'text-xs text-red-500 transition-opacity',

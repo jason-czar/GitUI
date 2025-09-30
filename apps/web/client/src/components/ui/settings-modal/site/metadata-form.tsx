@@ -231,9 +231,12 @@ export const MetadataForm = ({
                     )}
                 </div>
             </div>
-            
+
             {/* Pinned buttons at the bottom */}
-            <div className="sticky bottom-0 bg-background border-t border-border/50 p-6" style={{ borderTopWidth: '0.5px' }}>
+            <div
+                className="sticky bottom-0 bg-background border-t border-border/50 p-6"
+                style={{ borderTopWidth: '0.5px' }}
+            >
                 <div className="flex justify-end gap-4">
                     <Button
                         variant="outline"

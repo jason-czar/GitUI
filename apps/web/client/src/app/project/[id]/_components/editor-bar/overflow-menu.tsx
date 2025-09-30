@@ -17,14 +17,25 @@ interface OverflowMenuProps {
     visibleCount: number;
 }
 
-export const OverflowMenu = ({ isOpen, onOpenChange, overflowGroups, visibleCount }: OverflowMenuProps) => {
+export const OverflowMenu = ({
+    isOpen,
+    onOpenChange,
+    overflowGroups,
+    visibleCount,
+}: OverflowMenuProps) => {
     if (overflowGroups.length === 0) return null;
 
     return (
         <>
             {visibleCount > 0 && <InputSeparator />}
             <DropdownMenu open={isOpen} onOpenChange={onOpenChange} modal={false}>
-                <HoverOnlyTooltip content="More options" side="bottom" className="mt-1" hideArrow disabled={isOpen}>
+                <HoverOnlyTooltip
+                    content="More options"
+                    side="bottom"
+                    className="mt-1"
+                    hideArrow
+                    disabled={isOpen}
+                >
                     <DropdownMenuTrigger asChild>
                         <ToolbarButton
                             isOpen={isOpen}
@@ -53,4 +64,4 @@ export const OverflowMenu = ({ isOpen, onOpenChange, overflowGroups, visibleCoun
             </DropdownMenu>
         </>
     );
-}; 
+};

@@ -35,10 +35,17 @@ export const Border = observer(() => {
 
         const values = Object.values(borders);
 
-        return values.every(val => val === values[0]);
-    }, [boxState.borderTopWidth.num, boxState.borderRightWidth.num, boxState.borderBottomWidth.num, boxState.borderLeftWidth.num]);
+        return values.every((val) => val === values[0]);
+    }, [
+        boxState.borderTopWidth.num,
+        boxState.borderRightWidth.num,
+        boxState.borderBottomWidth.num,
+        boxState.borderLeftWidth.num,
+    ]);
 
-    const [activeTab, setActiveTab] = useState<BorderTab>(areAllBordersEqual ? BorderTab.ALL : BorderTab.INDIVIDUAL);
+    const [activeTab, setActiveTab] = useState<BorderTab>(
+        areAllBordersEqual ? BorderTab.ALL : BorderTab.INDIVIDUAL,
+    );
 
     const getBorderDisplay = () => {
         const top = boxState.borderTopWidth.num ?? 0;
@@ -50,18 +57,18 @@ export const Border = observer(() => {
             return null;
         }
 
-        const nonZeroValues = [top, right, bottom, left].filter(val => val !== 0);
+        const nonZeroValues = [top, right, bottom, left].filter((val) => val !== 0);
 
         if (nonZeroValues.length === 4 && nonZeroValues.every((val) => val === nonZeroValues[0])) {
             return boxState.borderWidth.unit === 'px'
                 ? `${boxState.borderWidth.num}`
-                : `${boxState.borderWidth.value}`
+                : `${boxState.borderWidth.value}`;
         }
 
-        return "Mixed"
-    }
+        return 'Mixed';
+    };
 
-    const borderValue = getBorderDisplay()
+    const borderValue = getBorderDisplay();
 
     return (
         <DropdownMenu open={isOpen} onOpenChange={onOpenChange} modal={false}>
@@ -75,9 +82,16 @@ export const Border = observer(() => {
                 <DropdownMenuTrigger asChild>
                     <ToolbarButton
                         isOpen={isOpen}
-                        className={cn('flex items-center gap-1 min-w-9', borderValue && '!text-foreground-primary [&_*]:!text-foreground-primary')}
+                        className={cn(
+                            'flex items-center gap-1 min-w-9',
+                            borderValue &&
+                                '!text-foreground-primary [&_*]:!text-foreground-primary',
+                        )}
                     >
-                        <Icons.BorderEdit className={cn('h-4 w-4 min-h-4 min-w-4', borderExists && 'text-white')} />
+                        <Icons.BorderEdit
+                            className={cn('h-4 w-4 min-h-4 min-w-4', borderExists && 'text-white')}
+                        />
+
                         {borderValue && (
                             <span className="text-xs !text-white data-[state=open]:!text-foreground-primary">
                                 {borderValue}
@@ -94,19 +108,21 @@ export const Border = observer(() => {
                 <div className="flex items-center gap-2 mb-3">
                     <button
                         onClick={() => setActiveTab(BorderTab.ALL)}
-                        className={`flex-1 text-sm px-4 py-1.5 rounded-md transition-colors cursor-pointer ${activeTab === BorderTab.ALL
-                            ? 'text-foreground-primary bg-background-active/50'
-                            : 'text-muted-foreground hover:bg-background-tertiary/20 hover:text-foreground-hover'
-                            }`}
+                        className={`flex-1 text-sm px-4 py-1.5 rounded-md transition-colors cursor-pointer ${
+                            activeTab === BorderTab.ALL
+                                ? 'text-foreground-primary bg-background-active/50'
+                                : 'text-muted-foreground hover:bg-background-tertiary/20 hover:text-foreground-hover'
+                        }`}
                     >
                         All sides
                     </button>
                     <button
                         onClick={() => setActiveTab(BorderTab.INDIVIDUAL)}
-                        className={`flex-1 text-sm px-4 py-1.5 rounded-md transition-colors cursor-pointer ${activeTab === BorderTab.INDIVIDUAL
-                            ? 'text-foreground-primary bg-background-active/50'
-                            : 'text-muted-foreground hover:bg-background-tertiary/20 hover:text-foreground-hover'
-                            }`}
+                        className={`flex-1 text-sm px-4 py-1.5 rounded-md transition-colors cursor-pointer ${
+                            activeTab === BorderTab.INDIVIDUAL
+                                ? 'text-foreground-primary bg-background-active/50'
+                                : 'text-muted-foreground hover:bg-background-tertiary/20 hover:text-foreground-hover'
+                        }`}
                     >
                         Individual
                     </button>

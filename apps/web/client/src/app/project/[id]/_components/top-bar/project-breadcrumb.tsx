@@ -61,7 +61,7 @@ export const ProjectBreadcrumb = observer(() => {
             return;
         }
 
-        const sandboxId = editorEngine.branches.activeBranch.sandbox.id
+        const sandboxId = editorEngine.branches.activeBranch.sandbox.id;
         if (!sandboxId) {
             console.error('No sandbox ID found');
             return;
@@ -104,7 +104,7 @@ export const ProjectBreadcrumb = observer(() => {
             <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
                 <DropdownMenuTrigger asChild>
                     <Button
-                        variant='ghost'
+                        variant="ghost"
                         className="ml-1 px-0 gap-2 text-foreground-onlook text-small hover:text-foreground-active hover:!bg-transparent cursor-pointer group"
                     >
                         <Icons.OnlookLogo
@@ -113,6 +113,7 @@ export const ProjectBreadcrumb = observer(() => {
                                 isClosingProject && 'animate-pulse',
                             )}
                         />
+
                         <span className="mx-0 max-w-[60px] md:max-w-[100px] lg:max-w-[200px] px-0 text-foreground-onlook text-small truncate cursor-pointer group-hover:text-foreground-active">
                             {isClosingProject ? 'Stopping project...' : project?.name}
                         </span>
@@ -165,6 +166,7 @@ export const ProjectBreadcrumb = observer(() => {
                     >
                         <div className="flex flex-row center items-center group">
                             <Icons.Gear className="mr-2 group-hover:rotate-12 transition-transform" />
+
                             {t(transKeys.help.menu.openSettings)}
                         </div>
                     </DropdownMenuItem>

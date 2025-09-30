@@ -15,7 +15,9 @@ export const CustomDomain = observer(() => {
 
     const { data: subscription } = api.subscription.get.useQuery();
     const product = subscription?.product;
-    const { data: customDomain } = api.domain.custom.get.useQuery({ projectId: editorEngine.projectId });
+    const { data: customDomain } = api.domain.custom.get.useQuery({
+        projectId: editorEngine.projectId,
+    });
 
     const renderContent = () => {
         if (product?.type !== ProductType.PRO) {

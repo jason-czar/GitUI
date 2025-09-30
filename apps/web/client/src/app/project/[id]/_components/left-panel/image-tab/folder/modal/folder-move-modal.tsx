@@ -30,14 +30,18 @@ export const FolderMoveModal = observer(() => {
     const targetFolder = moveState.targetFolder;
 
     return (
-        <AlertDialog open={!!(moveState.folderToMove && moveState.targetFolder)} onOpenChange={handleClose}>
+        <AlertDialog
+            open={!!(moveState.folderToMove && moveState.targetFolder)}
+            onOpenChange={handleClose}
+        >
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>Move Folder</AlertDialogTitle>
                     <AlertDialogDescription>
                         {folder && targetFolder && (
                             <>
-                                Are you sure you want to move &quot;{folder.name}&quot; to &quot;{targetFolder.name || 'root'}&quot; folder?
+                                Are you sure you want to move &quot;{folder.name}&quot; to &quot;
+                                {targetFolder.name || 'root'}&quot; folder?
                                 <span className="block mt-2 text-sm">
                                     This will move the folder to the selected folder location.
                                 </span>
@@ -46,11 +50,7 @@ export const FolderMoveModal = observer(() => {
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <Button 
-                        variant={'ghost'} 
-                        onClick={handleClose} 
-                        disabled={moveState.isLoading}
-                    >
+                    <Button variant={'ghost'} onClick={handleClose} disabled={moveState.isLoading}>
                         Cancel
                     </Button>
                     <Button
@@ -72,4 +72,4 @@ export const FolderMoveModal = observer(() => {
             </AlertDialogContent>
         </AlertDialog>
     );
-}); 
+});

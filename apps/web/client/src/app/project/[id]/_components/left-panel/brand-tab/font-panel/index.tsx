@@ -129,6 +129,7 @@ const FontPanel = observer(() => {
             <div className="px-4 py-3 border-b border-border">
                 <div className="relative">
                     <Icons.MagnifyingGlass className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+
                     <Input
                         ref={inputRef}
                         type="text"
@@ -138,6 +139,7 @@ const FontPanel = observer(() => {
                         onChange={(e) => handleSearch(e.target.value)}
                         onKeyDown={handleKeyDown}
                     />
+
                     {searchQuery && (
                         <button
                             className="absolute right-[1px] top-[1px] bottom-[1px] aspect-square hover:bg-background-onlook active:bg-transparent flex items-center justify-center rounded-r-[calc(theme(borderRadius.md)-1px)] group"
@@ -178,6 +180,7 @@ const FontPanel = observer(() => {
                                     <div className="flex justify-center items-center border-dashed border-default border-2 rounded-lg h-20 my-2">
                                         <div className="flex items-center gap-2">
                                             <Icons.LoadingSpinner className="h-4 w-4 animate-spin text-muted-foreground" />
+
                                             <span className="text-sm text-muted-foreground">
                                                 Scanning fonts...
                                             </span>
@@ -196,12 +199,14 @@ const FontPanel = observer(() => {
                                                 <FontFamily
                                                     name={font.family}
                                                     variants={
-                                                        font.weight?.map(
-                                                            (weight) =>
-                                                                VARIANTS.find(
-                                                                    (v) => v.value === weight,
-                                                                )?.name,
-                                                        ).filter((v) => v !== undefined) ?? []
+                                                        font.weight
+                                                            ?.map(
+                                                                (weight) =>
+                                                                    VARIANTS.find(
+                                                                        (v) => v.value === weight,
+                                                                    )?.name,
+                                                            )
+                                                            .filter((v) => v !== undefined) ?? []
                                                     }
                                                     showDropdown={true}
                                                     showAddButton={false}
@@ -241,11 +246,14 @@ const FontPanel = observer(() => {
                                             <FontFamily
                                                 name={font.family}
                                                 variants={
-                                                    font.weight?.map(
-                                                        (weight) =>
-                                                            VARIANTS.find((v) => v.value === weight)
-                                                                ?.name,
-                                                    ).filter((v) => v !== undefined) ?? []
+                                                    font.weight
+                                                        ?.map(
+                                                            (weight) =>
+                                                                VARIANTS.find(
+                                                                    (v) => v.value === weight,
+                                                                )?.name,
+                                                        )
+                                                        .filter((v) => v !== undefined) ?? []
                                                 }
                                                 showDropdown={false}
                                                 showAddButton={true}
@@ -273,6 +281,7 @@ const FontPanel = observer(() => {
                                 {isLoading ? (
                                     <div className="flex items-center gap-2">
                                         <Icons.LoadingSpinner className="h-4 w-4 animate-spin" />
+
                                         <span>Loading...</span>
                                     </div>
                                 ) : (

@@ -24,7 +24,11 @@ export const Members = ({ onPopoverOpenChange }: MembersProps) => {
             <Tooltip>
                 <TooltipTrigger asChild>
                     <PopoverTrigger asChild>
-                        <Button variant="outline" size="icon" className="rounded-full size-8 hover:border-border bg-background-secondary hover:bg-background-secondary/80 text-foreground-secondary hover:text-foreground-primary">
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            className="rounded-full size-8 hover:border-border bg-background-secondary hover:bg-background-secondary/80 text-foreground-secondary hover:text-foreground-primary"
+                        >
                             <Icons.Plus className="size-4" />
                         </Button>
                     </PopoverTrigger>

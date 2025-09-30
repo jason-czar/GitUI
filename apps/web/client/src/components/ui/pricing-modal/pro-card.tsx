@@ -1,11 +1,18 @@
 import { transKeys } from '@/i18n/keys';
 import { api } from '@/trpc/react';
 import { PriceKey, PRO_PRODUCT_CONFIG } from '@onlook/stripe';
-import { Badge } from "@onlook/ui/badge";
+import { Badge } from '@onlook/ui/badge';
 import { Button } from '@onlook/ui/button';
 import { Icons } from '@onlook/ui/icons';
 import { MotionCard } from '@onlook/ui/motion-card';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@onlook/ui/select';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@onlook/ui/select';
 import { toast } from '@onlook/ui/sonner';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
@@ -32,18 +39,22 @@ export const ProCard = ({
     onSignupClick?: () => void;
 }) => {
     const t = useTranslations();
-    const { subscription, isPro, refetchSubscription, setIsCheckingSubscription } = useSubscription();
+    const { subscription, isPro, refetchSubscription, setIsCheckingSubscription } =
+        useSubscription();
     const { mutateAsync: checkout } = api.subscription.checkout.useMutation();
     const { mutateAsync: getPriceId } = api.subscription.getPriceId.useMutation();
     const { mutateAsync: updateSubscription } = api.subscription.update.useMutation();
-    const { mutateAsync: releaseSubscriptionSchedule } = api.subscription.releaseSubscriptionSchedule.useMutation();
+    const { mutateAsync: releaseSubscriptionSchedule } =
+        api.subscription.releaseSubscriptionSchedule.useMutation();
 
     const [isCheckingOut, setIsCheckingOut] = useState(false);
     const [selectedTier, setSelectedTier] = useState<PriceKey>(PriceKey.PRO_MONTHLY_TIER_1);
 
-    const selectedTierData = PRO_PRODUCT_CONFIG.prices.find(tier => tier.key === selectedTier);
+    const selectedTierData = PRO_PRODUCT_CONFIG.prices.find((tier) => tier.key === selectedTier);
     const isNewTierSelected = selectedTier !== subscription?.price.key;
-    const isPendingTierSelected = selectedTier !== subscription?.price.key && selectedTier === subscription?.scheduledChange?.price?.key;
+    const isPendingTierSelected =
+        selectedTier !== subscription?.price.key &&
+        selectedTier === subscription?.scheduledChange?.price?.key;
 
     if (!PRO_PRODUCT_CONFIG.prices.length) {
         throw new Error('No pro tiers found');
@@ -74,11 +85,16 @@ export const ProCard = ({
 
     const handleCancelScheduledDowngrade = async () => {
         try {
-            if (!subscription?.scheduledChange?.scheduledChangeAt || !subscription.scheduledChange.stripeSubscriptionScheduleId) {
+            if (
+                !subscription?.scheduledChange?.scheduledChangeAt ||
+                !subscription.scheduledChange.stripeSubscriptionScheduleId
+            ) {
                 throw new Error('No scheduled downgrade found.');
             }
             setIsCheckingOut(true);
-            await releaseSubscriptionSchedule({ subscriptionScheduleId: subscription.scheduledChange.stripeSubscriptionScheduleId });
+            await releaseSubscriptionSchedule({
+                subscriptionScheduleId: subscription.scheduledChange.stripeSubscriptionScheduleId,
+            });
             refetchSubscription();
             toast.success('Scheduled downgrade canceled!');
         } catch (error) {
@@ -151,30 +167,28 @@ export const ProCard = ({
             return (
                 <div className="flex items-center gap-2">
                     <Icons.Shadow className="w-4 h-4 animate-spin" />
-                    <span>
-                        {t(transKeys.pricing.loading.checkingPayment)}
-                    </span>
+                    <span>{t(transKeys.pricing.loading.checkingPayment)}</span>
                 </div>
-            )
+            );
         }
 
         if (isUnauthenticated) {
-            return "Get Started with Pro";
+            return 'Get Started with Pro';
         }
 
         if (!isPro) {
-            return "Upgrade to Pro Plan";
+            return 'Upgrade to Pro Plan';
         }
 
         if (!isNewTierSelected) {
-            return "Current plan";
+            return 'Current plan';
         }
 
         if (isPendingTierSelected) {
-            return "Cancel Scheduled Downgrade"
+            return 'Cancel Scheduled Downgrade';
         }
 
-        return "Update plan";
+        return 'Update plan';
     };
 
     const handleButtonClick = () => {
@@ -195,11 +209,17 @@ export const ProCard = ({
             <motion.div className="p-6 flex flex-col h-full">
                 <div className="space-y-1">
                     <h2 className="text-title2">{t(transKeys.pricing.plans.pro.name)}</h2>
-                    <p className="text-foreground-onlook text-largePlus">{formatPrice(selectedTierData?.cost ?? 0)}</p>
+                    <p className="text-foreground-onlook text-largePlus">
+                        {formatPrice(selectedTierData?.cost ?? 0)}
+                    </p>
                 </div>
                 <div className="border-[0.5px] border-border-primary -mx-6 my-6" />
-                <p className="text-foreground-primary text-title3 text-balance">{t(transKeys.pricing.plans.pro.description)}</p>
+
+                <p className="text-foreground-primary text-title3 text-balance">
+                    {t(transKeys.pricing.plans.pro.description)}
+                </p>
                 <div className="border-[0.5px] border-border-primary -mx-6 my-6" />
+
                 <div className="flex flex-col gap-2 mb-6">
                     <Select
                         value={selectedTier}
@@ -214,8 +234,13 @@ export const ProCard = ({
                                     <SelectItem key={value.key} value={value.key}>
                                         <div className="flex items-center gap-2">
                                             {value.description}
-                                            {value.key === subscription?.price.key && <Badge variant="secondary">Current Plan</Badge>}
-                                            {value.key === subscription?.scheduledChange?.price?.key && <Badge variant="secondary">Pending</Badge>}
+                                            {value.key === subscription?.price.key && (
+                                                <Badge variant="secondary">Current Plan</Badge>
+                                            )}
+                                            {value.key ===
+                                                subscription?.scheduledChange?.price?.key && (
+                                                <Badge variant="secondary">Pending</Badge>
+                                            )}
                                         </div>
                                     </SelectItem>
                                 ))}
@@ -230,9 +255,11 @@ export const ProCard = ({
                         {buttonContent()}
                     </Button>
 
-                    {isPendingTierSelected && isPro && <div className="text-amber-500 text-small text-balance">
-                        {`This plan will start on ${subscription?.scheduledChange?.scheduledChangeAt.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`}
-                    </div>}
+                    {isPendingTierSelected && isPro && (
+                        <div className="text-amber-500 text-small text-balance">
+                            {`This plan will start on ${subscription?.scheduledChange?.scheduledChangeAt.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`}
+                        </div>
+                    )}
                     {!isPro && <LegacyPromotion />}
                 </div>
                 <div className="flex flex-col gap-2 ">
@@ -242,6 +269,7 @@ export const ProCard = ({
                             className="flex items-center gap-3 text-sm text-foreground-secondary/80"
                         >
                             <Icons.CheckCircled className="w-5 h-5 text-foreground-secondary/80" />
+
                             <span>{feature}</span>
                         </div>
                     ))}

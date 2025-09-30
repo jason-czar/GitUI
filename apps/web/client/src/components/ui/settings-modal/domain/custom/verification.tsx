@@ -10,7 +10,8 @@ export const Verification = observer(() => {
     return (
         <div className="space-y-4">
             <NoDomainInput />
-            {(verificationState === VerificationState.VERIFICATION_CREATED || verificationState === VerificationState.VERIFYING) && (
+            {(verificationState === VerificationState.VERIFICATION_CREATED ||
+                verificationState === VerificationState.VERIFYING) && (
                 <>
                     <ConfigureHeader />
                     <DnsRecords />

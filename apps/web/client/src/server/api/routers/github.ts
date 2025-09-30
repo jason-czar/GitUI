@@ -27,6 +27,86 @@ const getUserGitHubInstallation = async (db: DrizzleDb, userId: string) => {
 };
 
 export const githubRouter = createTRPCRouter({
+    // GitUI: OAuth-based repository access
+    getRepositoriesWithOAuth: protectedProcedure
+        .query(async ({ ctx }) => {
+            // Get GitHub access token from Supabase session
+            const { data: { session } } = await ctx.supabase.auth.getSession();
+            const githubToken = session?.provider_token;
+            
+            if (!githubToken) {
+                throw new TRPCError({
+                    code: 'UNAUTHORIZED',
+                    message: 'GitHub OAuth token not found. Please connect your GitHub account.',
+                });
+            }
+            
+            try {
+                const response = await fetch('https://api.github.com/user/repos?per_page=100&sort=updated', {
+                    headers: {
+                        'Authorization': `Bearer ${githubToken}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                    },
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`GitHub API error: ${response.status}`);
+                }
+                
+                const repos = await response.json();
+                return repos.map((repo: any) => ({
+                    id: repo.id,
+                    name: repo.name,
+                    full_name: repo.full_name,
+                    description: repo.description,
+                    private: repo.private,
+                    default_branch: repo.default_branch,
+                    clone_url: repo.clone_url,
+                    html_url: repo.html_url,
+                    updated_at: repo.updated_at,
+                    owner: {
+                        login: repo.owner.login,
+                        avatar_url: repo.owner.avatar_url,
+                    },
+                }));
+            } catch (error) {
+                throw new TRPCError({
+                    code: 'INTERNAL_SERVER_ERROR',
+                    message: 'Failed to fetch repositories from GitHub',
+                    cause: error,
+                });
+            }
+        }),
+    
+    checkOAuthConnection: protectedProcedure
+        .query(async ({ ctx }) => {
+            const { data: { session } } = await ctx.supabase.auth.getSession();
+            const githubToken = session?.provider_token;
+            
+            // If we have a provider token, get the username from GitHub API
+            let githubUsername = null;
+            if (githubToken) {
+                try {
+                    const userResponse = await fetch('https://api.github.com/user', {
+                        headers: {
+                            'Authorization': `Bearer ${githubToken}`,
+                            'Accept': 'application/vnd.github.v3+json',
+                        },
+                    });
+                    if (userResponse.ok) {
+                        const githubUser = await userResponse.json();
+                        githubUsername = githubUser.login;
+                    }
+                } catch (error) {
+                    console.error('Error fetching GitHub user:', error);
+                }
+            }
+            
+            return {
+                connected: !!githubToken,
+                username: githubUsername,
+            };
+        }),
     validate: protectedProcedure
         .input(
             z.object({

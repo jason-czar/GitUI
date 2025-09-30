@@ -22,9 +22,13 @@ export interface CssValue {
 }
 
 export const layoutTypeOptions: Record<string, CssValue> = {
-    block: { value: "block", label: "Block", icon: <Icons.CrossL className="h-3.5 w-3.5" /> },
-    flex: { value: "flex", label: "Flex" },
-    grid: { value: "grid", label: "Grid" },
+    block: {
+        value: 'block',
+        label: 'Block',
+        icon: <Icons.CrossL className="h-3.5 w-3.5" />,
+    },
+    flex: { value: 'flex', label: 'Flex' },
+    grid: { value: 'grid', label: 'Grid' },
 };
 
 export const Display = observer(() => {
@@ -34,7 +38,7 @@ export const Display = observer(() => {
     );
 
     const { isOpen, onOpenChange } = useDropdownControl({
-        id: 'display-dropdown'
+        id: 'display-dropdown',
     });
 
     useEffect(() => {
@@ -43,15 +47,20 @@ export const Display = observer(() => {
 
     return (
         <DropdownMenu open={isOpen} onOpenChange={onOpenChange} modal={false}>
-            <HoverOnlyTooltip content="Display" side="bottom" className="mt-1" hideArrow disabled={isOpen}>
+            <HoverOnlyTooltip
+                content="Display"
+                side="bottom"
+                className="mt-1"
+                hideArrow
+                disabled={isOpen}
+            >
                 <DropdownMenuTrigger asChild>
-                    <ToolbarButton
-                        isOpen={isOpen}
-                        className="flex items-center gap-1 min-w-9"
-                    >
+                    <ToolbarButton isOpen={isOpen} className="flex items-center gap-1 min-w-9">
                         <Icons.Layout className="h-4 w-4 min-h-4 min-w-4" />
                         {(layoutType === 'flex' || layoutType === 'grid') && (
-                            <span className="text-small">{layoutTypeOptions[layoutType]?.label ?? layoutType}</span>
+                            <span className="text-small">
+                                {layoutTypeOptions[layoutType]?.label ?? layoutType}
+                            </span>
                         )}
                     </ToolbarButton>
                 </DropdownMenuTrigger>

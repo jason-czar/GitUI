@@ -7,17 +7,15 @@ import type { Branch, Project } from '@onlook/models';
 export const ProjectProviders = ({
     children,
     project,
-    branches
+    branches,
 }: {
-    children: React.ReactNode,
-    project: Project,
-    branches: Branch[]
+    children: React.ReactNode;
+    project: Project;
+    branches: Branch[];
 }) => {
     return (
         <EditorEngineProvider project={project} branches={branches}>
-            <HostingProvider>
-                {children}
-            </HostingProvider>
+            <HostingProvider>{children}</HostingProvider>
         </EditorEngineProvider>
     );
 };

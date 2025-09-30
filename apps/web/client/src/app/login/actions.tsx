@@ -44,7 +44,9 @@ export async function devLogin() {
 
     const supabase = await createClient();
 
-    const { data: { session } } = await supabase.auth.getSession();
+    const {
+        data: { session },
+    } = await supabase.auth.getSession();
 
     if (session) {
         redirect(Routes.AUTH_REDIRECT);

@@ -7,7 +7,7 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuTrigger
+    DropdownMenuTrigger,
 } from '@onlook/ui/dropdown-menu';
 import { Icons } from '@onlook/ui/icons';
 import { toast } from '@onlook/ui/sonner';
@@ -16,7 +16,12 @@ import { getMimeType } from '@onlook/utility';
 import CodeMirror, { EditorSelection } from '@uiw/react-codemirror';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useRef } from 'react';
-import { createSearchHighlight, getBasicSetup, getExtensions, scrollToFirstMatch } from './code-mirror-config';
+import {
+    createSearchHighlight,
+    getBasicSetup,
+    getExtensions,
+    scrollToFirstMatch,
+} from './code-mirror-config';
 import { FileTab } from './file-tab';
 import { FileTree } from './file-tree';
 
@@ -165,10 +170,11 @@ export const CodeTab = observer(() => {
                 selection,
                 effects: [
                     EditorView.scrollIntoView(selection.main, {
-                        y: 'start'
-                    })
+                        y: 'start',
+                    }),
                 ],
-                userEvent: 'select.element'
+
+                userEvent: 'select.element',
             });
 
             // Force the editor to focus
@@ -191,7 +197,7 @@ export const CodeTab = observer(() => {
 
         try {
             editorView.dispatch({
-                effects: createSearchHighlight(ide.searchTerm)
+                effects: createSearchHighlight(ide.searchTerm),
             });
 
             setTimeout(() => {
@@ -258,7 +264,7 @@ export const CodeTab = observer(() => {
 
                 // Reopen the previously active file if it exists in the new branch
                 if (activeFilePath) {
-                    const fileExists = files.some(file => file === activeFilePath);
+                    const fileExists = files.some((file) => file === activeFilePath);
                     if (fileExists) {
                         await loadFile(activeFilePath);
                         // Restore the highlight range if it was preserved
@@ -292,19 +298,22 @@ export const CodeTab = observer(() => {
         }
     }
 
-    const loadFile = useCallback(async (filePath: string, searchTerm?: string): Promise<EditorFile | null> => {
-        if (!isSandboxReady) {
-            handleSandboxNotReady('load file');
-            return null;
-        }
+    const loadFile = useCallback(
+        async (filePath: string, searchTerm?: string): Promise<EditorFile | null> => {
+            if (!isSandboxReady) {
+                handleSandboxNotReady('load file');
+                return null;
+            }
 
-        try {
-            return await ide.openFile(filePath, searchTerm, false);
-        } catch (error) {
-            console.error('Error loading file:', error);
-            return null;
-        }
-    }, [isSandboxReady]);
+            try {
+                return await ide.openFile(filePath, searchTerm, false);
+            } catch (error) {
+                console.error('Error loading file:', error);
+                return null;
+            }
+        },
+        [isSandboxReady],
+    );
 
     function handleFileSelect(file: EditorFile) {
         ide.setHighlightRange(null);
@@ -320,19 +329,22 @@ export const CodeTab = observer(() => {
         return ide.getFilePathFromOid(oid);
     }
 
-    const closeFile = useCallback((fileId: string) => {
-        if (ide.openedFiles.find(f => f.id === fileId)?.isDirty) {
-            ide.showUnsavedDialog = true;
-            return;
-        }
+    const closeFile = useCallback(
+        (fileId: string) => {
+            if (ide.openedFiles.find((f) => f.id === fileId)?.isDirty) {
+                ide.showUnsavedDialog = true;
+                return;
+            }
 
-        const editorView = editorViewsRef.current.get(fileId);
-        if (editorView) {
-            editorView.destroy();
-            editorViewsRef.current.delete(fileId);
-        }
-        ide.closeFile(fileId);
-    }, [ide]);
+            const editorView = editorViewsRef.current.get(fileId);
+            if (editorView) {
+                editorView.destroy();
+                editorViewsRef.current.delete(fileId);
+            }
+            ide.closeFile(fileId);
+        },
+        [ide],
+    );
 
     const saveFile = async () => {
         if (!ide.activeFile) {
@@ -440,7 +452,6 @@ export const CodeTab = observer(() => {
         };
     }, []);
 
-
     const scrollToActiveTab = useCallback(() => {
         if (!fileTabsContainerRef.current || !ide.activeFile) return;
 
@@ -469,7 +480,6 @@ export const CodeTab = observer(() => {
 
     return (
         <div className="size-full flex flex-col">
-
             {/* Show connection status when sandbox is not ready */}
             {!isSandboxReady ? (
                 <div className="flex-1 flex items-center justify-center">
@@ -482,12 +492,7 @@ export const CodeTab = observer(() => {
                 </div>
             ) : (
                 <div className="flex flex-1 min-h-0 overflow-hidden">
-                    {ide.isFilesVisible && (
-                        <FileTree
-                            ref={fileTreeRef}
-                            onFileSelect={loadFile}
-                        />
-                    )}
+                    {ide.isFilesVisible && <FileTree ref={fileTreeRef} onFileSelect={loadFile} />}
 
                     {/* Editor section */}
                     <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
@@ -499,10 +504,16 @@ export const CodeTab = observer(() => {
                                         <Button
                                             variant="ghost"
                                             size="icon"
-                                            onClick={() => ide.isFilesVisible = !ide.isFilesVisible}
+                                            onClick={() =>
+                                                (ide.isFilesVisible = !ide.isFilesVisible)
+                                            }
                                             className="text-muted-foreground hover:text-foreground"
                                         >
-                                            {ide.isFilesVisible ? <Icons.SidebarLeftCollapse /> : <Icons.SidebarLeftExpand />}
+                                            {ide.isFilesVisible ? (
+                                                <Icons.SidebarLeftCollapse />
+                                            ) : (
+                                                <Icons.SidebarLeftExpand />
+                                            )}
                                         </Button>
                                     </TooltipTrigger>
                                     <TooltipContent side="bottom" className="mt-1" hideArrow>
@@ -517,7 +528,9 @@ export const CodeTab = observer(() => {
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end" className="-mt-1">
                                         <DropdownMenuItem
-                                            onClick={() => ide.activeFile && closeFile(ide.activeFile.id)}
+                                            onClick={() =>
+                                                ide.activeFile && closeFile(ide.activeFile.id)
+                                            }
                                             disabled={!ide.activeFile}
                                             className="cursor-pointer"
                                         >
@@ -533,7 +546,10 @@ export const CodeTab = observer(() => {
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             </div>
-                            <div className="flex items-center h-full overflow-x-auto w-full ml-11 mr-10.5" ref={fileTabsContainerRef}>
+                            <div
+                                className="flex items-center h-full overflow-x-auto w-full ml-11 mr-10.5"
+                                ref={fileTabsContainerRef}
+                            >
                                 {ide.openedFiles.map((file) => (
                                     <FileTab
                                         key={file.id}
@@ -572,7 +588,10 @@ export const CodeTab = observer(() => {
                                             key={file.id}
                                             className="h-full"
                                             style={{
-                                                display: ide.activeFile?.id === file.id ? 'block' : 'none',
+                                                display:
+                                                    ide.activeFile?.id === file.id
+                                                        ? 'block'
+                                                        : 'none',
                                             }}
                                         >
                                             {file.isBinary ? (
@@ -601,11 +620,14 @@ export const CodeTab = observer(() => {
                                                     onCreateEditor={(editor) => {
                                                         editorViewsRef.current.set(file.id, editor);
 
-                                                        editor.dom.addEventListener('mousedown', () => {
-                                                            if (ide.highlightRange) {
-                                                                ide.setHighlightRange(null);
-                                                            }
-                                                        });
+                                                        editor.dom.addEventListener(
+                                                            'mousedown',
+                                                            () => {
+                                                                if (ide.highlightRange) {
+                                                                    ide.setHighlightRange(null);
+                                                                }
+                                                            },
+                                                        );
 
                                                         // If this file is the active file and we have a highlight range,
                                                         // trigger the highlight effect again
@@ -616,7 +638,9 @@ export const CodeTab = observer(() => {
                                                         ) {
                                                             setTimeout(() => {
                                                                 if (ide.highlightRange) {
-                                                                    ide.setHighlightRange(ide.highlightRange);
+                                                                    ide.setHighlightRange(
+                                                                        ide.highlightRange,
+                                                                    );
                                                                 }
                                                             }, 300);
                                                         }
@@ -626,8 +650,8 @@ export const CodeTab = observer(() => {
                                             {ide.activeFile?.isDirty && ide.showUnsavedDialog && (
                                                 <div className="absolute top-4 left-1/2 z-50 -translate-x-1/2 bg-white dark:bg-zinc-800 border dark:border-zinc-700 shadow-lg rounded-lg p-4 w-[320px]">
                                                     <div className="text-sm text-gray-800 dark:text-gray-100 mb-4">
-                                                        You have unsaved changes. Are you sure you want
-                                                        to close this file?
+                                                        You have unsaved changes. Are you sure you
+                                                        want to close this file?
                                                     </div>
                                                     <div className="flex justify-end gap-1">
                                                         <Button

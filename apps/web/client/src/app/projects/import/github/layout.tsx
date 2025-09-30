@@ -17,7 +17,5 @@ export default async function Layout({ children }: Readonly<{ children: React.Re
     if (!session) {
         redirect(Routes.LOGIN);
     }
-    return (
-        <ImportGithubProjectProvider totalSteps={3}>{children}</ImportGithubProjectProvider>
-    );
+    return <ImportGithubProjectProvider totalSteps={3}>{children}</ImportGithubProjectProvider>;
 }

@@ -40,6 +40,7 @@ export const DraftImagePill = React.forwardRef<
                     alt={context.displayName}
                     className="w-full h-full object-cover rounded-l-md"
                 />
+
                 <div className="absolute inset-0 border-l-[1px] border-y-[1px] rounded-l-md border-white/10 pointer-events-none" />
             </div>
 

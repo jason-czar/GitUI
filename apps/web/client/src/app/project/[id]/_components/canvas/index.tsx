@@ -63,16 +63,19 @@ export const Canvas = observer(() => {
         }
     };
 
-    const updateFramesInSelection = useCallback((start: { x: number; y: number }, end: { x: number; y: number }) => {
-        const intersectingFrameIds = getFramesInSelection(
-            editorEngine,
-            start,
-            end,
-            position,
-            scale
-        );
-        setFramesInSelection(new Set(intersectingFrameIds));
-    }, [position, scale, editorEngine]);
+    const updateFramesInSelection = useCallback(
+        (start: { x: number; y: number }, end: { x: number; y: number }) => {
+            const intersectingFrameIds = getFramesInSelection(
+                editorEngine,
+                start,
+                end,
+                position,
+                scale,
+            );
+            setFramesInSelection(new Set(intersectingFrameIds));
+        },
+        [position, scale, editorEngine],
+    );
 
     const handleCanvasMouseMove = useCallback(
         throttle((event: React.MouseEvent<HTMLDivElement>) => {
@@ -88,14 +91,13 @@ export const Canvas = observer(() => {
             // Update frames in selection for visual feedback
             updateFramesInSelection(dragSelectStart, { x, y });
         }, 16), // ~60fps
-        [isDragSelecting, dragSelectStart, updateFramesInSelection]
+        [isDragSelecting, dragSelectStart, updateFramesInSelection],
     );
 
     const handleCanvasMouseUp = (event: React.MouseEvent<HTMLDivElement>) => {
         // Mouse up is now handled by the global listener in useEffect
         // This function is kept for consistency but the logic is in the global handler
     };
-
     const handleZoom = useCallback(
         (event: WheelEvent) => {
             if (!containerRef.current) {
@@ -235,14 +237,14 @@ export const Canvas = observer(() => {
                         dragSelectStart,
                         dragSelectEnd,
                         position,
-                        scale
+                        scale,
                     );
 
                     // Select the frames if any were found in the selection
                     if (selectedFrames.length > 0) {
                         editorEngine.frames.select(
-                            selectedFrames.map(fd => fd.frame),
-                            event.shiftKey // multiselect if shift is held
+                            selectedFrames.map((fd) => fd.frame),
+                            event.shiftKey, // multiselect if shift is held
                         );
                     }
                 } catch (error) {
@@ -290,6 +292,7 @@ export const Canvas = observer(() => {
                     endY={dragSelectEnd.y}
                     isSelecting={isDragSelecting}
                 />
+
                 <Overlay />
                 <PanOverlay
                     clampPosition={(position: { x: number; y: number }) =>

@@ -1,4 +1,3 @@
-
 import { useEditorEngine } from '@/components/store/editor';
 import { api } from '@/trpc/react';
 import { DefaultSettings } from '@onlook/constants';
@@ -16,7 +15,9 @@ export const ProjectTab = observer(() => {
     const utils = api.useUtils();
     const { data: project } = api.project.get.useQuery({ projectId: editorEngine.projectId });
     const { mutateAsync: updateProject } = api.project.update.useMutation();
-    const { data: projectSettings } = api.settings.get.useQuery({ projectId: editorEngine.projectId });
+    const { data: projectSettings } = api.settings.get.useQuery({
+        projectId: editorEngine.projectId,
+    });
     const { mutateAsync: updateProjectSettings } = api.settings.upsert.useMutation();
 
     const installCommand = projectSettings?.commands?.install ?? DefaultSettings.COMMANDS.install;
@@ -29,7 +30,7 @@ export const ProjectTab = observer(() => {
         name: '',
         install: '',
         run: '',
-        build: ''
+        build: '',
     });
     const [isSaving, setIsSaving] = useState(false);
 
@@ -39,7 +40,7 @@ export const ProjectTab = observer(() => {
             name,
             install: installCommand,
             run: runCommand,
-            build: buildCommand
+            build: buildCommand,
         });
     }, [name, installCommand, runCommand, buildCommand]);
 
@@ -70,7 +71,11 @@ export const ProjectTab = observer(() => {
             }
 
             // Update commands if any changed
-            if (formData.install !== installCommand || formData.run !== runCommand || formData.build !== buildCommand) {
+            if (
+                formData.install !== installCommand ||
+                formData.run !== runCommand ||
+                formData.build !== buildCommand
+            ) {
                 await updateProjectSettings({
                     projectId: editorEngine.projectId,
                     settings: toDbProjectSettings(editorEngine.projectId, {
@@ -97,12 +102,12 @@ export const ProjectTab = observer(() => {
             name,
             install: installCommand,
             run: runCommand,
-            build: buildCommand
+            build: buildCommand,
         });
     };
 
     const updateField = (field: keyof typeof formData, value: string) => {
-        setFormData(prev => ({ ...prev, [field]: value }));
+        setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
     return (
@@ -168,7 +173,10 @@ export const ProjectTab = observer(() => {
             </div>
 
             {/* Save/Discard buttons matching site tab pattern */}
-            <div className="sticky bottom-0 bg-background border-t border-border/50 p-6" style={{ borderTopWidth: '0.5px' }}>
+            <div
+                className="sticky bottom-0 bg-background border-t border-border/50 p-6"
+                style={{ borderTopWidth: '0.5px' }}
+            >
                 <div className="flex justify-end gap-4">
                     <Button
                         variant="outline"

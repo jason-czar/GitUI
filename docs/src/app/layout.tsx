@@ -51,7 +51,11 @@ export default function Layout({ children }: { children: ReactNode }) {
             <body className="flex flex-col min-h-screen">
                 {isProduction && (
                     <>
-                        <Script src="https://z.onlook.com/cdn-cgi/zaraz/i.js" strategy="lazyOnload" />
+                        <Script
+                            src="https://z.onlook.com/cdn-cgi/zaraz/i.js"
+                            strategy="lazyOnload"
+                        />
+
                         <RB2BLoader />
                     </>
                 )}
@@ -64,4 +68,3 @@ export default function Layout({ children }: { children: ReactNode }) {
         </html>
     );
 }
-

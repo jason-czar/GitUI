@@ -10,8 +10,11 @@ export const DangerZone = observer(() => {
     const editorEngine = useEditorEngine();
 
     const { data: domains } = api.domain.getAll.useQuery({ projectId: editorEngine.projectId });
-    const { deployment: unpublishPreviewDeployment, unpublish: runUnpublishPreview } = useHostingType(DeploymentType.UNPUBLISH_PREVIEW);
-    const { deployment: unpublishCustomDeployment, unpublish: runUnpublishCustom } = useHostingType(DeploymentType.UNPUBLISH_CUSTOM);
+    const { deployment: unpublishPreviewDeployment, unpublish: runUnpublishPreview } =
+        useHostingType(DeploymentType.UNPUBLISH_PREVIEW);
+    const { deployment: unpublishCustomDeployment, unpublish: runUnpublishCustom } = useHostingType(
+        DeploymentType.UNPUBLISH_CUSTOM,
+    );
 
     const previewDomain = domains?.preview;
     const customDomain = domains?.published;
@@ -56,9 +59,14 @@ export const DangerZone = observer(() => {
                         className="ml-auto"
                         size="sm"
                         variant="destructive"
-                        disabled={!previewDomain || unpublishPreviewDeployment?.status === DeploymentStatus.IN_PROGRESS}
+                        disabled={
+                            !previewDomain ||
+                            unpublishPreviewDeployment?.status === DeploymentStatus.IN_PROGRESS
+                        }
                     >
-                        {unpublishPreviewDeployment?.status === DeploymentStatus.IN_PROGRESS ? 'Unpublishing...' : 'Unpublish'}
+                        {unpublishPreviewDeployment?.status === DeploymentStatus.IN_PROGRESS
+                            ? 'Unpublishing...'
+                            : 'Unpublish'}
                     </Button>
                 </div>
                 {customDomain && (
@@ -71,9 +79,14 @@ export const DangerZone = observer(() => {
                             className="ml-auto"
                             size="sm"
                             variant="destructive"
-                            disabled={!customDomain || unpublishCustomDeployment?.status === DeploymentStatus.IN_PROGRESS}
+                            disabled={
+                                !customDomain ||
+                                unpublishCustomDeployment?.status === DeploymentStatus.IN_PROGRESS
+                            }
                         >
-                            {unpublishCustomDeployment?.status === DeploymentStatus.IN_PROGRESS ? 'Unpublishing...' : 'Unpublish'}
+                            {unpublishCustomDeployment?.status === DeploymentStatus.IN_PROGRESS
+                                ? 'Unpublishing...'
+                                : 'Unpublish'}
                         </Button>
                     </div>
                 )}

@@ -34,7 +34,8 @@ export const useGitHubData = () => {
         setRepositoriesError(null);
 
         try {
-            const repositoriesData = await clientApi.github.getRepositoriesWithApp.query();
+            // GitUI: Use OAuth-based repository access instead of GitHub Apps
+            const repositoriesData = await clientApi.github.getRepositoriesWithOAuth.query();
             setRepositories(repositoriesData as GitHubRepository[]);
         } catch (error) {
             const errorMessage =

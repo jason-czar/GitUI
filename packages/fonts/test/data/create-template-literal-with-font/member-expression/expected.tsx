@@ -1,4 +1,4 @@
 import React from 'react';
 export function Component() {
-  return <div className={`${inter.variable} ${theme.colors}`} />;
+    return <div className={`${inter.variable} ${theme.colors}`} />;
 }

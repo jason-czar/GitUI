@@ -36,10 +36,14 @@ export const FontFamilySelector = observer(() => {
     };
 
     return (
-        <DropdownMenu open={isOpen} modal={false} onOpenChange={(v) => {
-            onOpenChange(v);
-            if (!v) editorEngine.state.brandTab = null;
-        }}>
+        <DropdownMenu
+            open={isOpen}
+            modal={false}
+            onOpenChange={(v) => {
+                onOpenChange(v);
+                if (!v) editorEngine.state.brandTab = null;
+            }}
+        >
             <HoverOnlyTooltip
                 content="Font Family"
                 side="bottom"
@@ -85,6 +89,7 @@ export const FontFamilySelector = observer(() => {
                         aria-label="Search fonts"
                         tabIndex={0}
                     />
+
                     <div className="text-sm text-muted-foreground mb-1 mt-2">Brand fonts</div>
                 </div>
                 <div className="flex-1 overflow-y-auto px-2 pb-2 divide-y divide-border">
@@ -98,7 +103,9 @@ export const FontFamilySelector = observer(() => {
                                 <FontFamily
                                     name={font.family}
                                     onSetFont={() => handleFontFamilyChange(font)}
-                                    isActive={textState.fontFamily.toLowerCase() === font.id.toLowerCase()}
+                                    isActive={
+                                        textState.fontFamily.toLowerCase() === font.id.toLowerCase()
+                                    }
                                 />
                             </div>
                         ))

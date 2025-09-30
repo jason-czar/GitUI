@@ -1,5 +1,5 @@
 import React from 'react';
 
 export function Component() {
-    return <div className={isActive ? "active" : "inactive"} />;
-} 
+    return <div className={isActive ? 'active' : 'inactive'} />;
+}

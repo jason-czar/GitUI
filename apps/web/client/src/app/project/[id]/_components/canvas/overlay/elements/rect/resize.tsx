@@ -183,6 +183,7 @@ const EdgeHandle: React.FC<EdgeHandleProps> = ({
                 style={{ cursor: getCursorStyle(position), pointerEvents: 'auto' }}
                 onMouseDown={handleMouseDownRect}
             />
+
             {showHandle && (
                 <rect
                     x={
@@ -233,6 +234,7 @@ const CornerHandle: React.FC<HandleProps> = ({
         >
             {/* Invisible larger circle for hit area */}
             <circle cx={halfSize} cy={halfSize} r={hitAreaHalfSize} fill="transparent" />
+
             <circle
                 cx={halfSize}
                 cy={halfSize}
@@ -268,6 +270,7 @@ const RadiusHandle: React.FC<HandleProps> = ({
             onMouseDown={(e) => handleMouseDown(e, position, styles)}
         >
             <circle cx={halfSize} cy={halfSize} r={hitAreaHalfSize} fill="transparent" />
+
             <circle
                 cx={halfSize}
                 cy={halfSize}
@@ -276,6 +279,7 @@ const RadiusHandle: React.FC<HandleProps> = ({
                 stroke={color}
                 strokeWidth={1}
             />
+
             <circle cx={halfSize} cy={halfSize} r={1.5} fill={color} />
         </g>
     );

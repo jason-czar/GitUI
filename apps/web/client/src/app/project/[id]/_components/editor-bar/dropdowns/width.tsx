@@ -16,21 +16,22 @@ export const Width = observer(() => {
         useDimensionControl('width');
 
     const { isOpen, onOpenChange } = useDropdownControl({
-        id: 'width-dropdown'
+        id: 'width-dropdown',
     });
 
     return (
         <DropdownMenu open={isOpen} onOpenChange={onOpenChange} modal={false}>
-            <HoverOnlyTooltip content="Width" side="bottom" className="mt-1" hideArrow disabled={isOpen}>
+            <HoverOnlyTooltip
+                content="Width"
+                side="bottom"
+                className="mt-1"
+                hideArrow
+                disabled={isOpen}
+            >
                 <DropdownMenuTrigger asChild>
-                    <ToolbarButton
-                        isOpen={isOpen}
-                        className="flex items-center gap-1"
-                    >
+                    <ToolbarButton isOpen={isOpen} className="flex items-center gap-1">
                         <Icons.Width className="h-4 w-4 min-h-4 min-w-4" />
-                        <span className="text-small">
-                            {dimensionState.width.value}
-                        </span>
+                        <span className="text-small">{dimensionState.width.value}</span>
                     </ToolbarButton>
                 </DropdownMenuTrigger>
             </HoverOnlyTooltip>
@@ -76,4 +77,4 @@ export const Width = observer(() => {
             </DropdownMenuContent>
         </DropdownMenu>
     );
-})
+});

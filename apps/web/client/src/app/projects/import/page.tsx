@@ -13,9 +13,9 @@ const Page = () => {
     };
     const backgroundUrl = useGetBackground('create');
 
-
     return (
-        <div className="w-screen h-screen flex flex-col"
+        <div
+            className="w-screen h-screen flex flex-col"
             style={{
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
@@ -38,15 +38,17 @@ const Page = () => {
                         <div className="space-y-2">
                             <CardTitle className="text-title3">Import a Local Project</CardTitle>
                             <CardDescription className="text-sm text-balance">
-                                Select a directory from your computer to start working with your project in Onlook.
+                                Select a directory from your computer to start working with your
+                                project in Onlook.
                             </CardDescription>
                         </div>
                     </CardHeader>
                 </Card>
-                {/* Temporary disabled */}
                 <Card
-                    className={'w-full h-64 cursor-pointer transition-all duration-200 bg-background/80 backdrop-blur-xl hover:shadow-lg hover:scale-[1.02] border-[0.5px] border-foreground-tertiary/50 cursor-not-allowed opacity-60'}
-                    onClick={() => false && handleCardClick('github')}
+                    className={
+                        'w-full h-64 cursor-pointer transition-all duration-200 bg-background/80 backdrop-blur-xl hover:shadow-lg hover:scale-[1.02] border-[0.5px] border-foreground-tertiary/50'
+                    }
+                    onClick={() => handleCardClick('github')}
                     tabIndex={0}
                     role="button"
                     aria-label="Connect to GitHub"
@@ -58,7 +60,8 @@ const Page = () => {
                         <div className="space-y-2">
                             <CardTitle className="text-title3">Import from GitHub</CardTitle>
                             <CardDescription className="text-sm text-balance">
-                                Connect your GitHub account to access and work with your repositories
+                                Connect your GitHub account to access and work with your
+                                repositories
                             </CardDescription>
                         </div>
                     </CardHeader>

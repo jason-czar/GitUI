@@ -12,7 +12,13 @@ import { observer } from 'mobx-react-lite';
 import { useFolderContext } from '../../providers/folder-provider';
 
 export const FolderDeleteModal = observer(() => {
-    const { deleteState, handleDeleteModalToggle, onDeleteFolder, getChildFolders, getImagesInFolder } = useFolderContext();
+    const {
+        deleteState,
+        handleDeleteModalToggle,
+        onDeleteFolder,
+        getChildFolders,
+        getImagesInFolder,
+    } = useFolderContext();
 
     const handleDelete = async () => {
         if (!deleteState.isLoading) {
@@ -26,7 +32,6 @@ export const FolderDeleteModal = observer(() => {
         }
     };
 
-
     const folder = deleteState.folderToDelete;
     const totalItems = folder ? getImagesInFolder(folder).length : 0;
     const hasSubfolders = folder ? getChildFolders(folder).length > 0 : false;
@@ -39,10 +44,12 @@ export const FolderDeleteModal = observer(() => {
                     <AlertDialogDescription>
                         {folder && (
                             <>
-                                Are you sure you want to delete the folder &quot;{folder.name}&quot;?
+                                Are you sure you want to delete the folder &quot;{folder.name}
+                                &quot;?
                                 {totalItems > 0 && (
                                     <span className="block mt-2 text-red-600">
-                                        This will permanently delete {totalItems} image{totalItems !== 1 ? 's' : ''} 
+                                        This will permanently delete {totalItems} image
+                                        {totalItems !== 1 ? 's' : ''}
                                         {hasSubfolders && ' and all subfolders'}.
                                     </span>
                                 )}
@@ -54,16 +61,16 @@ export const FolderDeleteModal = observer(() => {
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <Button 
-                        variant={'ghost'} 
-                        onClick={handleClose} 
+                    <Button
+                        variant={'ghost'}
+                        onClick={handleClose}
                         disabled={deleteState.isLoading}
                     >
                         Cancel
                     </Button>
-                    <Button 
-                        variant={'destructive'} 
-                        onClick={handleDelete} 
+                    <Button
+                        variant={'destructive'}
+                        onClick={handleDelete}
                         disabled={deleteState.isLoading}
                     >
                         {deleteState.isLoading ? (

@@ -18,13 +18,15 @@ interface UserMessageProps {
 }
 
 export const getUserMessageContent = (message: ChatMessage) => {
-    return message.parts.map((part) => {
-        if (part.type === 'text') {
-            return part.text;
-        }
-        return '';
-    }).join('');
-}
+    return message.parts
+        .map((part) => {
+            if (part.type === 'text') {
+                return part.text;
+            }
+            return '';
+        })
+        .join('');
+};
 
 export const UserMessage = ({ onEditMessage, message }: UserMessageProps) => {
     const editorEngine = useEditorEngine();
@@ -81,25 +83,19 @@ export const UserMessage = ({ onEditMessage, message }: UserMessageProps) => {
     };
 
     const handleRetry = async () => {
-        toast.promise(
-            onEditMessage(message.id, getUserMessageContent(message), ChatType.EDIT),
-            {
-                loading: 'Resubmitting message...',
-                success: 'Message resubmitted successfully',
-                error: 'Failed to resubmit message',
-            }
-        )     
+        toast.promise(onEditMessage(message.id, getUserMessageContent(message), ChatType.EDIT), {
+            loading: 'Resubmitting message...',
+            success: 'Message resubmitted successfully',
+            error: 'Failed to resubmit message',
+        });
     };
 
     const sendMessage = async (newContent: string) => {
-        toast.promise(
-            onEditMessage(message.id, newContent, ChatType.EDIT),
-            {
-                loading: 'Editing message...',
-                success: 'Message resubmitted successfully',
-                error: 'Failed to resubmit message',
-            }
-        )
+        toast.promise(onEditMessage(message.id, newContent, ChatType.EDIT), {
+            loading: 'Editing message...',
+            success: 'Message resubmitted successfully',
+            error: 'Failed to resubmit message',
+        });
     };
 
     const handleRestoreCheckpoint = async () => {
@@ -139,6 +135,7 @@ export const UserMessage = ({ onEditMessage, message }: UserMessageProps) => {
                     onCompositionStart={() => setIsComposing(true)}
                     onCompositionEnd={() => setIsComposing(false)}
                 />
+
                 <div className="flex justify-end gap-2">
                     <Button size="sm" variant={'ghost'} onClick={handleCancel}>
                         Cancel

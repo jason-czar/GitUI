@@ -31,7 +31,9 @@ const FloatingRings = () => {
     useEffect(() => {
         const fetchContributors = async () => {
             try {
-                const response = await fetch('https://api.github.com/repos/onlook-dev/onlook/contributors?per_page=100');
+                const response = await fetch(
+                    'https://api.github.com/repos/onlook-dev/onlook/contributors?per_page=100',
+                );
                 if (!response.ok) {
                     throw new Error('Failed to fetch contributors');
                 }
@@ -75,7 +77,10 @@ const FloatingRings = () => {
                     const angle = (i / innerRingCount) * 2 * Math.PI;
                     const x = center + Math.cos(angle) * innerRadius;
                     const y = center + Math.sin(angle) * innerRadius;
-                    const contributor = !isLoading && contributors.length > 0 ? contributors[i % contributors.length] : null;
+                    const contributor =
+                        !isLoading && contributors.length > 0
+                            ? contributors[i % contributors.length]
+                            : null;
                     return (
                         <div
                             key={`inner-${i}`}
@@ -85,7 +90,7 @@ const FloatingRings = () => {
                                 height: '56px',
                                 left: `${x - 28}px`,
                                 top: `${y - 28}px`,
-                                transformOrigin: 'center center'
+                                transformOrigin: 'center center',
                             }}
                         >
                             {contributor && (
@@ -107,7 +112,10 @@ const FloatingRings = () => {
                     const x = center + Math.cos(angle) * outerRadius;
                     const y = center + Math.sin(angle) * outerRadius;
                     const contributorIndex = (i + innerRingCount) % (contributors.length || 1);
-                    const contributor = !isLoading && contributors.length > 0 ? contributors[contributorIndex] : null;
+                    const contributor =
+                        !isLoading && contributors.length > 0
+                            ? contributors[contributorIndex]
+                            : null;
                     return (
                         <div
                             key={`outer-${i}`}
@@ -117,7 +125,7 @@ const FloatingRings = () => {
                                 height: '56px',
                                 left: `${x - 28}px`,
                                 top: `${y - 28}px`,
-                                transformOrigin: 'center center'
+                                transformOrigin: 'center center',
                             }}
                         >
                             {contributor && (
@@ -144,10 +152,10 @@ interface ContributorSectionProps {
 
 export function ContributorSection({
     contributorCount = 9412,
-    githubLink = "https://github.com/onlook-dev/onlook",
-    discordLink = "https://discord.gg/ZZzadNQtns"
+    githubLink = 'https://github.com/onlook-dev/onlook',
+    discordLink = 'https://discord.gg/ZZzadNQtns',
 }: ContributorSectionProps) {
-    const [starCount, setStarCount] = useState<string>("0");
+    const [starCount, setStarCount] = useState<string>('0');
     const [isLoading, setIsLoading] = useState(true);
 
     const formatStarCount = (count: number): string => {
@@ -174,14 +182,19 @@ export function ContributorSection({
     return (
         <div className="relative w-full flex items-center justify-center py-32 mt-8 overflow-hidden px-4">
             {/* Main Contributors Content */}
-            <div className="w-full max-w-6xl mx-auto relative z-10 flex flex-col items-center justify-center bg-background-onlook rounded-3xl px-12 py-32 shadow-xl overflow-hidden md:[--md-scale:1] [--md-scale:0]" style={{ minWidth: 420 }}>
+            <div
+                className="w-full max-w-6xl mx-auto relative z-10 flex flex-col items-center justify-center bg-background-onlook rounded-3xl px-12 py-32 shadow-xl overflow-hidden md:[--md-scale:1] [--md-scale:0]"
+                style={{ minWidth: 420 }}
+            >
                 {/* Floating Circles: two concentric rings */}
                 <FloatingRings />
                 <h2 className="text-foreground-primary text-3xl md:text-4xl font-light text-center mb-2">
                     Supported by you &<br />
                     {isLoading ? '...' : starCount} other builders
                 </h2>
-                <p className="text-foreground-secondary text-regular text-center mb-8 max-w-xl">Join the community building <br /> the open source prompt-to-build app</p>
+                <p className="text-foreground-secondary text-regular text-center mb-8 max-w-xl">
+                    Join the community building <br /> the open source prompt-to-build app
+                </p>
                 <div className="flex gap-4 flex-col md:flex-row w-full justify-center items-center">
                     <Link
                         href={githubLink}
@@ -203,4 +216,4 @@ export function ContributorSection({
             </div>
         </div>
     );
-} 
+}

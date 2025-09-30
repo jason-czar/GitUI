@@ -212,6 +212,7 @@ function Sidebar({
                         : 'group-data-[collapsible=icon]:w-(--sidebar-width-icon)',
                 )}
             />
+
             <div
                 data-slot="sidebar-container"
                 className={cn(
@@ -523,10 +524,7 @@ function SidebarMenuAction({
     asChild = false,
     showOnHover = false,
     ...props
-}: React.ComponentProps<'button'> & {
-    asChild?: boolean;
-    showOnHover?: boolean;
-}) {
+}: React.ComponentProps<'button'> & { asChild?: boolean; showOnHover?: boolean }) {
     const Comp = asChild ? Slot : 'button';
 
     return (
@@ -573,9 +571,7 @@ function SidebarMenuSkeleton({
     className,
     showIcon = false,
     ...props
-}: React.ComponentProps<'div'> & {
-    showIcon?: boolean;
-}) {
+}: React.ComponentProps<'div'> & { showIcon?: boolean }) {
     // Random width between 50 to 90%.
     const width = React.useMemo(() => {
         return `${Math.floor(Math.random() * 40) + 50}%`;
@@ -636,11 +632,7 @@ function SidebarMenuSubButton({
     isActive = false,
     className,
     ...props
-}: React.ComponentProps<'a'> & {
-    asChild?: boolean;
-    size?: 'sm' | 'md';
-    isActive?: boolean;
-}) {
+}: React.ComponentProps<'a'> & { asChild?: boolean; size?: 'sm' | 'md'; isActive?: boolean }) {
     const Comp = asChild ? Slot : 'a';
 
     return (

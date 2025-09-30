@@ -32,6 +32,7 @@ export const ChatTabContent = ({
                 />
             </div>
             <ErrorSection isStreaming={isStreaming} onSendMessage={sendMessage} />
+
             <ChatInput
                 messages={messages}
                 suggestions={suggestions}

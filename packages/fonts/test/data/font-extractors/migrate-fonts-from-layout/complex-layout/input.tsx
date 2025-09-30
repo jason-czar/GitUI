@@ -20,6 +20,7 @@ export const brandFont = localFont({
         { path: './fonts/brand-regular.woff2', weight: '400', style: 'normal' },
         { path: './fonts/brand-bold.woff2', weight: '700', style: 'normal' },
     ],
+
     variable: '--font-brand',
 });
 

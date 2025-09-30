@@ -60,7 +60,10 @@ export function ResponsiveWebsiteBlock() {
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="w-full h-100 bg-[#2E2C2D] rounded-lg mb-6 relative overflow-hidden" ref={containerRef}>
+            <div
+                className="w-full h-100 bg-[#2E2C2D] rounded-lg mb-6 relative overflow-hidden"
+                ref={containerRef}
+            >
                 {/* Mini Website Container */}
                 <div
                     className="h-80 bg-[#E5E3DE] rounded-lg border border-[#D1CFC9] shadow-lg absolute left-1/2 top-12 transform -translate-x-1/2"
@@ -89,29 +92,45 @@ export function ResponsiveWebsiteBlock() {
                         {/* Hero Content */}
                         <div className="text-center text-[#3C342F]">
                             <h1 className="text-xl font-serif mb-3">Le Fidgette</h1>
-                            <p className="text-xs opacity-90 mb-6 text-balance">Creating natural shapes inspired by the natural world.</p>
+                            <p className="text-xs opacity-90 mb-6 text-balance">
+                                Creating natural shapes inspired by the natural world.
+                            </p>
                         </div>
 
                         {/* "View Work" Button */}
                         <div className="w-24 bg-[#8E837D] p-2 text-center cursor-pointer hover:bg-opacity-90 transition-opacity mb-12">
-                            <p className="text-[10px] text-white font-medium tracking-wider">VIEW WORK</p>
+                            <p className="text-[10px] text-white font-medium tracking-wider">
+                                VIEW WORK
+                            </p>
                         </div>
                         {/* Three-column minimalist text */}
-                        <div className={`grid w-full text-[#3C342F] ${isMobileWidth ? 'grid-cols-1 gap-4' : 'grid-cols-3 gap-8 max-w-120'}`}>
+                        <div
+                            className={`grid w-full text-[#3C342F] ${isMobileWidth ? 'grid-cols-1 gap-4' : 'grid-cols-3 gap-8 max-w-120'}`}
+                        >
                             <div className={`${isMobileWidth ? 'text-center' : 'text-left'}`}>
                                 <div className="w-4 h-4 bg-[#D1CFC9] mb-2"></div>
-                                <h3 className="font-serif text-xs font-semibold mb-1">Artisanal Quality</h3>
+                                <h3 className="font-serif text-xs font-semibold mb-1">
+                                    Artisanal Quality
+                                </h3>
                                 <p className="text-[11px] opacity-80">Hand-thrown with passion.</p>
                             </div>
                             <div className={`${isMobileWidth ? 'text-center' : 'text-left'}`}>
                                 <div className="w-4 h-4 bg-[#D1CFC9] mb-2"></div>
-                                <h3 className="font-serif text-xs font-semibold mb-1">Earthy Tones</h3>
-                                <p className="text-[11px] opacity-80">Inspired by nature's palette.</p>
+                                <h3 className="font-serif text-xs font-semibold mb-1">
+                                    Earthy Tones
+                                </h3>
+                                <p className="text-[11px] opacity-80">
+                                    Inspired by nature's palette.
+                                </p>
                             </div>
                             <div className={`${isMobileWidth ? 'text-center' : 'text-left'}`}>
                                 <div className="w-4 h-4 bg-[#D1CFC9] mb-2"></div>
-                                <h3 className="font-serif text-xs font-semibold mb-1">Lasting Beauty</h3>
-                                <p className="text-[11px] opacity-80">Functional art for your home.</p>
+                                <h3 className="font-serif text-xs font-semibold mb-1">
+                                    Lasting Beauty
+                                </h3>
+                                <p className="text-[11px] opacity-80">
+                                    Functional art for your home.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -137,13 +156,16 @@ export function ResponsiveWebsiteBlock() {
                     <div className="mb-2">
                         <Laptop className="w-6 h-6 text-foreground-primary" />
                     </div>
-                    <span className="text-foreground-primary text-largePlus font-light">Instantly responsive</span>
+                    <span className="text-foreground-primary text-largePlus font-light">
+                        Instantly responsive
+                    </span>
                 </div>
                 {/* Description */}
                 <p className="text-foreground-secondary text-regular text-balance w-1/2">
-                    Craft sites that look great on laptops, tablets, and phones with minimal adjustments.
+                    Craft sites that look great on laptops, tablets, and phones with minimal
+                    adjustments.
                 </p>
             </div>
         </div>
     );
-} 
+}

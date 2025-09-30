@@ -68,4 +68,4 @@ export function WindowActionsGroup({ frameData }: { frameData: FrameData }) {
             )}
         </>
     );
-} 
+}

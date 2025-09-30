@@ -192,18 +192,14 @@ export const TreeNode = memo(
                         'bg-[#FA003C] dark:bg-[#FA003C]/90': selected,
                         'bg-[#FA003C]/10 dark:bg-[#FA003C]/10': isParentSelected,
                         'bg-[#FA003C]/20 dark:bg-[#FA003C]/20': hovered && isParentSelected,
-                        'text-purple-100 dark:text-purple-100':
-                            node.data.instanceId && selected,
-                        'text-purple-500 dark:text-purple-300':
-                            node.data.instanceId && !selected,
+                        'text-purple-100 dark:text-purple-100': node.data.instanceId && selected,
+                        'text-purple-500 dark:text-purple-300': node.data.instanceId && !selected,
                         'text-purple-800 dark:text-purple-200':
                             node.data.instanceId && !selected && hovered,
-                        'bg-purple-700/70 dark:bg-purple-500/50':
-                            node.data.instanceId && selected,
+                        'bg-purple-700/70 dark:bg-purple-500/50': node.data.instanceId && selected,
                         'bg-purple-400/30 dark:bg-purple-900/60':
                             node.data.instanceId && !selected && hovered && !isParentSelected,
-                        'bg-purple-300/30 dark:bg-purple-900/30':
-                            isParentSelected?.data.instanceId,
+                        'bg-purple-300/30 dark:bg-purple-900/30': isParentSelected?.data.instanceId,
                         'bg-purple-300/50 dark:bg-purple-900/50':
                             hovered && isParentSelected?.data.instanceId,
                         'text-white dark:text-primary':
@@ -243,10 +239,10 @@ export const TreeNode = memo(
                     (node.data.component
                         ? node.data.component
                         : ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'].includes(
-                            node.data.tagName.toLowerCase(),
-                        )
-                            ? ''
-                            : node.data.tagName.toLowerCase()) +
+                                node.data.tagName.toLowerCase(),
+                            )
+                          ? ''
+                          : node.data.tagName.toLowerCase()) +
                     ' ' +
                     node.data.textContent
                 );
@@ -295,8 +291,8 @@ export const TreeNode = memo(
                                             hovered && !selected
                                                 ? 'text-purple-600 dark:text-purple-200 '
                                                 : selected
-                                                    ? 'text-purple-100 dark:text-purple-100'
-                                                    : 'text-purple-500 dark:text-purple-300',
+                                                  ? 'text-purple-100 dark:text-purple-100'
+                                                  : 'text-purple-500 dark:text-purple-300',
                                         )}
                                     />
                                 ) : (
@@ -343,8 +339,8 @@ export const TreeNode = memo(
                                             ? selected
                                                 ? 'text-purple-100 dark:text-purple-100'
                                                 : hovered
-                                                    ? 'text-purple-600 dark:text-purple-200'
-                                                    : 'text-purple-500 dark:text-purple-300'
+                                                  ? 'text-purple-600 dark:text-purple-200'
+                                                  : 'text-purple-500 dark:text-purple-300'
                                             : '',
                                         !node.data.isVisible && 'opacity-80',
                                         selected && 'mr-5',

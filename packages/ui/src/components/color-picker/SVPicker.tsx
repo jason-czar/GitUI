@@ -75,6 +75,7 @@ export const SVPicker: React.FC<{
                 <SVPickerGradient
                     style={{ background: saturationGradient, mixBlendMode: 'multiply' }}
                 />
+
                 <ColorHandle
                     style={{
                         position: 'absolute',

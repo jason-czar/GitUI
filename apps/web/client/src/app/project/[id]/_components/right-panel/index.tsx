@@ -63,6 +63,7 @@ export const RightPanel = observer(() => {
                                     value={EditorTabValue.CHAT}
                                 >
                                     <Icons.Sparkles className="mr-0.5 mb-0.5 h-4 w-4" />
+
                                     {t(transKeys.editor.panels.edit.tabs.chat.name)}
                                     <Icons.ChevronDown className="ml-0.5 h-3 w-3 text-muted-foreground" />
                                 </TabsTrigger>
@@ -79,6 +80,7 @@ export const RightPanel = observer(() => {
                         {selectedTab === EditorTabValue.DEV && <CodeControls />}
                     </TabsList>
                     <ChatHistory isOpen={isChatHistoryOpen} onOpenChange={setIsChatHistoryOpen} />
+
                     <TabsContent className="h-full overflow-y-auto" value={EditorTabValue.CHAT}>
                         {currentConversation && (
                             <ChatTab

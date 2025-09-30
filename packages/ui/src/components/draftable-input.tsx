@@ -8,8 +8,9 @@ export function useDraftValue<T>(
 ): [
     T, // draft
     (value: T) => void, // on change draft value
-    () => void, // on change done
+    () => void,
 ] {
+    // on change done
     const [draft, setDraft] = React.useState(value);
 
     React.useEffect(() => {

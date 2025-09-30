@@ -4,7 +4,14 @@ import { ScheduledSubscriptionAction } from '@onlook/stripe';
 import { Button } from '@onlook/ui/button';
 import { Icons } from '@onlook/ui/icons';
 import { MotionCard } from '@onlook/ui/motion-card';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@onlook/ui/select';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@onlook/ui/select';
 import { toast } from '@onlook/ui/sonner';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
@@ -21,12 +28,11 @@ const FREE_TIER = {
         '5 AI chat messages a day',
         '15 AI messages a month',
         'Unlimited styling and code editing',
-        'Limited to 1 screenshot per chat'
+        'Limited to 1 screenshot per chat',
     ],
+
     defaultSelectValue: 'daily',
-    selectValues: [
-        { value: 'daily', label: '5 Daily Messages' },
-    ],
+    selectValues: [{ value: 'daily', label: '5 Daily Messages' }],
 };
 
 export const FreeCard = ({
@@ -43,7 +49,8 @@ export const FreeCard = ({
     const { mutateAsync: manageSubscription } = api.subscription.manageSubscription.useMutation();
     const [isCheckingOut, setIsCheckingOut] = useState(false);
     const isFree = !isPro;
-    const isScheduledCancellation = subscription?.scheduledChange?.scheduledAction === ScheduledSubscriptionAction.CANCELLATION;
+    const isScheduledCancellation =
+        subscription?.scheduledChange?.scheduledAction === ScheduledSubscriptionAction.CANCELLATION;
 
     const handleDowngradeToFree = async () => {
         try {
@@ -73,23 +80,23 @@ export const FreeCard = ({
                     <Icons.Shadow className="w-4 h-4 animate-spin" />
                     <span>{t(transKeys.pricing.loading.checkingPayment)}</span>
                 </div>
-            )
+            );
         }
 
         if (isUnauthenticated) {
-            return "Get Started Free";
+            return 'Get Started Free';
         }
 
         if (isScheduledCancellation) {
-            return `Pro plan ends on ${subscription?.scheduledChange?.scheduledChangeAt.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`
+            return `Pro plan ends on ${subscription?.scheduledChange?.scheduledChangeAt.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
         }
 
         if (isFree) {
             return t(transKeys.pricing.buttons.currentPlan);
         }
 
-        return "Downgrade to Free Plan";
-    }
+        return 'Downgrade to Free Plan';
+    };
 
     const handleButtonClick = () => {
         if (isUnauthenticated && onSignupClick) {
@@ -112,13 +119,14 @@ export const FreeCard = ({
                     <p className="text-foreground-onlook text-largePlus">{FREE_TIER.price}</p>
                 </div>
                 <div className="border-[0.5px] border-border-primary -mx-6 my-6" />
-                <p className="text-foreground-primary text-title3 text-balance">{FREE_TIER.description}</p>
+
+                <p className="text-foreground-primary text-title3 text-balance">
+                    {FREE_TIER.description}
+                </p>
                 <div className="border-[0.5px] border-border-primary -mx-6 my-6" />
+
                 <div className="flex flex-col gap-2 mb-6">
-                    <Select
-                        value={FREE_TIER.defaultSelectValue}
-                        disabled={true}
-                    >
+                    <Select value={FREE_TIER.defaultSelectValue} disabled={true}>
                         <SelectTrigger className="w-full">
                             <SelectValue placeholder="Select a plan" />
                         </SelectTrigger>
@@ -136,7 +144,10 @@ export const FreeCard = ({
                         className="w-full"
                         variant="outline"
                         onClick={handleButtonClick}
-                        disabled={isCheckingOut || (!isUnauthenticated && (isFree || isScheduledCancellation))}
+                        disabled={
+                            isCheckingOut ||
+                            (!isUnauthenticated && (isFree || isScheduledCancellation))
+                        }
                     >
                         {buttonContent()}
                     </Button>
@@ -148,6 +159,7 @@ export const FreeCard = ({
                             className="flex items-center gap-3 text-sm text-foreground-secondary/80"
                         >
                             <Icons.CheckCircled className="w-5 h-5 text-foreground-secondary/80" />
+
                             <span>{feature}</span>
                         </div>
                     ))}

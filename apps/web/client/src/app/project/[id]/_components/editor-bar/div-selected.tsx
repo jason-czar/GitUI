@@ -25,7 +25,6 @@ import { AdvancedTypography } from './text-inputs/advanced-typography';
 
 // Group definitions for the div-selected toolbar
 export const DIV_SELECTED_GROUPS = [
-
     {
         key: 'base',
         label: 'Base',
@@ -65,13 +64,13 @@ const MUST_EXTEND_GROUPS = [
         label: 'Dimensions',
         components: [<Width />, <Height />],
     },
-]
+];
 
 export const DivSelected = memo(({ availableWidth = 0 }: { availableWidth?: number }) => {
-    const { visibleCount } = useMeasureGroup({ availableWidth, count: DIV_SELECTED_GROUPS.length});
+    const { visibleCount } = useMeasureGroup({ availableWidth, count: DIV_SELECTED_GROUPS.length });
     const { isOpen, onOpenChange } = useDropdownControl({
         id: 'div-selected-overflow-dropdown',
-        isOverflow: true
+        isOverflow: true,
     });
 
     const visibleGroups = DIV_SELECTED_GROUPS.slice(0, visibleCount);

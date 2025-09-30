@@ -50,7 +50,9 @@ export const TopBar = observer(() => {
             <ModeToggle />
             <div className="flex flex-grow basis-0 justify-end items-center gap-1.5 mr-2">
                 <div className="flex items-center group">
-                    <div className={`transition-all duration-200 ${isMembersPopoverOpen ? 'mr-2' : '-mr-2 group-hover:mr-2'}`}>
+                    <div
+                        className={`transition-all duration-200 ${isMembersPopoverOpen ? 'mr-2' : '-mr-2 group-hover:mr-2'}`}
+                    >
                         <Members onPopoverOpenChange={setIsMembersPopoverOpen} />
                     </div>
                     <Tooltip>

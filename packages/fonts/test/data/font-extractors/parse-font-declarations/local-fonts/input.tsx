@@ -6,6 +6,7 @@ export const customFont = localFont({
         { path: './fonts/custom-bold.woff2', weight: '700', style: 'normal' },
         { path: './fonts/custom-italic.woff2', weight: '400', style: 'italic' },
     ],
+
     variable: '--font-custom',
     display: 'swap',
 });
@@ -21,5 +22,6 @@ export const brandFont = localFont({
         { path: './fonts/brand-light.woff2', weight: '300', style: 'normal' },
         { path: './fonts/brand-regular.woff2', weight: '400', style: 'normal' },
     ],
+
     variable: '--font-brand',
 });

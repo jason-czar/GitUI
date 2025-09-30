@@ -24,21 +24,21 @@ export const ErrorSection = observer(({ isStreaming, onSendMessage }: ErrorSecti
 
     const sendFixError = () => {
         toast.promise(
-            onSendMessage('How can I resolve these errors? If you propose a fix, please make it concise.', ChatType.FIX),
+            onSendMessage(
+                'How can I resolve these errors? If you propose a fix, please make it concise.',
+                ChatType.FIX,
+            ),
             {
                 error: 'Failed to send fix error message. Please try again.',
-            }
-        )
+            },
+        );
     };
 
     return (
         <Collapsible
             open={isOpen}
             onOpenChange={setIsOpen}
-            className={cn(
-                'flex flex-col m-2',
-                errorCount === 0 && 'hidden',
-            )}
+            className={cn('flex flex-col m-2', errorCount === 0 && 'hidden')}
         >
             <div
                 className={cn(
@@ -60,6 +60,7 @@ export const ErrorSection = observer(({ isStreaming, onSendMessage }: ErrorSecti
                                     isOpen && 'rotate-180',
                                 )}
                             />
+
                             <div className="text-start min-w-0 flex-1">
                                 <p className="text-amber-800 dark:text-amber-200 truncate text-small pointer-events-none select-none">
                                     {errorCount === 1 ? 'Error' : `${errorCount} Errors`}
@@ -99,9 +100,14 @@ export const ErrorSection = observer(({ isStreaming, onSendMessage }: ErrorSecti
                         >
                             <div className="px-2.5 py-2 max-h-60 overflow-auto">
                                 {allErrors.map((error: ParsedError) => (
-                                    <div key={`${error.branchId}-${error.content}`} className="mb-3 last:mb-0 font-mono">
+                                    <div
+                                        key={`${error.branchId}-${error.content}`}
+                                        className="mb-3 last:mb-0 font-mono"
+                                    >
                                         <div className="flex items-center gap-2 text-sm text-amber-800/80 dark:text-amber-200/80 mb-1">
-                                            <span className="truncate">{error.sourceId} • {error.branchName}</span>
+                                            <span className="truncate">
+                                                {error.sourceId} • {error.branchName}
+                                            </span>
                                         </div>
                                         <pre className="text-micro text-amber-800/60 dark:text-amber-200/60">
                                             {error.content}

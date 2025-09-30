@@ -39,9 +39,7 @@ function ContextMenuSubTrigger({
     inset,
     children,
     ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.SubTrigger> & {
-    inset?: boolean;
-}) {
+}: React.ComponentProps<typeof ContextMenuPrimitive.SubTrigger> & { inset?: boolean }) {
     return (
         <ContextMenuPrimitive.SubTrigger
             data-slot="context-menu-sub-trigger"
@@ -169,9 +167,7 @@ function ContextMenuLabel({
     className,
     inset,
     ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.Label> & {
-    inset?: boolean;
-}) {
+}: React.ComponentProps<typeof ContextMenuPrimitive.Label> & { inset?: boolean }) {
     return (
         <ContextMenuPrimitive.Label
             data-slot="context-menu-label"

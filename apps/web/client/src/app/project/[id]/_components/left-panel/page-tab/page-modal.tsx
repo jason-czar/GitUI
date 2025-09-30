@@ -129,6 +129,7 @@ export function PageModal({
                             onCompositionStart={() => setIsComposing(true)}
                             onCompositionEnd={() => setIsComposing(false)}
                         />
+
                         {warning && (
                             <p className="text-sm text-yellow-300 flex items-center gap-2">
                                 {warning}

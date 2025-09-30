@@ -18,7 +18,7 @@ export const NonProjectSettingsModal = observer(() => {
             icon: <Icons.Person className="mr-2 h-4 w-4" />,
             component: <PreferencesTab />,
         },
-    ]
+    ];
 
     return (
         <AnimatePresence>
@@ -86,6 +86,7 @@ export const NonProjectSettingsModal = observer(() => {
                                         </div>
                                     </div>
                                     <Separator orientation="vertical" className="h-full" />
+
                                     {/* Right content */}
                                     <div className="flex-1 overflow-y-auto">
                                         {

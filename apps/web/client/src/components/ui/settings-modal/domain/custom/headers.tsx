@@ -30,9 +30,7 @@ export const ConfigureHeader = observer(() => {
                     onClick={verifyDomain}
                     disabled={isLoading}
                 >
-                    {isLoading && (
-                        <Icons.LoadingSpinner className="h-4 w-4 animate-spin mr-2" />
-                    )}
+                    {isLoading && <Icons.LoadingSpinner className="h-4 w-4 animate-spin mr-2" />}
                     Verify Setup
                 </Button>
             </div>

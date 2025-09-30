@@ -65,16 +65,16 @@ export const TopBar = ({ searchQuery, onSearchChange }: TopBarProps) => {
     useEffect(() => {
         const loadRecentSearches = async () => {
             try {
-                const rs = await localforage.getItem<string[]>(RECENT_SEARCHES_KEY) ?? []
+                const rs = (await localforage.getItem<string[]>(RECENT_SEARCHES_KEY)) ?? [];
                 if (Array.isArray(rs)) setRecentSearches(rs.slice(0, 6));
-            } catch { }
+            } catch {}
         };
         loadRecentSearches();
         const loadRecentColors = async () => {
             try {
-                const rc = await localforage.getItem<string[]>(RECENT_COLORS_KEY) ?? []
+                const rc = (await localforage.getItem<string[]>(RECENT_COLORS_KEY)) ?? [];
                 if (Array.isArray(rc)) setRecentColors(rc.slice(0, 10));
-            } catch { }
+            } catch {}
         };
         loadRecentColors();
     }, []);
@@ -85,15 +85,13 @@ export const TopBar = ({ searchQuery, onSearchChange }: TopBarProps) => {
         if (!q) return;
         const timer = setTimeout(async () => {
             try {
-                const recentSearches = (await localforage.getItem<string[]>(RECENT_SEARCHES_KEY)) ?? []
-                const rs = new Set<string>([
-                    q,
-                    ...recentSearches,
-                ]);
+                const recentSearches =
+                    (await localforage.getItem<string[]>(RECENT_SEARCHES_KEY)) ?? [];
+                const rs = new Set<string>([q, ...recentSearches]);
                 const arr = Array.from(rs).slice(0, 8);
                 localforage.setItem(RECENT_SEARCHES_KEY, arr);
                 setRecentSearches(arr);
-            } catch { }
+            } catch {}
         }, 600);
         return () => clearTimeout(timer);
     }, [searchQuery]);
@@ -152,7 +150,8 @@ export const TopBar = ({ searchQuery, onSearchChange }: TopBarProps) => {
 
             if (errorMessage.includes('502') || errorMessage.includes('sandbox')) {
                 toast.error('Sandbox service temporarily unavailable', {
-                    description: 'Please try again in a few moments. Our servers may be experiencing high load.',
+                    description:
+                        'Please try again in a few moments. Our servers may be experiencing high load.',
                 });
             } else {
                 toast.error('Failed to create project', {
@@ -180,6 +179,7 @@ export const TopBar = ({ searchQuery, onSearchChange }: TopBarProps) => {
                         transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
                     >
                         <Icons.MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground-tertiary z-10" />
+
                         <Input
                             ref={searchInputRef}
                             value={searchQuery ?? ''}
@@ -188,6 +188,7 @@ export const TopBar = ({ searchQuery, onSearchChange }: TopBarProps) => {
                             placeholder="Search projects"
                             className="pl-9 pr-7 focus-visible:border-transparent focus-visible:ring-0"
                         />
+
                         {searchQuery && (
                             <button
                                 onClick={() => onSearchChange?.('')}
@@ -227,6 +228,7 @@ export const TopBar = ({ searchQuery, onSearchChange }: TopBarProps) => {
                             }}
                         >
                             <Icons.Plus className="w-4 h-4 mr-1 text-foreground-secondary group-hover:text-blue-100" />
+
                             {t(transKeys.projects.actions.newProject)}
                         </DropdownMenuItem>
                         <DropdownMenuItem
@@ -260,6 +262,7 @@ export const TopBar = ({ searchQuery, onSearchChange }: TopBarProps) => {
                             }}
                         >
                             <Icons.Upload className="w-4 h-4 mr-1 text-foreground-secondary group-hover:text-teal-100" />
+
                             <p className="text-microPlus">{t(transKeys.projects.actions.import)}</p>
                         </DropdownMenuItem>
                     </DropdownMenuContent>

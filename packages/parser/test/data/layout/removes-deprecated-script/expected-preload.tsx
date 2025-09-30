@@ -1,7 +1,7 @@
 import Script from 'next/script';
 export default function Document() {
-  return (
-    <html>
+    return (
+        <html>
             <head>
                 <title>Test</title>
                 <Script type="module" src="https://some-url/onlook-dev/web/script.js" />
@@ -9,6 +9,6 @@ export default function Document() {
             <body>
                 <main />
             </body>
-        </html>);
-
+        </html>
+    );
 }

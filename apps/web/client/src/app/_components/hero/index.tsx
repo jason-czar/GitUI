@@ -39,7 +39,7 @@ export function Hero() {
                             className="flex flex-col gap-3 items-center relative z-20 pt-4 pb-2 mb-6"
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 1.2, ease: "easeOut" }}
+                            transition={{ duration: 0.6, delay: 1.2, ease: 'easeOut' }}
                         >
                             <a
                                 href="https://www.ycombinator.com/companies/onlook/jobs/e4gHv1n-founding-engineer-fullstack"
@@ -50,28 +50,34 @@ export function Hero() {
                                 We're hiring engineers
                                 <Icons.ArrowRight className="w-4 h-4" />
                             </a>
-
                         </motion.div>
                     )}
                     <motion.h1
                         className="text-6xl font-light leading-tight text-center !leading-[0.9]"
-                        initial={{ opacity: 0, filter: "blur(4px)" }}
-                        animate={{ opacity: 1, filter: "blur(0px)" }}
-                        transition={{ duration: 0.6, ease: "easeOut" }}
-                        style={{ willChange: "opacity, filter", transform: "translateZ(0)" }}
+                        initial={{ opacity: 0, filter: 'blur(4px)' }}
+                        animate={{ opacity: 1, filter: 'blur(0px)' }}
+                        transition={{ duration: 0.6, ease: 'easeOut' }}
+                        style={{ willChange: 'opacity, filter', transform: 'translateZ(0)' }}
                     >
-                        Cursor for<br />
-                        <span className={`italic font-normal ${vujahdayScript.className} text-[4.6rem] ml-1 leading-[1.0]`}>Designers</span>
+                        Cursor for
+                        <br />
+                        <span
+                            className={`italic font-normal ${vujahdayScript.className} text-[4.6rem] ml-1 leading-[1.0]`}
+                        >
+                            Designers
+                        </span>
                     </motion.h1>
                     <motion.p
                         className="text-lg text-foreground-secondary max-w-xl text-center mt-2 text-balance"
-                        initial={{ opacity: 0, filter: "blur(4px)" }}
-                        animate={{ opacity: 1, filter: "blur(0px)" }}
-                        transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
-                        style={{ willChange: "opacity, filter", transform: "translateZ(0)" }}
+                        initial={{ opacity: 0, filter: 'blur(4px)' }}
+                        animate={{ opacity: 1, filter: 'blur(0px)' }}
+                        transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
+                        style={{ willChange: 'opacity, filter', transform: 'translateZ(0)' }}
                     >
-                        Onlook is a next-generation visual code editor<br />
-                        that lets designers and product managers craft<br />
+                        Onlook is a next-generation visual code editor
+                        <br />
+                        that lets designers and product managers craft
+                        <br />
                         web experiences with AI
                     </motion.p>
                     <HighDemand />
@@ -81,30 +87,40 @@ export function Hero() {
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+                        transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
                         onAnimationComplete={() => {
-                            setCardKey(prev => prev + 1);
+                            setCardKey((prev) => prev + 1);
                         }}
                     >
-                        <Create user={user ?? null} cardKey={cardKey} isCreatingProject={isCreatingProject} setIsCreatingProject={setIsCreatingProject} />
+                        <Create
+                            user={user ?? null}
+                            cardKey={cardKey}
+                            isCreatingProject={isCreatingProject}
+                            setIsCreatingProject={setIsCreatingProject}
+                        />
                     </motion.div>
                     <motion.div
                         className="flex gap-12 mt-0"
-                        initial={{ opacity: 0, filter: "blur(4px)" }}
-                        animate={{ opacity: 1, filter: "blur(0px)" }}
-                        transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
-                        style={{ willChange: "opacity, filter", transform: "translateZ(0)" }}
+                        initial={{ opacity: 0, filter: 'blur(4px)' }}
+                        animate={{ opacity: 1, filter: 'blur(0px)' }}
+                        transition={{ duration: 0.6, delay: 0.6, ease: 'easeOut' }}
+                        style={{ willChange: 'opacity, filter', transform: 'translateZ(0)' }}
                     >
-                        <StartBlank user={user ?? null} isCreatingProject={isCreatingProject} setIsCreatingProject={setIsCreatingProject} />
+                        <StartBlank
+                            user={user ?? null}
+                            isCreatingProject={isCreatingProject}
+                            setIsCreatingProject={setIsCreatingProject}
+                        />
+
                         <Import />
                     </motion.div>
-
                 </div>
-                <motion.div className="hidden text-balance flex-col gap-4 items-center relative z-20 mx-10 text-foreground-secondary bg-foreground-secondary/10 backdrop-blur-lg rounded-lg border-[0.5px] border-foreground-secondary/20 p-4"
-                    initial={{ opacity: 0, filter: "blur(4px)" }}
-                    animate={{ opacity: 1, filter: "blur(0px)" }}
-                    transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
-                    style={{ willChange: "opacity, filter", transform: "translateZ(0)" }}
+                <motion.div
+                    className="hidden text-balance flex-col gap-4 items-center relative z-20 mx-10 text-foreground-secondary bg-foreground-secondary/10 backdrop-blur-lg rounded-lg border-[0.5px] border-foreground-secondary/20 p-4"
+                    initial={{ opacity: 0, filter: 'blur(4px)' }}
+                    animate={{ opacity: 1, filter: 'blur(0px)' }}
+                    transition={{ duration: 0.6, delay: 0.6, ease: 'easeOut' }}
+                    style={{ willChange: 'opacity, filter', transform: 'translateZ(0)' }}
                 >
                     Onlook isn't designed for Mobile – Please open on a larger screen
                 </motion.div>

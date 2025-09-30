@@ -41,7 +41,12 @@ export const ImagesProvider = observer(({ children }: ImagesProviderProps) => {
             uploadOperations.uploadState.error ??
             moveOperations.moveState.error
         );
-    }, [deleteOperations.deleteState.error, renameOperations.renameState.error, uploadOperations.uploadState.error, moveOperations.moveState.error]);
+    }, [
+        deleteOperations.deleteState.error,
+        renameOperations.renameState.error,
+        uploadOperations.uploadState.error,
+        moveOperations.moveState.error,
+    ]);
 
     const value: ImagesContextValue = {
         isOperating,
@@ -49,7 +54,7 @@ export const ImagesProvider = observer(({ children }: ImagesProviderProps) => {
         renameOperations,
         uploadOperations,
         moveOperations,
-        error
+        error,
     };
 
     return <ImagesContext.Provider value={value}>{children}</ImagesContext.Provider>;

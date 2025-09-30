@@ -9,7 +9,6 @@ import { Icons } from '@onlook/ui/icons';
 import { useState } from 'react';
 import { useInputControl } from '../hooks/use-input-control';
 
-
 type IconType =
     | 'LeftSide'
     | 'TopSide'

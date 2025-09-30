@@ -13,17 +13,17 @@ export const PublishDropdown = observer(() => {
 
     return (
         <div className="rounded-md flex flex-col text-foreground-secondary">
-            {
-                isPreviewDeploying ?
-                    <LoadingState type={DeploymentType.PREVIEW} /> :
-                    <PreviewDomainSection />
-            }
+            {isPreviewDeploying ? (
+                <LoadingState type={DeploymentType.PREVIEW} />
+            ) : (
+                <PreviewDomainSection />
+            )}
             <Separator />
-            {
-                isCustomDeploying ?
-                    <LoadingState type={DeploymentType.CUSTOM} /> :
-                    <CustomDomainSection />
-            }
+            {isCustomDeploying ? (
+                <LoadingState type={DeploymentType.CUSTOM} />
+            ) : (
+                <CustomDomainSection />
+            )}
             <Separator />
             <AdvancedSettingsSection />
         </div>

@@ -176,26 +176,164 @@ export class CodesandboxProvider extends Provider {
         branch: string;
     }): Promise<CreateProjectOutput> {
         const sdk = new CodeSandbox();
-        const TIMEOUT_MS = 30000;
+        // GitUI: Increased timeout to 2 minutes for better reliability
+        const TIMEOUT_MS = 120000;
 
-        const createPromise = sdk.sandboxes.create({
-            source: 'git',
-            url: input.repoUrl,
-            branch: input.branch,
-            async setup(session) {
-                await session.setup.run();
-            },
-        });
+        console.log(`GitUI: Creating sandbox from ${input.repoUrl} (branch: ${input.branch})`);
 
+        // GitUI: Simplified approach - let CodeSandbox handle everything automatically
+        let createPromise;
+
+        try {
+            // Primary approach: Create with minimal configuration
+            createPromise = sdk.sandboxes.create({
+                source: 'git',
+                url: input.repoUrl,
+                branch: input.branch,
+                // GitUI: Let CodeSandbox auto-detect everything for better compatibility
+            });
+
+            console.log('GitUI: Attempting primary sandbox creation...');
+        } catch (error) {
+            console.warn('GitUI: Primary creation failed, trying alternative approach:', error);
+
+            // Fallback 1: Try with explicit branch specification
+            try {
+                createPromise = sdk.sandboxes.create({
+                    source: 'git',
+                    url: input.repoUrl,
+                    branch: input.branch || 'main', // Ensure branch is specified
+                });
+            } catch (fallbackError) {
+                console.warn('GitUI: Fallback 1 failed, trying final approach:', fallbackError);
+
+                // Fallback 2: Try without branch specification (let CodeSandbox use default)
+                createPromise = sdk.sandboxes.create({
+                    source: 'git',
+                    url: input.repoUrl,
+                });
+            }
+        }
+
+        // Helper function to detect package manager
+        async function detectPackageManager(
+            session: any,
+        ): Promise<'npm' | 'pnpm' | 'bun' | 'yarn'> {
+            try {
+                // Check for package manager lock files (most reliable method)
+                const files = await session.fs.readdir('/');
+
+                // Priority order: bun > pnpm > yarn > npm
+                if (files.includes('bun.lockb')) {
+                    return 'bun';
+                }
+                if (files.includes('pnpm-lock.yaml')) {
+                    return 'pnpm';
+                }
+                if (files.includes('yarn.lock')) {
+                    return 'yarn';
+                }
+                if (files.includes('package-lock.json')) {
+                    return 'npm';
+                }
+
+                // Check package.json for packageManager field (Node.js Corepack)
+                try {
+                    const packageJson = await session.fs.readFile('/package.json', 'utf8');
+                    const pkg = JSON.parse(packageJson);
+
+                    if (pkg.packageManager) {
+                        const pm = pkg.packageManager.toLowerCase();
+                        if (pm.startsWith('bun@')) {
+                            return 'bun';
+                        }
+                        if (pm.startsWith('pnpm@')) {
+                            return 'pnpm';
+                        }
+                        if (pm.startsWith('yarn@')) {
+                            return 'yarn';
+                        }
+                        if (pm.startsWith('npm@')) {
+                            return 'npm';
+                        }
+                    }
+
+                    // Check for pnpm workspace file
+                    if (files.includes('pnpm-workspace.yaml')) {
+                        return 'pnpm';
+                    }
+                } catch (e) {
+                    // Ignore package.json read errors
+                }
+
+                // Default to npm if no indicators found
+                return 'npm';
+            } catch (error) {
+                console.warn('Failed to detect package manager, defaulting to npm:', error);
+                return 'npm';
+            }
+        }
+
+        // GitUI: Enhanced timeout handling with better error messages
         const timeoutPromise = new Promise<never>((_, reject) => {
-            setTimeout(() => reject(new Error('Repository access timeout')), TIMEOUT_MS);
+            setTimeout(() => {
+                const errorMsg = `GitUI: Timeout after ${TIMEOUT_MS / 1000}s while creating sandbox from ${input.repoUrl} (branch: ${input.branch}). This could be due to:
+- Repository is private and requires authentication
+- Branch '${input.branch}' doesn't exist (try 'main' or 'master')
+- Repository is too large or has connectivity issues
+- CodeSandbox service is experiencing delays`;
+                reject(new Error(errorMsg));
+            }, TIMEOUT_MS);
         });
 
-        const newSandbox = await Promise.race([createPromise, timeoutPromise]);
+        try {
+            console.log('GitUI: Waiting for sandbox creation...');
+            const newSandbox = await Promise.race([createPromise, timeoutPromise]);
+            console.log(`GitUI: Successfully created sandbox: ${newSandbox.id}`);
 
-        return {
-            id: newSandbox.id,
-        };
+            return {
+                id: newSandbox.id,
+            };
+        } catch (error) {
+            // GitUI: Enhanced error handling with specific suggestions
+            const errorMessage = error instanceof Error ? error.message : String(error);
+
+            if (errorMessage.includes('timeout') || errorMessage.includes('Timeout')) {
+                throw new Error(`GitUI: Repository import timed out. Please check:
+1. Repository URL is correct: ${input.repoUrl}
+2. Branch '${input.branch}' exists (common branches: main, master, develop)
+3. Repository is public or you have proper access
+4. Try again in a few minutes if CodeSandbox is busy
+
+Original error: ${errorMessage}`);
+            }
+
+            if (errorMessage.includes('branch') || errorMessage.includes('Branch')) {
+                throw new Error(`GitUI: Branch '${input.branch}' not found. Please check:
+1. Branch name is correct (case-sensitive)
+2. Branch exists in the repository
+3. Try using 'main' or 'master' instead
+
+Original error: ${errorMessage}`);
+            }
+
+            if (errorMessage.includes('access') || errorMessage.includes('permission')) {
+                throw new Error(`GitUI: Access denied to repository. Please check:
+1. Repository is public, or
+2. You have proper access permissions
+3. Repository URL is correct: ${input.repoUrl}
+
+Original error: ${errorMessage}`);
+            }
+
+            // Generic error with helpful context
+            throw new Error(`GitUI: Failed to create sandbox from repository.
+Repository: ${input.repoUrl}
+Branch: ${input.branch}
+Error: ${errorMessage}
+
+Please verify the repository is accessible and try again.`);
+        }
     }
 
     async pauseProject(input: PauseProjectInput): Promise<PauseProjectOutput> {

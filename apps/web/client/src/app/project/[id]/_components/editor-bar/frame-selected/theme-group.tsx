@@ -17,7 +17,7 @@ export function ThemeGroup({ frameData }: { frameData: FrameData }) {
 
             const theme = await frameData.view.getTheme();
             setTheme(theme);
-        }
+        };
         void getTheme();
     }, [frameData]);
 
@@ -34,29 +34,29 @@ export function ThemeGroup({ frameData }: { frameData: FrameData }) {
     return (
         <>
             <HoverOnlyTooltip content="System Theme" side="bottom" sideOffset={10}>
-                    <ToolbarButton
-                        className={`w-9 ${theme === SystemTheme.SYSTEM ? 'bg-background-tertiary/50 hover:bg-background-tertiary/50 text-foreground-primary' : 'hover:bg-background-tertiary/50 text-foreground-onlook'}`}
-                        onClick={() => changeTheme(SystemTheme.SYSTEM)}
-                    >
-                        <Icons.Laptop className="h-4 w-4" />
-                    </ToolbarButton>
+                <ToolbarButton
+                    className={`w-9 ${theme === SystemTheme.SYSTEM ? 'bg-background-tertiary/50 hover:bg-background-tertiary/50 text-foreground-primary' : 'hover:bg-background-tertiary/50 text-foreground-onlook'}`}
+                    onClick={() => changeTheme(SystemTheme.SYSTEM)}
+                >
+                    <Icons.Laptop className="h-4 w-4" />
+                </ToolbarButton>
             </HoverOnlyTooltip>
             <HoverOnlyTooltip content="Dark Theme" side="bottom" sideOffset={10}>
-                    <ToolbarButton
-                        className={`w-9 ${theme === SystemTheme.DARK ? 'bg-background-tertiary/50 hover:bg-background-tertiary/50 text-foreground-primary' : 'hover:bg-background-tertiary/50 text-foreground-onlook'}`}
-                        onClick={() => changeTheme(SystemTheme.DARK)}
-                    >
-                        <Icons.Moon className="h-4 w-4" />
-                    </ToolbarButton>
+                <ToolbarButton
+                    className={`w-9 ${theme === SystemTheme.DARK ? 'bg-background-tertiary/50 hover:bg-background-tertiary/50 text-foreground-primary' : 'hover:bg-background-tertiary/50 text-foreground-onlook'}`}
+                    onClick={() => changeTheme(SystemTheme.DARK)}
+                >
+                    <Icons.Moon className="h-4 w-4" />
+                </ToolbarButton>
             </HoverOnlyTooltip>
             <HoverOnlyTooltip content="Light Theme" side="bottom" sideOffset={10}>
-                    <ToolbarButton
-                        className={`w-9 ${theme === SystemTheme.LIGHT ? 'bg-background-tertiary/50 hover:bg-background-tertiary/50 text-foreground-primary' : 'hover:bg-background-tertiary/50 text-foreground-onlook'}`}
-                        onClick={() => changeTheme(SystemTheme.LIGHT)}
-                    >
-                        <Icons.Sun className="h-4 w-4" />
-                    </ToolbarButton>
+                <ToolbarButton
+                    className={`w-9 ${theme === SystemTheme.LIGHT ? 'bg-background-tertiary/50 hover:bg-background-tertiary/50 text-foreground-primary' : 'hover:bg-background-tertiary/50 text-foreground-onlook'}`}
+                    onClick={() => changeTheme(SystemTheme.LIGHT)}
+                >
+                    <Icons.Sun className="h-4 w-4" />
+                </ToolbarButton>
             </HoverOnlyTooltip>
         </>
     );
-} 
+}

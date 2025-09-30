@@ -1,4 +1,4 @@
 import React from 'react';
 export function Component() {
-  return <div className={`${inter.variable} ${isActive ? "active" : "inactive"}`} />;
+    return <div className={`${inter.variable} ${isActive ? 'active' : 'inactive'}`} />;
 }

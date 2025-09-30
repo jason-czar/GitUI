@@ -43,7 +43,7 @@ const MUST_EXTEND_GROUPS = [
         label: 'Dimensions',
         components: [<Width />, <Height />],
     },
-]
+];
 
 export const ImgSelected = memo(({ availableWidth = 0 }: { availableWidth?: number }) => {
     const { isOpen, onOpenChange } = useDropdownControl({

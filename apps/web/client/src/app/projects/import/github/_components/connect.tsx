@@ -9,11 +9,7 @@ import { StepContent, StepFooter, StepHeader } from '../../steps';
 import { useImportGithubProject } from '../_context';
 
 export const ConnectGithub = () => {
-    const {
-        prevStep,
-        nextStep,
-        installation,
-    } = useImportGithubProject();
+    const { prevStep, nextStep, installation } = useImportGithubProject();
 
     const itemContent = ({
         title,
@@ -49,7 +45,7 @@ export const ConnectGithub = () => {
                 </div>
                 <CardTitle className="text-xl font-normal">{'Connect to GitHub'}</CardTitle>
                 <CardDescription className="font-normal">
-                    {'Work with real code directly in Onlook'}
+                    {'Work with real code directly in GitUI'}
                 </CardDescription>
             </StepHeader>
             <StepContent>
@@ -61,16 +57,19 @@ export const ConnectGithub = () => {
                     className="w-full text-sm"
                 >
                     <Separator orientation="horizontal" className="shrink-0 bg-border mb-6" />
+
                     {itemContent({
                         title: installation.hasInstallation
-                            ? 'GitHub App already connected'
-                            : 'Install Onlook GitHub App',
+                            ? 'GitHub already connected'
+                            : 'Connect GitHub Account',
                         description: installation.hasInstallation
-                            ? 'You can access your repositories through the GitHub App'
-                            : 'Get secure repository access with fine-grained permissions',
-                        icon: installation.hasInstallation
-                            ? <Icons.Check className="w-5 h-5 text-green-500" />
-                            : <Icons.GitHubLogo className="w-5 h-5" />,
+                            ? 'You can access your repositories through OAuth'
+                            : 'Connect your GitHub account to access your repositories',
+                        icon: installation.hasInstallation ? (
+                            <Icons.Check className="w-5 h-5 text-green-500" />
+                        ) : (
+                            <Icons.GitHubLogo className="w-5 h-5" />
+                        ),
                     })}
                     {installation.error && (
                         <div className="mt-4 p-3 bg-red-900 border border-red-800 rounded-md">
@@ -107,7 +106,7 @@ export const ConnectGithub = () => {
                         disabled={installation.isChecking}
                     >
                         <Icons.GitHubLogo className="w-4 h-4 mr-2" />
-                        <span>Install GitHub App</span>
+                        <span>Connect GitHub</span>
                     </Button>
                 )}
             </StepFooter>

@@ -71,6 +71,7 @@ export const FolderRenameModal = observer(() => {
                         disabled={renameState.isLoading}
                         autoFocus
                     />
+
                     {renameState.error && (
                         <p className="text-sm text-red-500 mt-2">{renameState.error}</p>
                     )}

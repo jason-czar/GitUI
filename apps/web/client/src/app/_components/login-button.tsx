@@ -39,7 +39,9 @@ export const GithubLoginButton = ({
                 {t(transKeys.welcome.login.github)}
             </Button>
             {isLastSignInMethod && (
-                <p className="text-teal-500 text-small mt-1">{t(transKeys.welcome.login.lastUsed)}</p>
+                <p className="text-teal-500 text-small mt-1">
+                    {t(transKeys.welcome.login.lastUsed)}
+                </p>
             )}
         </div>
     );
@@ -78,7 +80,9 @@ export const GoogleLoginButton = ({
                 {t(transKeys.welcome.login.google)}
             </Button>
             {isLastSignInMethod && (
-                <p className="text-teal-500 text-small mt-1">{t(transKeys.welcome.login.lastUsed)}</p>
+                <p className="text-teal-500 text-small mt-1">
+                    {t(transKeys.welcome.login.lastUsed)}
+                </p>
             )}
         </div>
     );
@@ -104,7 +108,9 @@ export const DevLoginButton = ({
         >
             {isSigningIn ? (
                 <Icons.LoadingSpinner className="w-4 h-4 mr-2 animate-spin" />
-            ) : 'DEV MODE: Sign in as demo user'}
+            ) : (
+                'DEV MODE: Sign in as demo user'
+            )}
         </Button>
-    )
-}
+    );
+};

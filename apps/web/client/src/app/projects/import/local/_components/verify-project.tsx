@@ -10,7 +10,8 @@ import { StepContent, StepFooter, StepHeader } from '../../steps';
 import { useProjectCreation } from '../_context';
 
 export const VerifyProject = () => {
-    const { projectData, prevStep, nextStep, isFinalizing, validateNextJsProject } = useProjectCreation();
+    const { projectData, prevStep, nextStep, isFinalizing, validateNextJsProject } =
+        useProjectCreation();
     const [validation, setValidation] = useState<NextJsProjectValidation | null>(null);
 
     useEffect(() => {
@@ -118,7 +119,11 @@ export const VerifyProject = () => {
                 <Button onClick={prevStep} disabled={isFinalizing} variant="outline">
                     Cancel
                 </Button>
-                <Button className="px-3 py-2" onClick={validation?.isValid ? nextStep : prevStep} disabled={isFinalizing}>
+                <Button
+                    className="px-3 py-2"
+                    onClick={validation?.isValid ? nextStep : prevStep}
+                    disabled={isFinalizing}
+                >
                     {validation?.isValid ? 'Finish setup' : 'Select a different folder'}
                 </Button>
             </StepFooter>

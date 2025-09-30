@@ -15,14 +15,12 @@ export function WebsiteLayout({ children, showFooter = true }: WebsiteLayoutProp
             <div className="fixed top-0 left-0 w-full h-12 bg-background/80 backdrop-blur-sm z-50 top-bar">
                 <TopBar />
             </div>
-            
+
             {/* Page content */}
-            <div>
-                {children}
-            </div>
-            
+            <div>{children}</div>
+
             {/* Footer */}
             {showFooter && <Footer />}
         </div>
     );
-} 
+}

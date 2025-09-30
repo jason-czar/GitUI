@@ -1,7 +1,19 @@
 import { Icons } from '@onlook/ui/icons';
 import React, { useState, useEffect } from 'react';
 
-function VersionRow({ title, subtitle, children, selected, onClick }: { title: string, subtitle: string, children?: React.ReactNode, selected?: boolean, onClick?: () => void }) {
+function VersionRow({
+    title,
+    subtitle,
+    children,
+    selected,
+    onClick,
+}: {
+    title: string;
+    subtitle: string;
+    children?: React.ReactNode;
+    selected?: boolean;
+    onClick?: () => void;
+}) {
     return (
         <div
             className={`flex flex-row items-center justify-between px-4 py-3 cursor-pointer transition-colors ${selected ? 'bg-background-onlook/90' : 'bg-transparent'} hover:bg-background-onlook/90`}
@@ -23,7 +35,7 @@ export function RevisionHistory() {
     const [isAnimating, setIsAnimating] = useState(false);
     const [isFading, setIsFading] = useState(false);
     const [lastUserInteraction, setLastUserInteraction] = useState(Date.now());
-    
+
     // Demo colors for carousel
     const demoColors = [
         'bg-gradient-to-br from-gray-400 to-gray-700',
@@ -31,7 +43,7 @@ export function RevisionHistory() {
         'bg-gradient-to-br from-gray-400 to-gray-700',
         'bg-gradient-to-br from-gray-400 to-gray-700',
     ];
-    
+
     // Demo images for carousel (null if no image)
     const demoImages = [
         '/assets/site-version-1.png',
@@ -39,7 +51,7 @@ export function RevisionHistory() {
         '/assets/site-version-3.png',
         '/assets/site-version-4.png',
     ];
-    
+
     // Version data for Today section
     const todayVersions = [
         { title: 'New typography and layout', subtitle: 'Alessandro · 3h ago' },
@@ -63,7 +75,7 @@ export function RevisionHistory() {
         const timer = setTimeout(() => {
             setDisplayedImageIdx(selectedVersionIdx);
         }, 230); // 0.23 second delay
-        
+
         return () => clearTimeout(timer);
     }, [selectedVersionIdx]);
 
@@ -91,7 +103,9 @@ export function RevisionHistory() {
             <div className="w-full h-100 bg-background-onlook/80 rounded-lg mb-6 relative overflow-hidden">
                 {/* Versions mockup */}
                 <div className="w-100 h-100 rounded-xl overflow-hidden absolute right-[-150px] top-10 flex flex-col items-center justify-start bg-black/85 backdrop-blur-2xl border-[0.5px] border-foreground-primary/20 shadow-lg z-40">
-                    <p className="text-foreground-primary text-regular font-light w-full text-left px-4 py-3 border-b-[0.5px] border-foreground-primary/20">Versions</p>
+                    <p className="text-foreground-primary text-regular font-light w-full text-left px-4 py-3 border-b-[0.5px] border-foreground-primary/20">
+                        Versions
+                    </p>
                     <div className="w-full h-full overflow-y-auto px-0 py-2 flex flex-col gap-2">
                         {/* Today */}
                         <div className="text-foreground-secondary text-xs mt-1 px-4">Today</div>
@@ -111,7 +125,7 @@ export function RevisionHistory() {
                     </div>
                 </div>
                 {/* Demo Sites with image and color background */}
-                <div 
+                <div
                     key={selectedVersionIdx}
                     className={`w-100 h-100 rounded-sm overflow-hidden absolute left-7 top-20 flex flex-col items-center justify-start border-[0.5px] border-foreground-primary/20 shadow-lg z-10 transition-all duration-200 ease-in-out relative ${demoColors[selectedVersionIdx]} transform ${isAnimating ? 'scale-95' : 'scale-100'} ${isFading ? 'opacity-50' : 'opacity-100'}`}
                 >
@@ -128,12 +142,18 @@ export function RevisionHistory() {
             <div className="flex flex-row items-start gap-8 w-full">
                 {/* Icon + Title */}
                 <div className="flex flex-col items-start w-1/2">
-                    <div className="mb-2"><Icons.CounterClockwiseClock className="w-6 h-6 text-foreground-primary" /></div>
-                    <span className="text-foreground-primary text-largePlus font-light">Revision history</span>
+                    <div className="mb-2">
+                        <Icons.CounterClockwiseClock className="w-6 h-6 text-foreground-primary" />
+                    </div>
+                    <span className="text-foreground-primary text-largePlus font-light">
+                        Revision history
+                    </span>
                 </div>
                 {/* Description */}
-                <p className="text-foreground-secondary text-regular text-balance w-1/2">Never lose your progress – revert when you need to</p>
+                <p className="text-foreground-secondary text-regular text-balance w-1/2">
+                    Never lose your progress – revert when you need to
+                </p>
             </div>
         </div>
     );
-} 
+}

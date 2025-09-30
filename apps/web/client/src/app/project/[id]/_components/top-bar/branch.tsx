@@ -1,16 +1,16 @@
-import { useEditorEngine } from "@/components/store/editor";
-import { Button } from "@onlook/ui/button";
+import { useEditorEngine } from '@/components/store/editor';
+import { Button } from '@onlook/ui/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuSeparator,
-    DropdownMenuTrigger
-} from "@onlook/ui/dropdown-menu";
-import { Icons } from "@onlook/ui/icons";
-import { observer } from "mobx-react-lite";
-import { useState } from "react";
-import { BranchControls } from "../branch/branch-controls";
-import { BranchList } from "../branch/branch-list";
+    DropdownMenuTrigger,
+} from '@onlook/ui/dropdown-menu';
+import { Icons } from '@onlook/ui/icons';
+import { observer } from 'mobx-react-lite';
+import { useState } from 'react';
+import { BranchControls } from '../branch/branch-controls';
+import { BranchList } from '../branch/branch-list';
 
 export const BranchDisplay = observer(() => {
     const editorEngine = useEditorEngine();
@@ -23,7 +23,7 @@ export const BranchDisplay = observer(() => {
             await editorEngine.branches.switchToBranch(branchId);
             setIsOpen(false);
         } catch (error) {
-            console.error("Failed to switch branch:", error);
+            console.error('Failed to switch branch:', error);
         }
     };
 
@@ -47,6 +47,7 @@ export const BranchDisplay = observer(() => {
                     onBranchSwitch={handleBranchSwitch}
                     showSearch={true}
                 />
+
                 <DropdownMenuSeparator />
                 <BranchControls branch={activeBranch} onClose={() => setIsOpen(false)} />
             </DropdownMenuContent>

@@ -1,11 +1,7 @@
 import { useEditorEngine } from '@/components/store/editor';
 import { SystemTheme } from '@onlook/models/assets';
 import type { TailwindColor } from '@onlook/models/style';
-import {
-    ColorPicker,
-    Gradient,
-    type GradientState
-} from '@onlook/ui/color-picker';
+import { ColorPicker, Gradient, type GradientState } from '@onlook/ui/color-picker';
 import { parseGradientFromCSS } from '@onlook/ui/color-picker/Gradient';
 import { Icons } from '@onlook/ui/icons';
 import { Input } from '@onlook/ui/input';
@@ -79,6 +75,7 @@ const ColorGroup = ({
                                 className="w-5 h-5 rounded-sm"
                                 style={{ backgroundColor: color.lightColor }}
                             />
+
                             <span className="text-xs font-normal truncate max-w-32">
                                 {toNormalCase(color.name)}
                             </span>
@@ -137,7 +134,6 @@ export const ColorPickerContent: React.FC<ColorPickerProps> = ({
     const [activeTab, setActiveTab] = useState<TabValue>(
         isCreatingNewColor ? TabValue.CUSTOM : TabValue.BRAND,
     );
-
 
     const isColorRemoved = (colorToCheck: Color) => colorToCheck.isEqual(Color.from('transparent'));
 
@@ -380,7 +376,13 @@ export const ColorPickerContent: React.FC<ColorPickerProps> = ({
             setGradientState(defaultGradient);
             setSelectedStopId('stop-1');
         }
-    }, [editorEngine.elements.selected, editorEngine.style.selectedStyle?.styles.computed.backgroundImage, backgroundImage, parseGradientFromCSS, onChange]);
+    }, [
+        editorEngine.elements.selected,
+        editorEngine.style.selectedStyle?.styles.computed.backgroundImage,
+        backgroundImage,
+        parseGradientFromCSS,
+        onChange,
+    ]);
 
     useEffect(() => {
         (async () => {
@@ -482,35 +484,38 @@ export const ColorPickerContent: React.FC<ColorPickerProps> = ({
         [gradientState.stops, onChange],
     );
 
-    const applyPresetGradient = useCallback((preset: PresetGradient) => {
-        try {
-            let angle = 0;
-            if (preset.type === 'linear') {
-                angle = parseInt((/(\d+)deg/.exec(preset.css))?.[1] ?? '90');
-            }
+    const applyPresetGradient = useCallback(
+        (preset: PresetGradient) => {
+            try {
+                let angle = 0;
+                if (preset.type === 'linear') {
+                    angle = parseInt(/(\d+)deg/.exec(preset.css)?.[1] ?? '90');
+                }
 
-            const newGradientState: GradientState = {
-                type: preset.type,
-                angle: angle,
-                stops: preset.stops.map((stop, index) => ({
-                    id: `stop-${index + 1}`,
-                    color: stop.color,
-                    position: stop.position,
-                    opacity: stop.opacity ?? 100,
-                })),
-            };
-            setGradientState(newGradientState);
-            setSelectedStopId('stop-1');
-            handleGradientChange(newGradientState);
+                const newGradientState: GradientState = {
+                    type: preset.type,
+                    angle: angle,
+                    stops: preset.stops.map((stop, index) => ({
+                        id: `stop-${index + 1}`,
+                        color: stop.color,
+                        position: stop.position,
+                        opacity: stop.opacity ?? 100,
+                    })),
+                };
+                setGradientState(newGradientState);
+                setSelectedStopId('stop-1');
+                handleGradientChange(newGradientState);
 
-            const firstStop = newGradientState.stops[0];
-            if (firstStop) {
-                onChange(Color.from(firstStop.color));
+                const firstStop = newGradientState.stops[0];
+                if (firstStop) {
+                    onChange(Color.from(firstStop.color));
+                }
+            } catch (error) {
+                console.error('Error applying preset gradient:', error);
             }
-        } catch (error) {
-            console.error('Error applying preset gradient:', error);
-        }
-    }, [handleGradientChange, onChange]);
+        },
+        [handleGradientChange, onChange],
+    );
 
     function renderPalette() {
         const colors = Object.keys(palette.colors);
@@ -560,6 +565,7 @@ export const ColorPickerContent: React.FC<ColorPickerProps> = ({
                                         backgroundColor: palette.colors[Number.parseInt(level)],
                                     }}
                                 />
+
                                 <div className="text-small text-foreground-secondary group-hover:text-foreground-primary">
                                     <span>
                                         {palette.name}-{level}
@@ -600,6 +606,7 @@ export const ColorPickerContent: React.FC<ColorPickerProps> = ({
                                     className="w-5 h-5 content-center rounded border-[0.5px] border-foreground-tertiary/50"
                                     style={{ background: preset.css }}
                                 />
+
                                 <div className="text-small text-foreground-secondary group-hover:text-foreground-primary">
                                     <span>{preset.id}</span>
                                 </div>
@@ -656,7 +663,7 @@ export const ColorPickerContent: React.FC<ColorPickerProps> = ({
                                         'p-1 rounded transition-colors',
                                         isColorRemoved(color)
                                             ? 'bg-background-secondary'
-                                            : 'hover:bg-background-tertiary'
+                                            : 'hover:bg-background-tertiary',
                                     )}
                                     onClick={handleRemoveColor}
                                 >
@@ -665,7 +672,7 @@ export const ColorPickerContent: React.FC<ColorPickerProps> = ({
                                             'h-4 w-4',
                                             isColorRemoved(color)
                                                 ? 'text-foreground-primary'
-                                                : 'text-foreground-tertiary'
+                                                : 'text-foreground-tertiary',
                                         )}
                                     />
                                 </button>
@@ -679,6 +686,7 @@ export const ColorPickerContent: React.FC<ColorPickerProps> = ({
                         <div className="border-b border-t">
                             <div className="relative">
                                 <Icons.MagnifyingGlass className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+
                                 <Input
                                     ref={inputRef}
                                     type="text"
@@ -688,6 +696,7 @@ export const ColorPickerContent: React.FC<ColorPickerProps> = ({
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     onKeyDown={handleKeyDown}
                                 />
+
                                 {searchQuery && (
                                     <button
                                         className="absolute right-[1px] top-[1px] bottom-[1px] aspect-square hover:bg-background-onlook active:bg-transparent flex items-center justify-center rounded-r-[calc(theme(borderRadius.md)-1px)] group"
@@ -734,6 +743,7 @@ export const ColorPickerContent: React.FC<ColorPickerProps> = ({
                             setPalette(val.palette);
                         }}
                     />
+
                     <Separator />
                     <div className="flex flex-row items-center justify-between w-full px-2 py-1">
                         <span className="text-foreground-secondary text-small">{palette.name}</span>
@@ -769,10 +779,11 @@ export const ColorPickerContent: React.FC<ColorPickerProps> = ({
                         <div className="flex flex-row items-center justify-between w-full px-2 py-1">
                             <span className="text-foreground-secondary text-small">Presets</span>
                             <button
-                                className={`px-1 py-1 text-xs transition-colors w-6 h-6 flex items-center justify-center rounded ${viewMode === 'grid'
-                                    ? 'text-foreground-secondary hover:text-foreground-primary hover:bg-background-hover'
-                                    : 'text-foreground-primary bg-background-secondary'
-                                    }`}
+                                className={`px-1 py-1 text-xs transition-colors w-6 h-6 flex items-center justify-center rounded ${
+                                    viewMode === 'grid'
+                                        ? 'text-foreground-secondary hover:text-foreground-primary hover:bg-background-hover'
+                                        : 'text-foreground-primary bg-background-secondary'
+                                }`}
                                 onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
                                 title="Toggle view mode"
                             >

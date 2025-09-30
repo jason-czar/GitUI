@@ -4,7 +4,16 @@ import type { WindowMetadata } from '@onlook/models';
 import { Button } from '@onlook/ui/button';
 import { Icons } from '@onlook/ui/icons';
 import { Input } from '@onlook/ui/input';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from '@onlook/ui/select';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectSeparator,
+    SelectTrigger,
+    SelectValue,
+} from '@onlook/ui/select';
 import { computeWindowMetadata } from '@onlook/utility';
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
@@ -14,16 +23,14 @@ export const FrameDimensions = observer(({ frameId }: { frameId: string }) => {
     const frameData = editorEngine.frames.get(frameId);
 
     if (!frameData) {
-        return (
-            <p className="text-sm text-foreground-primary">Frame not found</p>
-        );
+        return <p className="text-sm text-foreground-primary">Frame not found</p>;
     }
 
     const [metadata, setMetadata] = useState<WindowMetadata>(() =>
         computeWindowMetadata(
             frameData.frame.dimension.width.toString(),
-            frameData.frame.dimension.height.toString()
-        )
+            frameData.frame.dimension.height.toString(),
+        ),
     );
 
     const [device, setDevice] = useState(() => {
@@ -42,15 +49,20 @@ export const FrameDimensions = observer(({ frameId }: { frameId: string }) => {
         const roundedWidth = Math.round(width);
         const roundedHeight = Math.round(height);
 
-        const newMetadata = computeWindowMetadata(roundedWidth.toString(), roundedHeight.toString());
+        const newMetadata = computeWindowMetadata(
+            roundedWidth.toString(),
+            roundedHeight.toString(),
+        );
         setMetadata(newMetadata);
 
-        editorEngine.frames.updateAndSaveToStorage(frameData.frame.id, { dimension: { width: roundedWidth, height: roundedHeight } });
+        editorEngine.frames.updateAndSaveToStorage(frameData.frame.id, {
+            dimension: { width: roundedWidth, height: roundedHeight },
+        });
     };
 
     const handleDimensionInput = (
         event: React.ChangeEvent<HTMLInputElement>,
-        dimension: 'width' | 'height'
+        dimension: 'width' | 'height',
     ) => {
         const value = parseInt(event.target.value);
         if (isNaN(value)) return;
@@ -167,6 +179,7 @@ export const FrameDimensions = observer(({ frameId }: { frameId: string }) => {
                         type="number"
                         onChange={(event) => handleDimensionInput(event, 'width')}
                     />
+
                     <p className="p-0 h-fit w-fit absolute right-2 top-1/2 transform -translate-y-1/2 text-foreground-secondary text-xs">
                         px
                     </p>
@@ -183,6 +196,7 @@ export const FrameDimensions = observer(({ frameId }: { frameId: string }) => {
                         type="number"
                         onChange={(event) => handleDimensionInput(event, 'height')}
                     />
+
                     <p className="p-0 h-fit w-fit absolute right-2 top-1/2 transform -translate-y-1/2 text-foreground-secondary text-xs">
                         px
                     </p>

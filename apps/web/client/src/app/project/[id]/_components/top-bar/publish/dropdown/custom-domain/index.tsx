@@ -15,10 +15,7 @@ export const Section = () => {
     const { customDomain } = useCustomDomainContext();
     return (
         <div className="p-4 flex flex-col items-center gap-2">
-            {customDomain?.url
-                ? <DomainSection />
-                : <NoCustomDomain />
-            }
+            {customDomain?.url ? <DomainSection /> : <NoCustomDomain />}
         </div>
-    )
-}
+    );
+};

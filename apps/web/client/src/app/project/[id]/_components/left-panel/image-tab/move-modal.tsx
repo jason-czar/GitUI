@@ -27,14 +27,19 @@ export const MoveImageModal = () => {
     };
 
     return (
-        <AlertDialog open={!!moveState.imageToMove && !!moveState.targetFolder} onOpenChange={handleClose}>
+        <AlertDialog
+            open={!!moveState.imageToMove && !!moveState.targetFolder}
+            onOpenChange={handleClose}
+        >
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>Move Image</AlertDialogTitle>
                     <AlertDialogDescription>
                         {moveState.imageToMove && moveState.targetFolder && (
                             <>
-                                Are you sure you want to move &quot;{moveState.imageToMove.fileName}&quot; to &quot;{moveState.targetFolder.name ?? 'root'}&quot; folder?
+                                Are you sure you want to move &quot;{moveState.imageToMove.fileName}
+                                &quot; to &quot;{moveState.targetFolder.name ?? 'root'}&quot;
+                                folder?
                                 <span className="block mt-2 text-sm">
                                     This will move the image file to the selected folder location.
                                 </span>
@@ -65,4 +70,4 @@ export const MoveImageModal = () => {
             </AlertDialogContent>
         </AlertDialog>
     );
-} 
+};

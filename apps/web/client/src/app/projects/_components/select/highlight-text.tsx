@@ -13,7 +13,7 @@ export function HighlightText({ text, searchQuery }: { text: string; searchQuery
                     </span>
                 ) : (
                     part
-                )
+                ),
             )}
         </>
     );

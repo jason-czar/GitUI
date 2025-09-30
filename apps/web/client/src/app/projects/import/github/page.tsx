@@ -9,11 +9,7 @@ import { FinalizingGithubProject } from './_components/finalizing';
 import { SetupGithub } from './_components/setup';
 import { useImportGithubProject } from './_context';
 
-const steps = [
-    <ConnectGithub />,
-    <SetupGithub />,
-    <FinalizingGithubProject />
-];
+const steps = [<ConnectGithub />, <SetupGithub />, <FinalizingGithubProject />];
 
 const Page = () => {
     const { currentStep } = useImportGithubProject();
@@ -53,7 +49,7 @@ const Page = () => {
                                 <AnimatePresence
                                     mode="popLayout"
                                     initial={false}
-                                // custom={direction}
+                                    // custom={direction}
                                 >
                                     <motion.div
                                         key={currentStep}

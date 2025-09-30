@@ -14,7 +14,7 @@ export const OverlayOpenCode = observer(({ isInputting }: { isInputting: boolean
     }
 
     const handleCodeButtonClick = async () => {
-        await editorEngine.ide.openCodeBlock(oid)
+        await editorEngine.ide.openCodeBlock(oid);
     };
 
     return (
@@ -34,5 +34,5 @@ export const OverlayOpenCode = observer(({ isInputting }: { isInputting: boolean
                 <Icons.Code className="w-4 h-4" />
             </button>
         </div>
-    )
+    );
 });

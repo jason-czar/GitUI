@@ -76,7 +76,8 @@ export const NewProjectMenu = observer(() => {
 
             if (errorMessage.includes('502') || errorMessage.includes('sandbox')) {
                 toast.error('Sandbox service temporarily unavailable', {
-                    description: 'Please try again in a few moments. Our servers may be experiencing high load.',
+                    description:
+                        'Please try again in a few moments. Our servers may be experiencing high load.',
                 });
             } else {
                 toast.error('Failed to create project', {

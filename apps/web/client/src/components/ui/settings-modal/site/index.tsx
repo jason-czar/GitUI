@@ -51,7 +51,10 @@ export const SiteTab = observer(() => {
         try {
             const url = createSecureUrl(baseUrl);
             const finalTitle = getFinalTitleMetadata();
-            const siteTitle = typeof finalTitle === 'string' ? finalTitle : finalTitle.absolute ?? finalTitle.default ?? '';
+            const siteTitle =
+                typeof finalTitle === 'string'
+                    ? finalTitle
+                    : (finalTitle.absolute ?? finalTitle.default ?? '');
 
             const updatedMetadata: PageMetadata = {
                 ...(homePage?.metadata ?? {}),
@@ -105,6 +108,7 @@ export const SiteTab = observer(() => {
                             alt: siteTitle,
                         },
                     ],
+
                     type: 'website',
                 };
             }
@@ -133,6 +137,7 @@ export const SiteTab = observer(() => {
                     <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10 flex items-center justify-center">
                         <div className="flex items-center gap-3 text-foreground-secondary">
                             <Icons.LoadingSpinner className="h-5 w-5 animate-spin" />
+
                             <span className="text-sm">Fetching metadata...</span>
                         </div>
                     </div>

@@ -31,7 +31,7 @@ import {
     WEB_SEARCH_TOOL_NAME,
     type WEB_SEARCH_TOOL_PARAMETERS,
     WRITE_FILE_TOOL_NAME,
-    type WRITE_FILE_TOOL_PARAMETERS
+    type WRITE_FILE_TOOL_PARAMETERS,
 } from '@onlook/ai';
 import { Icons } from '@onlook/ui/icons';
 import { cn } from '@onlook/ui/utils';
@@ -86,21 +86,30 @@ export function ToolCallSimple({
                 case LIST_BRANCHES_TOOL_NAME:
                     return 'Listing branches';
                 case SEARCH_REPLACE_EDIT_FILE_TOOL_NAME:
-                    const params = toolPart.input as z.infer<typeof SEARCH_REPLACE_EDIT_FILE_TOOL_PARAMETERS>;
+                    const params = toolPart.input as z.infer<
+                        typeof SEARCH_REPLACE_EDIT_FILE_TOOL_PARAMETERS
+                    >;
+
                     if (params?.file_path) {
                         return 'Editing ' + (params.file_path.split('/').pop() || '');
                     } else {
                         return 'Editing file';
                     }
                 case SEARCH_REPLACE_MULTI_EDIT_FILE_TOOL_NAME:
-                    const params1 = toolPart.input as z.infer<typeof SEARCH_REPLACE_MULTI_EDIT_FILE_TOOL_PARAMETERS>;
+                    const params1 = toolPart.input as z.infer<
+                        typeof SEARCH_REPLACE_MULTI_EDIT_FILE_TOOL_PARAMETERS
+                    >;
+
                     if (params1?.edits) {
                         return 'Editing ' + (params1.file_path.split('/').pop() || '');
                     } else {
                         return 'Editing files';
                     }
                 case FUZZY_EDIT_FILE_TOOL_NAME:
-                    const params2 = toolPart.input as z.infer<typeof FUZZY_EDIT_FILE_TOOL_PARAMETERS>;
+                    const params2 = toolPart.input as z.infer<
+                        typeof FUZZY_EDIT_FILE_TOOL_PARAMETERS
+                    >;
+
                     if (params2?.file_path) {
                         return 'Editing ' + (params2.file_path.split('/').pop() || '');
                     } else {
@@ -135,21 +144,36 @@ export function ToolCallSimple({
                         return 'Visiting URL';
                     }
                 case WEB_SEARCH_TOOL_NAME:
-                    if (toolPart.input && typeof toolPart.input === 'object' && 'query' in toolPart.input) {
-                        const params10 = toolPart.input as z.infer<typeof WEB_SEARCH_TOOL_PARAMETERS>;
+                    if (
+                        toolPart.input &&
+                        typeof toolPart.input === 'object' &&
+                        'query' in toolPart.input
+                    ) {
+                        const params10 = toolPart.input as z.infer<
+                            typeof WEB_SEARCH_TOOL_PARAMETERS
+                        >;
+
                         const query = params10.query;
-                        return "Searching \"" + truncateString(query) + "\"";
+                        return 'Searching "' + truncateString(query) + '"';
                     } else {
                         return 'Searching web';
                     }
                 case SANDBOX_TOOL_NAME:
-                    if (toolPart.input && typeof toolPart.input === 'object' && 'command' in toolPart.input) {
+                    if (
+                        toolPart.input &&
+                        typeof toolPart.input === 'object' &&
+                        'command' in toolPart.input
+                    ) {
                         return 'Sandbox: ' + toolPart.input?.command;
                     } else {
                         return 'Sandbox';
                     }
                 case GREP_TOOL_NAME:
-                    if (toolPart.input && typeof toolPart.input === 'object' && 'pattern' in toolPart.input) {
+                    if (
+                        toolPart.input &&
+                        typeof toolPart.input === 'object' &&
+                        'pattern' in toolPart.input
+                    ) {
                         const params11 = toolPart.input as z.infer<typeof GREP_TOOL_PARAMETERS>;
                         const pattern = params11.pattern;
                         return 'Searching for ' + truncateString(pattern);
@@ -173,7 +197,15 @@ export function ToolCallSimple({
                 case TODO_WRITE_TOOL_NAME:
                     const params9 = toolPart.input as z.infer<typeof TODO_WRITE_TOOL_PARAMETERS>;
                     if (params9?.todos) {
-                        return 'Writing todos ' + (params9?.todos.map((todo: { content: string; status: string; priority: string; }) => todo.content).join(', ') || '');
+                        return (
+                            'Writing todos ' +
+                            (params9?.todos
+                                .map(
+                                    (todo: { content: string; status: string; priority: string }) =>
+                                        todo.content,
+                                )
+                                .join(', ') || '')
+                        );
                     } else {
                         return 'Writing todos';
                     }
@@ -193,33 +225,41 @@ export function ToolCallSimple({
                 case TYPECHECK_TOOL_NAME:
                     return 'Checking types';
                 default:
-                    return toolName?.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                    return toolName?.replace(/[-_]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
             }
         } catch (error) {
             console.error('Error getting label', error);
-            return toolName?.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+            return toolName?.replace(/[-_]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
         }
-    }
+    };
     return (
         <div className="flex flex-col gap-2">
-            <div className={cn('flex items-center gap-2 ml-2 text-foreground-tertiary/80', className)}>
+            <div
+                className={cn(
+                    'flex items-center gap-2 ml-2 text-foreground-tertiary/80',
+                    className,
+                )}
+            >
                 <Icon className="w-4 h-4 flex-shrink-0" />
                 <span
                     className={cn(
                         'text-regularPlus',
                         loading &&
-                        'bg-gradient-to-l from-white/20 via-white/90 to-white/20 bg-[length:200%_100%] bg-clip-text text-transparent animate-shimmer filter drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]'
+                            'bg-gradient-to-l from-white/20 via-white/90 to-white/20 bg-[length:200%_100%] bg-clip-text text-transparent animate-shimmer filter drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]',
                     )}
                 >
                     {getLabel()}
                 </span>
             </div>
-            {(toolPart.state === 'output-error') && (
+            {toolPart.state === 'output-error' && (
                 <div className="flex items-start gap-2 ml-2 text-red-500 text-small max-h-32 overflow-y-auto border-l">
                     <Icons.ExclamationTriangle className="w-4 h-4 flex-shrink-0" />
-                    <span className="text-regularPlus">{toolPart.errorText || 'Error calling tool'}</span>
+
+                    <span className="text-regularPlus">
+                        {toolPart.errorText || 'Error calling tool'}
+                    </span>
                 </div>
             )}
         </div>
     );
-} 
+}

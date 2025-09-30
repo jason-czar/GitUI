@@ -11,7 +11,9 @@ export function BuilderFeaturesIntroSection() {
                     All the Tools to Build and Scale Your Apps
                 </p>
                 <p className="text-foreground-secondary text-lg max-w-xl mx-auto text-balance">
-                    Get the best of visual design with developer-grade features. Build complex React applications visually while maintaining full control over your code, components, and architecture.
+                    Get the best of visual design with developer-grade features. Build complex React
+                    applications visually while maintaining full control over your code, components,
+                    and architecture.
                 </p>
             </div>
         </div>

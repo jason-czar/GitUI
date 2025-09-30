@@ -159,6 +159,7 @@ export const BrandPalletGroup = ({
                                 >
                                     <span className="flex w-full text-smallPlus items-center">
                                         <Icons.Pencil className="mr-2 h-4 w-4 text-foreground-secondary group-hover:text-foreground-active" />
+
                                         <span>Rename</span>
                                     </span>
                                 </Button>
@@ -171,6 +172,7 @@ export const BrandPalletGroup = ({
                                 >
                                     <span className="flex w-full text-smallPlus items-center">
                                         <Icons.Trash className="mr-2 h-4 w-4 text-foreground-secondary group-hover:text-foreground-active" />
+
                                         <span>Delete</span>
                                     </span>
                                 </Button>
@@ -204,6 +206,7 @@ export const BrandPalletGroup = ({
                                             className="w-full aspect-square rounded-lg cursor-pointer hover:ring-2 hover:ring-border-primary border border-primary/10"
                                             style={{ backgroundColor: getColorValue(color) }}
                                         />
+
                                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 [&[data-state=open]]:opacity-100">
                                             <DropdownMenu modal={false}>
                                                 <DropdownMenuTrigger asChild>
@@ -246,6 +249,7 @@ export const BrandPalletGroup = ({
                                                                     getColorValue(color),
                                                             }}
                                                         />
+
                                                         <div className="flex flex-col">
                                                             <span className="text-sm text-foreground">
                                                                 {toNormalCase(color.name)}
@@ -265,6 +269,7 @@ export const BrandPalletGroup = ({
                                                         >
                                                             <span className="flex w-full text-sm items-center">
                                                                 <Icons.Pencil className="mr-2 h-4 w-4" />
+
                                                                 <span>Edit color</span>
                                                             </span>
                                                         </Button>
@@ -279,22 +284,23 @@ export const BrandPalletGroup = ({
                                                         >
                                                             <span className="flex w-full text-sm items-center">
                                                                 <Icons.Copy className="mr-2 h-4 w-4" />
+
                                                                 <span>Duplicate</span>
                                                             </span>
                                                         </Button>
                                                     </DropdownMenuItem>
                                                     {/* <DropdownMenuItem asChild>
-                                                        <Button
-                                                            variant="ghost"
-                                                            className="hover:bg-background-secondary focus:bg-background-secondary w-full rounded-sm group px-2 py-1"
-                                                            onClick={() => handleViewInCode(color)}
-                                                        >
-                                                            <span className="flex w-full text-sm items-center">
-                                                                <Icons.ExternalLink className="mr-2 h-4 w-4" />
-                                                                <span>View in code</span>
-                                                            </span>
-                                                        </Button>
-                                                    </DropdownMenuItem> */}
+                      <Button
+                      variant="ghost"
+                      className="hover:bg-background-secondary focus:bg-background-secondary w-full rounded-sm group px-2 py-1"
+                      onClick={() => handleViewInCode(color)}
+                      >
+                      <span className="flex w-full text-sm items-center">
+                      <Icons.ExternalLink className="mr-2 h-4 w-4" />
+                      <span>View in code</span>
+                      </span>
+                      </Button>
+                      </DropdownMenuItem> */}
                                                     {!isDefaultPalette ? (
                                                         <DropdownMenuItem asChild>
                                                             <Button
@@ -304,6 +310,7 @@ export const BrandPalletGroup = ({
                                                             >
                                                                 <span className="flex w-full text-sm items-center">
                                                                     <Icons.Trash className="mr-2 h-4 w-4" />
+
                                                                     <span>Delete</span>
                                                                 </span>
                                                             </Button>
@@ -320,6 +327,7 @@ export const BrandPalletGroup = ({
                                                                 >
                                                                     <span className="flex w-full text-sm items-center">
                                                                         <Icons.Reset className="mr-2 h-4 w-4" />
+
                                                                         <span>Reset override</span>
                                                                     </span>
                                                                 </Button>

@@ -34,12 +34,12 @@ function TruncatedLabelWithTooltip({ label }: { label: string }) {
                     {label}
                 </span>
             </TooltipTrigger>
-            <TooltipContent side='right'>
-                {label}
-            </TooltipContent>
+            <TooltipContent side="right">{label}</TooltipContent>
         </Tooltip>
     ) : (
-        <span ref={spanRef} className="truncate">{label}</span>
+        <span ref={spanRef} className="truncate">
+            {label}
+        </span>
     );
 }
 
@@ -157,6 +157,7 @@ export const SettingsModalWithProjects = observer(() => {
                                             </p>
                                             <div className="flex items-center gap-1.5 ml-2.5 mb-3 text-muted-foreground/80">
                                                 <Icons.Branch className="min-h-3 min-w-3" />
+
                                                 <span className="text-small truncate max-w-30">
                                                     {editorEngine.branches.activeBranch.name}
                                                 </span>
@@ -205,7 +206,11 @@ export const SettingsModalWithProjects = observer(() => {
                                                             }
                                                         >
                                                             {tab.icon}
-                                                            <TruncatedLabelWithTooltip label={capitalizeFirstLetter(tab.label.toLowerCase())} />
+                                                            <TruncatedLabelWithTooltip
+                                                                label={capitalizeFirstLetter(
+                                                                    tab.label.toLowerCase(),
+                                                                )}
+                                                            />
                                                         </Button>
                                                     ))}
                                                 </div>
@@ -237,6 +242,7 @@ export const SettingsModalWithProjects = observer(() => {
                                         </div>
                                     </div>
                                     <Separator orientation="vertical" className="h-full" />
+
                                     {/* Right content */}
                                     <div className="flex-1 overflow-y-auto">
                                         {

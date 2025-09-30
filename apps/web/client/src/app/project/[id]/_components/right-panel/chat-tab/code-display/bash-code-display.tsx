@@ -53,12 +53,26 @@ const formatCommandOutput = (output: string | null) => {
         }
 
         // Default styling for other lines
-        return <div key={index} className="text-foreground-secondary">{cleanLine}</div>;
+        return (
+            <div key={index} className="text-foreground-secondary">
+                {cleanLine}
+            </div>
+        );
     });
 };
 
 export const BashCodeDisplay = observer(
-    ({ content, defaultStdOut, defaultStdErr, isStream }: { content: string; defaultStdOut: string | null; defaultStdErr: string | null; isStream: boolean }) => {
+    ({
+        content,
+        defaultStdOut,
+        defaultStdErr,
+        isStream,
+    }: {
+        content: string;
+        defaultStdOut: string | null;
+        defaultStdErr: string | null;
+        isStream: boolean;
+    }) => {
         const editorEngine = useEditorEngine();
         const [running, setRunning] = useState(false);
         const [stdOut, setStdOut] = useState<string | null>(defaultStdOut);
@@ -70,7 +84,10 @@ export const BashCodeDisplay = observer(
             setStdErr(null);
 
             try {
-                const result = await editorEngine.activeSandbox.session.runCommand(content, setStdOut);
+                const result = await editorEngine.activeSandbox.session.runCommand(
+                    content,
+                    setStdOut,
+                );
 
                 if (!result) {
                     setStdErr('Failed to execute command: No session available');
@@ -95,7 +112,8 @@ export const BashCodeDisplay = observer(
                     <div className="relative flex p-4 text-xs w-full overflow-auto bg-background-secondary">
                         <code className="whitespace-pre">
                             <span className="text-foreground-secondary select-none mr-2">$</span>
-                            {content}</code>
+                            {content}
+                        </code>
                     </div>
                     {(stdOut !== null || stdErr !== null) && (
                         <div className="w-full h-[1px] bg-foreground-secondary/30"></div>

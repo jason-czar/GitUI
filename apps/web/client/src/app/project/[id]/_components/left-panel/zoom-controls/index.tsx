@@ -144,6 +144,7 @@ export const ZoomControls = observer(() => {
                     className={`p-1 h-6 text-left text-smallPlus rounded border mb-1 focus-visible:border-red-500`}
                     autoFocus
                 />
+
                 <button
                     onClick={() => handleZoom(1)}
                     className="w-full text-left px-2 py-1.5 rounded hover:bg-accent"

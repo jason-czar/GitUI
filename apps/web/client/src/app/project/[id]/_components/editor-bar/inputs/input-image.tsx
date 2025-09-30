@@ -225,6 +225,7 @@ export const InputImage = observer(() => {
                                             alt="Preview"
                                             className="w-full h-full object-cover"
                                         />
+
                                         {isUploading && (
                                             <div className="absolute inset-0 bg-blue-500/10 flex items-center justify-center">
                                                 <div className="bg-white/90 rounded-full p-2">

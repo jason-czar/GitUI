@@ -22,7 +22,9 @@ export const InvitationRow = ({ invitation }: { invitation: ProjectInvitation })
 
     const copyInvitationLink = async () => {
         try {
-            await navigator.clipboard.writeText(constructInvitationLink(env.NEXT_PUBLIC_SITE_URL, invitation.id, invitation.token));
+            await navigator.clipboard.writeText(
+                constructInvitationLink(env.NEXT_PUBLIC_SITE_URL, invitation.id, invitation.token),
+            );
             setIsCopied(true);
             toast.success('Invitation link copied to clipboard');
             setTimeout(() => {
@@ -47,12 +49,12 @@ export const InvitationRow = ({ invitation }: { invitation: ProjectInvitation })
             <div className="flex flex-row items-center justify-center ">
                 <Tooltip>
                     <TooltipTrigger>
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={copyInvitationLink}
-                        >
-                            {isCopied ? <Icons.Check className="size-4 text-muted-foreground transition-colors" /> : <Icons.Copy className="size-4 text-muted-foreground transition-colors" />}
+                        <Button variant="ghost" size="icon" onClick={copyInvitationLink}>
+                            {isCopied ? (
+                                <Icons.Check className="size-4 text-muted-foreground transition-colors" />
+                            ) : (
+                                <Icons.Copy className="size-4 text-muted-foreground transition-colors" />
+                            )}
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -71,9 +73,7 @@ export const InvitationRow = ({ invitation }: { invitation: ProjectInvitation })
                             <Icons.MailX className="size-4 text-muted-foreground transition-colors" />
                         </Button>
                     </TooltipTrigger>
-                    <TooltipContent>
-                        Cancel Invitation
-                    </TooltipContent>
+                    <TooltipContent>Cancel Invitation</TooltipContent>
                 </Tooltip>
             </div>
         </div>

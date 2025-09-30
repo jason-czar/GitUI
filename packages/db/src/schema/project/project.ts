@@ -19,6 +19,9 @@ export const projects = pgTable('projects', {
     tags: varchar('tags').array().default([]),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+    
+    // GitUI: Repository connection
+    repositoryId: uuid('repository_id'),
 
     // preview image
     previewImgUrl: varchar('preview_img_url'),

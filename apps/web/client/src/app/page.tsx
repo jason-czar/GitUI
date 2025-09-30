@@ -31,7 +31,7 @@ export default function Main() {
                 <AuthModal />
                 <NonProjectSettingsModal />
                 <SubscriptionModal />
-            </WebsiteLayout >
+            </WebsiteLayout>
         </CreateManagerProvider>
     );
 }

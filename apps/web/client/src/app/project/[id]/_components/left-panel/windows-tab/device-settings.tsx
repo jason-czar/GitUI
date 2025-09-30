@@ -20,9 +20,7 @@ export const DeviceSettings = observer(({ frameId }: { frameId: string }) => {
     }, [frameData]);
 
     if (!frameData) {
-        return (
-            <p className="text-sm text-foreground-primary">Frame not found</p>
-        );
+        return <p className="text-sm text-foreground-primary">Frame not found</p>;
     }
 
     async function changeTheme(newTheme: SystemTheme) {
@@ -49,10 +47,11 @@ export const DeviceSettings = observer(({ frameId }: { frameId: string }) => {
                 <div className="flex flex-row p-0.5 w-3/5 bg-background-secondary rounded">
                     <Button
                         size={'icon'}
-                        className={`flex-1 h-full px-0.5 py-1.5 bg-background-secondary rounded-sm ${theme === SystemTheme.SYSTEM
-                            ? 'bg-background-tertiary hover:bg-background-tertiary'
-                            : 'hover:bg-background-tertiary/50 text-foreground-onlook'
-                            }`}
+                        className={`flex-1 h-full px-0.5 py-1.5 bg-background-secondary rounded-sm ${
+                            theme === SystemTheme.SYSTEM
+                                ? 'bg-background-tertiary hover:bg-background-tertiary'
+                                : 'hover:bg-background-tertiary/50 text-foreground-onlook'
+                        }`}
                         variant={'ghost'}
                         onClick={() => changeTheme(SystemTheme.SYSTEM)}
                     >
@@ -60,10 +59,11 @@ export const DeviceSettings = observer(({ frameId }: { frameId: string }) => {
                     </Button>
                     <Button
                         size={'icon'}
-                        className={`flex-1 h-full px-0.5 py-1.5 bg-background-secondary rounded-sm ${theme === SystemTheme.DARK
-                            ? 'bg-background-tertiary hover:bg-background-tertiary'
-                            : 'hover:bg-background-tertiary/50 text-foreground-onlook'
-                            }`}
+                        className={`flex-1 h-full px-0.5 py-1.5 bg-background-secondary rounded-sm ${
+                            theme === SystemTheme.DARK
+                                ? 'bg-background-tertiary hover:bg-background-tertiary'
+                                : 'hover:bg-background-tertiary/50 text-foreground-onlook'
+                        }`}
                         variant={'ghost'}
                         onClick={() => changeTheme(SystemTheme.DARK)}
                     >
@@ -71,10 +71,11 @@ export const DeviceSettings = observer(({ frameId }: { frameId: string }) => {
                     </Button>
                     <Button
                         size={'icon'}
-                        className={`flex-1 h-full px-0.5 py-1.5 bg-background-secondary rounded-sm ${theme === SystemTheme.LIGHT
-                            ? 'bg-background-tertiary hover:bg-background-tertiary'
-                            : 'hover:bg-background-tertiary/50 text-foreground-onlook'
-                            }`}
+                        className={`flex-1 h-full px-0.5 py-1.5 bg-background-secondary rounded-sm ${
+                            theme === SystemTheme.LIGHT
+                                ? 'bg-background-tertiary hover:bg-background-tertiary'
+                                : 'hover:bg-background-tertiary/50 text-foreground-onlook'
+                        }`}
                         variant={'ghost'}
                         onClick={() => changeTheme(SystemTheme.LIGHT)}
                     >

@@ -14,6 +14,7 @@ const SystemFont = observer(() => {
                 <div className="flex justify-center items-center border-dashed border-default border-2 rounded-lg h-20 my-2">
                     <div className="flex items-center gap-2">
                         <Icons.LoadingSpinner className="h-4 w-4 animate-spin text-muted-foreground" />
+
                         <span className="text-sm text-muted-foreground">Scanning fonts...</span>
                     </div>
                 </div>
@@ -28,9 +29,12 @@ const SystemFont = observer(() => {
                             <FontFamily
                                 name={font.family}
                                 variants={
-                                    font.weight?.map(
-                                        (weight) => VARIANTS.find((v) => v.value === weight)?.name,
-                                    ).filter((v) => v !== undefined) ?? []
+                                    font.weight
+                                        ?.map(
+                                            (weight) =>
+                                                VARIANTS.find((v) => v.value === weight)?.name,
+                                        )
+                                        .filter((v) => v !== undefined) ?? []
                                 }
                                 showDropdown={true}
                                 showAddButton={false}

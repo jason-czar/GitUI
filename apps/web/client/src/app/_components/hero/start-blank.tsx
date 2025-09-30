@@ -15,9 +15,9 @@ export function StartBlank({
     isCreatingProject,
     setIsCreatingProject,
 }: {
-    user: User | null,
-    isCreatingProject: boolean,
-    setIsCreatingProject: (isCreatingProject: boolean) => void,
+    user: User | null;
+    isCreatingProject: boolean;
+    setIsCreatingProject: (isCreatingProject: boolean) => void;
 }) {
     const { mutateAsync: forkSandbox } = api.sandbox.fork.useMutation();
     const { mutateAsync: createProject } = api.project.create.useMutation();
@@ -63,7 +63,8 @@ export function StartBlank({
 
             if (errorMessage.includes('502') || errorMessage.includes('sandbox')) {
                 toast.error('Sandbox service temporarily unavailable', {
-                    description: 'Please try again in a few moments. Our servers may be experiencing high load.',
+                    description:
+                        'Please try again in a few moments. Our servers may be experiencing high load.',
                 });
             } else {
                 toast.error('Failed to create project', {
@@ -88,5 +89,5 @@ export function StartBlank({
             )}
             Start a Blank Project
         </button>
-    )
+    );
 }

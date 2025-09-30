@@ -30,10 +30,11 @@ export const InputRange = ({
 
     // Create debounced onChange handler
     const debouncedOnChange = useMemo(
-        () => debounce((newValue: number) => {
-            onChange?.(newValue);
-        }, 500),
-        [onChange]
+        () =>
+            debounce((newValue: number) => {
+                onChange?.(newValue);
+            }, 500),
+        [onChange],
     );
 
     // Cleanup debounce on unmount
@@ -71,7 +72,7 @@ export const InputRange = ({
             const direction = e.key === 'ArrowUp' ? 1 : -1;
             const currentValue = Number(localValue);
             if (!isNaN(currentValue)) {
-                const newValue = currentValue + (step * direction);
+                const newValue = currentValue + step * direction;
                 setLocalValue(String(newValue));
                 debouncedOnChange(newValue);
             }
@@ -126,6 +127,7 @@ export const InputRange = ({
                         [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:cursor-grab hover:[&::-moz-range-thumb]:bg-white/90 active:[&::-moz-range-thumb]:cursor-grabbing
                         [&::-ms-thumb]:appearance-none [&::-ms-thumb]:w-4 [&::-ms-thumb]:h-4 [&::-ms-thumb]:rounded-full [&::-ms-thumb]:bg-white [&::-ms-thumb]:cursor-grab hover:[&::-ms-thumb]:bg-white/90 active:[&::-ms-thumb]:cursor-grabbing"
                 />
+
                 <div className="flex items-center bg-background-tertiary/50 justify-between rounded-md px-3 h-[36px]">
                     <input
                         type="text"

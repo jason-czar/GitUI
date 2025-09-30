@@ -12,9 +12,9 @@ import { Settings } from '../settings';
 export function ProjectCard({
     project,
     refetch,
-    aspectRatio = "aspect-[4/2.6]",
-    searchQuery = "",
-    HighlightText
+    aspectRatio = 'aspect-[4/2.6]',
+    searchQuery = '',
+    HighlightText,
 }: {
     project: Project;
     refetch: () => void;
@@ -43,7 +43,10 @@ export function ProjectCard({
         };
     }, [project.metadata?.previewImg]);
 
-    const lastUpdated = useMemo(() => timeAgo(project.metadata.updatedAt), [project.metadata.updatedAt]);
+    const lastUpdated = useMemo(
+        () => timeAgo(project.metadata.updatedAt),
+        [project.metadata.updatedAt],
+    );
 
     return (
         <motion.div
@@ -53,13 +56,27 @@ export function ProjectCard({
             transition={{ type: 'spring', stiffness: 300, damping: 24 }}
             className="w-full break-inside-avoid cursor-pointer"
         >
-            <div className={`relative ${aspectRatio} rounded-lg overflow-hidden shadow-sm hover:shadow-xl hover:shadow-black/20 transition-all duration-300 group`}>
+            <div
+                className={`relative ${aspectRatio} rounded-lg overflow-hidden shadow-sm hover:shadow-xl hover:shadow-black/20 transition-all duration-300 group`}
+            >
                 {img ? (
-                    <img src={img} alt={project.name} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                    <img
+                        src={img}
+                        alt={project.name}
+                        className="absolute inset-0 w-full h-full object-cover"
+                        loading="lazy"
+                    />
                 ) : (
                     <>
                         <div className="absolute inset-0 w-full h-full bg-gradient-to-t from-gray-800/40 via-gray-500/40 to-gray-400/40" />
-                        <div className="absolute inset-0 rounded-lg border-[0.5px] border-gray-500/70" style={{ maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)' }} />
+
+                        <div
+                            className="absolute inset-0 rounded-lg border-[0.5px] border-gray-500/70"
+                            style={{
+                                maskImage:
+                                    'linear-gradient(to bottom, black 60%, transparent 100%)',
+                            }}
+                        />
                     </>
                 )}
 
@@ -72,14 +89,12 @@ export function ProjectCard({
                 </div>
 
                 <div className="absolute inset-0 flex items-center justify-center bg-background/30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none group-hover:pointer-events-auto z-20">
-                    <EditAppButton
-                        project={project}
-                    />
+                    <EditAppButton project={project} />
                 </div>
 
                 <div
                     className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background via-background/20 to-transparent p-4 h-32 transition-all duration-300 group-hover:from-background group-hover:via-background/40"
-                    style={{ bottom: "-1px", left: "-1px", right: "-1px" }}
+                    style={{ bottom: '-1px', left: '-1px', right: '-1px' }}
                 >
                     <div className="flex justify-between items-end h-full">
                         <div>
@@ -96,7 +111,10 @@ export function ProjectCard({
                             {SHOW_DESCRIPTION && project.metadata?.description && (
                                 <div className="text-white/60 text-xs line-clamp-1 drop-shadow-lg">
                                     {HighlightText ? (
-                                        <HighlightText text={project.metadata.description} searchQuery={searchQuery} />
+                                        <HighlightText
+                                            text={project.metadata.description}
+                                            searchQuery={searchQuery}
+                                        />
                                     ) : (
                                         project.metadata.description
                                     )}

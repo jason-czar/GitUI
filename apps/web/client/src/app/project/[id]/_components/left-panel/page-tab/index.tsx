@@ -140,6 +140,7 @@ export const PagesTab = observer(() => {
                     }
                 />
             ),
+
             animationDuration: 200,
         }),
         [filteredPages, dimensions.height, dimensions.width, highlightedIndex, editorEngine.pages],
@@ -160,6 +161,7 @@ export const PagesTab = observer(() => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                         onKeyDown={handleKeyDown}
                     />
+
                     {searchQuery && (
                         <button
                             className="hover:bg-background-onlook group absolute top-[1px] right-[1px] bottom-[1px] flex aspect-square items-center justify-center rounded-r-[calc(theme(borderRadius.md)-1px)] active:bg-transparent"

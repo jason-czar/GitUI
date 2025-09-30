@@ -27,7 +27,19 @@ function useOperatingSystem() {
     return os;
 }
 
-function VersionRow({ title, subtitle, children, selected, onClick }: { title: string, subtitle: string, children?: React.ReactNode, selected?: boolean, onClick?: () => void }) {
+function VersionRow({
+    title,
+    subtitle,
+    children,
+    selected,
+    onClick,
+}: {
+    title: string;
+    subtitle: string;
+    children?: React.ReactNode;
+    selected?: boolean;
+    onClick?: () => void;
+}) {
     return (
         <div
             className={`flex flex-row items-center justify-between px-4 py-3 cursor-pointer transition-colors ${selected ? 'bg-background-onlook/90' : 'bg-transparent'} hover:bg-background-onlook/90`}
@@ -42,7 +54,13 @@ function VersionRow({ title, subtitle, children, selected, onClick }: { title: s
     );
 }
 
-function ParallaxContainer({ children, speed = 0.1 }: { children: React.ReactNode, speed?: number }) {
+function ParallaxContainer({
+    children,
+    speed = 0.1,
+}: {
+    children: React.ReactNode;
+    speed?: number;
+}) {
     const containerRef = useRef<HTMLDivElement>(null);
     const [transform, setTransform] = useState(0);
     const ticking = useRef(false);
@@ -88,7 +106,7 @@ function ParallaxContainer({ children, speed = 0.1 }: { children: React.ReactNod
                 transition: 'transform 0.1s cubic-bezier(0.4, 0, 0.2, 1)',
                 willChange: 'transform',
                 backfaceVisibility: 'hidden',
-                perspective: '1000px'
+                perspective: '1000px',
             }}
         >
             {children}
@@ -120,6 +138,7 @@ export function WhatCanOnlookDoSection() {
         'bg-gradient-to-br from-gray-400 to-gray-700',
         'bg-gradient-to-br from-gray-400 to-gray-700',
     ];
+
     // Demo images for carousel (null if no image)
     const demoImages = [
         '/assets/site-version-1.png',
@@ -127,6 +146,7 @@ export function WhatCanOnlookDoSection() {
         '/assets/site-version-3.png',
         '/assets/site-version-4.png',
     ];
+
     // Version data for Today section
     const todayVersions = [
         { title: 'New typography and layout', subtitle: 'Alessandro · 3h ago' },
@@ -203,7 +223,10 @@ export function WhatCanOnlookDoSection() {
         setLastUserInteraction(Date.now());
     };
 
-    const handleResize = (e: React.MouseEvent, position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right') => {
+    const handleResize = (
+        e: React.MouseEvent,
+        position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right',
+    ) => {
         e.stopPropagation();
         const element = e.currentTarget as HTMLDivElement;
         const parent = element.parentElement as HTMLDivElement;
@@ -286,11 +309,20 @@ export function WhatCanOnlookDoSection() {
             <div className="w-full max-w-6xl mx-auto py-32 px-8 flex flex-col md:flex-row gap-24 md:gap-24">
                 {/* Left Column */}
                 <div className="flex-1 flex flex-col gap-24">
-                <div className="flex-1">
-                    <h2 className="text-4xl lg:text-5xl font-light text-foreground-primary leading-tight">
-                        <span className="bg-gradient-to-l from-white/20 via-white/90 to-white/20 bg-[length:200%_100%] bg-clip-text text-transparent animate-shimmer filter drop-shadow-[0_0_14px_rgba(255,255,255,1)]">AI</span> <span className="text-foreground-tertiary">•</span> <span className="font-mono">Code</span> <span className="text-foreground-tertiary">•</span> <span className="font-['Vujahday_Script'] not-italic text-5xl large:text-6xl">Design</span><br /> Side-by-side-by-side
-                    </h2>
-                </div>
+                    <div className="flex-1">
+                        <h2 className="text-4xl lg:text-5xl font-light text-foreground-primary leading-tight">
+                            <span className="bg-gradient-to-l from-white/20 via-white/90 to-white/20 bg-[length:200%_100%] bg-clip-text text-transparent animate-shimmer filter drop-shadow-[0_0_14px_rgba(255,255,255,1)]">
+                                AI
+                            </span>{' '}
+                            <span className="text-foreground-tertiary">•</span>{' '}
+                            <span className="font-mono">Code</span>{' '}
+                            <span className="text-foreground-tertiary">•</span>{' '}
+                            <span className="font-['Vujahday_Script'] not-italic text-5xl large:text-6xl">
+                                Design
+                            </span>
+                            <br /> Side-by-side-by-side
+                        </h2>
+                    </div>
                     <DirectEditingBlock />
                     <ComponentsBlock />
                     <RevisionHistory />
@@ -304,39 +336,69 @@ export function WhatCanOnlookDoSection() {
             </div>
             {/* Grid extension section */}
             <div className="w-full max-w-6xl mx-auto py-32 px-8">
-                <h2 className="text-foreground-primary text-6xl text-right leading-[1.1] font-light mb-20">...and so<br />much more</h2>
+                <h2 className="text-foreground-primary text-6xl text-right leading-[1.1] font-light mb-20">
+                    ...and so
+                    <br />
+                    much more
+                </h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-x-16 gap-y-20">
                     <div>
-                        <div className="text-foreground-primary text-regularPlus mb-2 text-balance">Import from GitHub or locally</div>
-                        <div className="text-foreground-secondary text-regular text-balance">Bring your existing React / Next.js / Tailwind codebase and start building</div>
-                    </div>
-                    <div>
-                        <div className="text-foreground-primary text-regularPlus mb-2 text-balance">Import from Figma</div>
-                        <div className="text-foreground-secondary text-regular text-balance">Make your designs come to life with a real working product</div>
-                    </div>
-                    <div>
-                        <div className="text-foreground-primary text-regularPlus mb-2 text-balance">Publish your work</div>
-                        <div className="text-foreground-secondary text-regular text-balance">Attach a custom domain and share your work with the world</div>
-                    </div>
-                    <div>
-                        <div className="text-foreground-primary text-regularPlus mb-2 text-balance">Draw-in Layers</div>
-                        <div className="text-foreground-secondary text-regular text-balance">Trace divs and text directly in your designs and create code in real-time</div>
-                    </div>
-                    <div>
-                        <div className="text-foreground-primary text-regularPlus mb-2 text-balance">All your favorite hotkeys</div>
+                        <div className="text-foreground-primary text-regularPlus mb-2 text-balance">
+                            Import from GitHub or locally
+                        </div>
                         <div className="text-foreground-secondary text-regular text-balance">
-                            <span className={`transition-all duration-250 mr-1 inline-block ${isShortcutAnimating ? 'blur-sm opacity-50 -translate-x-1' : 'blur-0 opacity-100 translate-x-0'}`}>
+                            Bring your existing React / Next.js / Tailwind codebase and start
+                            building
+                        </div>
+                    </div>
+                    <div>
+                        <div className="text-foreground-primary text-regularPlus mb-2 text-balance">
+                            Import from Figma
+                        </div>
+                        <div className="text-foreground-secondary text-regular text-balance">
+                            Make your designs come to life with a real working product
+                        </div>
+                    </div>
+                    <div>
+                        <div className="text-foreground-primary text-regularPlus mb-2 text-balance">
+                            Publish your work
+                        </div>
+                        <div className="text-foreground-secondary text-regular text-balance">
+                            Attach a custom domain and share your work with the world
+                        </div>
+                    </div>
+                    <div>
+                        <div className="text-foreground-primary text-regularPlus mb-2 text-balance">
+                            Draw-in Layers
+                        </div>
+                        <div className="text-foreground-secondary text-regular text-balance">
+                            Trace divs and text directly in your designs and create code in
+                            real-time
+                        </div>
+                    </div>
+                    <div>
+                        <div className="text-foreground-primary text-regularPlus mb-2 text-balance">
+                            All your favorite hotkeys
+                        </div>
+                        <div className="text-foreground-secondary text-regular text-balance">
+                            <span
+                                className={`transition-all duration-250 mr-1 inline-block ${isShortcutAnimating ? 'blur-sm opacity-50 -translate-x-1' : 'blur-0 opacity-100 translate-x-0'}`}
+                            >
                                 {getKeyboardShortcut()}
                             </span>
                             and design lightning fast with all your favorite shortcuts
                         </div>
                     </div>
                     <div>
-                        <div className="text-foreground-primary text-regularPlus mb-2 text-balance">Use Images and media assets</div>
-                        <div className="text-foreground-secondary text-regular text-balance">Manage your graphics and images all from one place</div>
+                        <div className="text-foreground-primary text-regularPlus mb-2 text-balance">
+                            Use Images and media assets
+                        </div>
+                        <div className="text-foreground-secondary text-regular text-balance">
+                            Manage your graphics and images all from one place
+                        </div>
                     </div>
                 </div>
             </div>
         </>
     );
-} 
+}

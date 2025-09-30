@@ -24,7 +24,10 @@ export const ContextWheel = observer(({ className }: ContextWheelProps) => {
             // Use cumulative token usage from all API responses
             // Assume a context window of ~200k tokens for Claude 4 Sonnet
             const maxContextTokens = 200000;
-            const percentage = Math.min((cumulativeUsage.totalTokens / maxContextTokens) * 100, 100);
+            const percentage = Math.min(
+                (cumulativeUsage.totalTokens / maxContextTokens) * 100,
+                100,
+            );
             return Math.round(percentage);
         }
 
@@ -35,7 +38,7 @@ export const ContextWheel = observer(({ className }: ContextWheelProps) => {
         let estimatedTokens = 0;
 
         // Count tokens from context items (current context)
-        contextItems.forEach(item => {
+        contextItems.forEach((item) => {
             if (item.content) {
                 // Rough estimate: 1 token ≈ 4 characters for English text
                 estimatedTokens += Math.ceil(item.content.length / 4);
@@ -43,11 +46,11 @@ export const ContextWheel = observer(({ className }: ContextWheelProps) => {
         });
 
         // Count tokens from ALL messages in the conversation (not just recent ones)
-        messages.forEach(message => {
+        messages.forEach((message) => {
             // Extract text content from message parts
             const textContent = message.parts
-                .filter(part => part.type === 'text')
-                .map(part => (part as any).text)
+                .filter((part) => part.type === 'text')
+                .map((part) => (part as any).text)
                 .join(' ');
             if (textContent) {
                 estimatedTokens += Math.ceil(textContent.length / 4);
@@ -96,12 +99,14 @@ export const ContextWheel = observer(({ className }: ContextWheelProps) => {
     return (
         <Tooltip>
             <TooltipTrigger asChild>
-                <div className={cn('flex items-center gap-1 cursor-help bg-background-tertiary/20 rounded px-1.5 py-1', className)}>
+                <div
+                    className={cn(
+                        'flex items-center gap-1 cursor-help bg-background-tertiary/20 rounded px-1.5 py-1',
+                        className,
+                    )}
+                >
                     <div className="relative w-4 h-4">
-                        <svg
-                            className="w-4 h-4 transform -rotate-90"
-                            viewBox="0 0 16 16"
-                        >
+                        <svg className="w-4 h-4 transform -rotate-90" viewBox="0 0 16 16">
                             {/* Background circle */}
                             <circle
                                 cx="8"
@@ -112,6 +117,7 @@ export const ContextWheel = observer(({ className }: ContextWheelProps) => {
                                 fill="none"
                                 className="text-foreground-tertiary/20"
                             />
+
                             {/* Progress circle */}
                             <circle
                                 cx="8"
@@ -127,7 +133,12 @@ export const ContextWheel = observer(({ className }: ContextWheelProps) => {
                             />
                         </svg>
                     </div>
-                    <span className={cn('text-small tabular-nums text-foreground-tertiary', getColorClass(contextPercentage))}>
+                    <span
+                        className={cn(
+                            'text-small tabular-nums text-foreground-tertiary',
+                            getColorClass(contextPercentage),
+                        )}
+                    >
                         {contextPercentage}%
                     </span>
                 </div>
@@ -138,9 +149,16 @@ export const ContextWheel = observer(({ className }: ContextWheelProps) => {
                     <div className="space-y-0.5 text-background-primary">
                         {cumulativeUsage && cumulativeUsage.totalTokens > 0 ? (
                             <>
-                                <div>{cumulativeUsage.totalTokens.toLocaleString()} total tokens</div>
-                                <div>{cumulativeUsage.promptTokens.toLocaleString()} prompt tokens</div>
-                                <div>{cumulativeUsage.completionTokens.toLocaleString()} completion tokens</div>
+                                <div>
+                                    {cumulativeUsage.totalTokens.toLocaleString()} total tokens
+                                </div>
+                                <div>
+                                    {cumulativeUsage.promptTokens.toLocaleString()} prompt tokens
+                                </div>
+                                <div>
+                                    {cumulativeUsage.completionTokens.toLocaleString()} completion
+                                    tokens
+                                </div>
                                 <div className="text-background-primary">
                                     {contextPercentage}% of context window
                                 </div>

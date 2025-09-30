@@ -10,6 +10,7 @@ export const env = createEnv({
         NODE_ENV: z.enum(['development', 'test', 'production']),
         CSB_API_KEY: z.string(),
         SUPABASE_DATABASE_URL: z.string().url(),
+        POSTGRES_URL_NON_POOLING: z.string().url().optional(),
         RESEND_API_KEY: z.string().optional(),
         FREESTYLE_API_KEY: z.string().optional(),
 
@@ -52,10 +53,15 @@ export const env = createEnv({
         LANGFUSE_PUBLIC_KEY: z.string().optional(),
         LANGFUSE_BASEURL: z.string().url().optional(),
 
-        // GitHub
+        // GitHub App (existing)
         GITHUB_APP_ID: z.string().optional(),
         GITHUB_APP_PRIVATE_KEY: z.string().optional(),
         GITHUB_APP_SLUG: z.string().optional(),
+        
+        // GitHub OAuth (for GitUI)
+        GITHUB_CLIENT_ID: z.string().optional(),
+        GITHUB_CLIENT_SECRET: z.string().optional(),
+        SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
     },
     /**
      * Specify your client-side environment variables schema here. This way you can ensure the app
@@ -72,6 +78,7 @@ export const env = createEnv({
         NEXT_PUBLIC_FEATURE_COLLABORATION: z.boolean().default(false),
         NEXT_PUBLIC_HOSTING_DOMAIN: z.string().optional(),
         NEXT_PUBLIC_RB2B_ID: z.string().optional(),
+        NEXT_PUBLIC_GITHUB_SCOPES: z.string().default('repo,read:org'),
     },
 
     /**
@@ -86,6 +93,7 @@ export const env = createEnv({
 
         // Supabase
         SUPABASE_DATABASE_URL: process.env.SUPABASE_DATABASE_URL,
+        POSTGRES_URL_NON_POOLING: process.env.POSTGRES_URL_NON_POOLING,
         NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
         NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
         NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
@@ -97,6 +105,9 @@ export const env = createEnv({
 
         // RB2B
         NEXT_PUBLIC_RB2B_ID: process.env.NEXT_PUBLIC_RB2B_ID,
+        
+        // GitHub OAuth client
+        NEXT_PUBLIC_GITHUB_SCOPES: process.env.NEXT_PUBLIC_GITHUB_SCOPES,
 
         // Hosting
         FREESTYLE_API_KEY: process.env.FREESTYLE_API_KEY,
@@ -141,10 +152,15 @@ export const env = createEnv({
         LANGFUSE_PUBLIC_KEY: process.env.LANGFUSE_PUBLIC_KEY,
         LANGFUSE_BASEURL: process.env.LANGFUSE_BASEURL,
 
-        // GitHub
+        // GitHub App (existing)
         GITHUB_APP_ID: process.env.GITHUB_APP_ID,
         GITHUB_APP_PRIVATE_KEY: process.env.GITHUB_APP_PRIVATE_KEY,
         GITHUB_APP_SLUG: process.env.GITHUB_APP_SLUG,
+        
+        // GitHub OAuth (for GitUI)
+        GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
+        GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+        SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
     },
     /**
      * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

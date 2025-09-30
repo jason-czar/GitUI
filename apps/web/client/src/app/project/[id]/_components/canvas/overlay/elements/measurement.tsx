@@ -394,6 +394,7 @@ export const MeasurementOverlay: React.FC<MeasurementProps> = memo(({ fromRect, 
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
+
             <rect
                 x={toRect.left}
                 y={toRect.top}
@@ -424,6 +425,7 @@ export const MeasurementOverlay: React.FC<MeasurementProps> = memo(({ fromRect, 
                             strokeLinecap="round"
                             strokeLinejoin="round"
                         />
+
                         {distance.supportLine && (
                             <line
                                 x1={distance.supportLine.start.x}
@@ -446,6 +448,7 @@ export const MeasurementOverlay: React.FC<MeasurementProps> = memo(({ fromRect, 
                                 fill={colors.red[500]}
                                 rx={2}
                             />
+
                             <text
                                 x={0}
                                 y={0}

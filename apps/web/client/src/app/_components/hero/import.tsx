@@ -1,7 +1,8 @@
 'use client';
 
 import { api } from '@/trpc/react';
-import { LocalForageKeys, Routes } from '@/utils/constants';
+import { LocalForageKeys } from '@/utils/constants';
+import { Button } from '@onlook/ui/button';
 import { Icons } from '@onlook/ui/icons/index';
 import localforage from 'localforage';
 import { useRouter } from 'next/navigation';
@@ -12,25 +13,27 @@ export function Import() {
     const { data: user } = api.user.get.useQuery();
     const { setIsAuthModalOpen } = useAuthContext();
 
-    const handleImportProject = () => {
+    const handleImportFromGitHub = () => {
         if (!user?.id) {
             // Store the return URL and open auth modal
-            localforage.setItem(LocalForageKeys.RETURN_URL, Routes.IMPORT_PROJECT);
+            void localforage.setItem(LocalForageKeys.RETURN_URL, '/projects/import/github');
             setIsAuthModalOpen(true);
             return;
         }
 
-        // Navigate to import project flow
-        router.push(Routes.IMPORT_PROJECT);
+        // Navigate directly to GitHub import flow
+        router.push('/projects/import/github');
     };
 
     return (
-        <button
-            onClick={handleImportProject}
-            className="text-sm text-foreground-secondary hover:text-foreground transition-colors duration-200 flex items-center gap-2"
+        <Button
+            onClick={handleImportFromGitHub}
+            variant="outline"
+            size="lg"
+            className="bg-background/80 backdrop-blur-sm border-foreground-tertiary/50 hover:bg-background/90 hover:border-foreground-secondary/50 transition-all duration-200 flex items-center gap-2 px-6 py-3"
         >
-            <Icons.Upload className="w-4 h-4" />
-            Import a Next.js App
-        </button>
-    )
+            <Icons.GitHubLogo className="w-5 h-5" />
+            Import from GitHub
+        </Button>
+    );
 }

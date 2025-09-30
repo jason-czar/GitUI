@@ -16,19 +16,19 @@ export const PricingTable = () => {
     return (
         <div className="flex flex-col items-center gap-6 sm:gap-8 w-full max-w-6xl mx-auto">
             <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 items-center lg:items-stretch w-full">
-                <FreeCard 
-                    delay={0.1} 
+                <FreeCard
+                    delay={0.1}
                     isUnauthenticated={!user}
                     onSignupClick={() => setIsAuthModalOpen(true)}
                 />
-                <ProCard 
-                    delay={0.2} 
+
+                <ProCard
+                    delay={0.2}
                     isUnauthenticated={!user}
                     onSignupClick={() => setIsAuthModalOpen(true)}
                 />
-                <EnterpriseCard 
-                    delay={0.3}
-                />
+
+                <EnterpriseCard delay={0.3} />
             </div>
             <div className="text-center">
                 <p className="text-foreground-secondary/60 text-small text-balance">

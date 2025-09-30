@@ -39,7 +39,11 @@ export const DeleteImageModal = () => {
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <Button variant={'ghost'} onClick={handleClose} disabled={deleteState.isLoading}>
+                    <Button
+                        variant={'ghost'}
+                        onClick={handleClose}
+                        disabled={deleteState.isLoading}
+                    >
                         Cancel
                     </Button>
                     <Button
@@ -61,4 +65,4 @@ export const DeleteImageModal = () => {
             </AlertDialogContent>
         </AlertDialog>
     );
-}
+};

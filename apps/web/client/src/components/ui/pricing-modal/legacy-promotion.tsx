@@ -1,9 +1,9 @@
-import { Button } from "@onlook/ui/button";
-import { Icons } from "@onlook/ui/icons/index";
-import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
-import { toast } from "sonner";
-import { api } from "~/trpc/react";
+import { Button } from '@onlook/ui/button';
+import { Icons } from '@onlook/ui/icons/index';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import { api } from '~/trpc/react';
 
 export const LegacyPromotion = () => {
     const { data: legacySubscriptions } = api.subscription.getLegacySubscriptions.useQuery();
@@ -42,7 +42,11 @@ export const LegacyPromotion = () => {
                                 toast.success('Copied to clipboard');
                             }}
                         >
-                            {isCopied ? <Icons.Check className="w-4 h-4" /> : <Icons.Copy className="w-4 h-4" />}
+                            {isCopied ? (
+                                <Icons.Check className="w-4 h-4" />
+                            ) : (
+                                <Icons.Copy className="w-4 h-4" />
+                            )}
                             {isCopied ? 'Copied' : 'Copy'}
                         </Button>
                     </div>

@@ -58,10 +58,12 @@ export const SetupGithub = () => {
     // Filter repositories by organization and search query
     const filteredRepositories = githubData.repositories.filter((repo: any) => {
         const matchesOrg = selectedOrg ? repo.owner.login === selectedOrg.login : true;
-        const matchesSearch = searchQuery.trim() === '' ||
+        const matchesSearch =
+            searchQuery.trim() === '' ||
             repo.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             repo.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            (repo.description && repo.description.toLowerCase().includes(searchQuery.toLowerCase()));
+            (repo.description &&
+                repo.description.toLowerCase().includes(searchQuery.toLowerCase()));
         return matchesOrg && matchesSearch;
     });
 
@@ -136,6 +138,7 @@ export const SetupGithub = () => {
                                                     alt={org.login}
                                                     className="w-4 h-4 rounded-full"
                                                 />
+
                                                 <span>{org.login}</span>
                                                 {org.description && (
                                                     <span className="text-xs text-foreground-secondary ml-1 truncate">
@@ -166,18 +169,26 @@ export const SetupGithub = () => {
                                             githubData.fetchOrganizations();
                                             githubData.fetchRepositories();
                                         }}
-                                        disabled={githubData.isLoadingRepositories || githubData.isLoadingOrganizations}
+                                        disabled={
+                                            githubData.isLoadingRepositories ||
+                                            githubData.isLoadingOrganizations
+                                        }
                                         className="w-8 h-8 rounded border bg-background hover:bg-secondary transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
                                         title="Refresh repositories"
                                     >
-                                        <Icons.Reload className={`h-4 w-4 text-foreground-tertiary ${(githubData.isLoadingRepositories || githubData.isLoadingOrganizations) ? 'animate-spin' : ''}`} />
+                                        <Icons.Reload
+                                            className={`h-4 w-4 text-foreground-tertiary ${githubData.isLoadingRepositories || githubData.isLoadingOrganizations ? 'animate-spin' : ''}`}
+                                        />
                                     </button>
                                     <motion.div
                                         ref={searchContainerRef}
                                         className="relative"
                                         initial={false}
                                         animate={isSearchExpanded ? { width: 240 } : { width: 32 }}
-                                        transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+                                        transition={{
+                                            duration: 0.2,
+                                            ease: [0.25, 0.46, 0.45, 0.94],
+                                        }}
                                     >
                                         {!isSearchExpanded ? (
                                             <button
@@ -189,6 +200,7 @@ export const SetupGithub = () => {
                                         ) : (
                                             <>
                                                 <Icons.MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground-tertiary z-10" />
+
                                                 <Input
                                                     ref={searchInputRef}
                                                     value={searchQuery}
@@ -196,6 +208,7 @@ export const SetupGithub = () => {
                                                     placeholder="Search repositories"
                                                     className="pl-9 pr-7 text-sm h-8 focus-visible:border-transparent focus-visible:ring-0"
                                                 />
+
                                                 {searchQuery && (
                                                     <button
                                                         onClick={() => setSearchQuery('')}
@@ -231,9 +244,11 @@ export const SetupGithub = () => {
                                         </div>
                                     ) : filteredRepositories.length === 0 ? (
                                         <div className="flex items-center justify-center h-full text-sm text-foreground-secondary">
-                                            {searchQuery ? 'No repositories match your search' :
-                                                selectedOrg ? `No repositories found for ${selectedOrg.login}` :
-                                                    'No repositories found'}
+                                            {searchQuery
+                                                ? 'No repositories match your search'
+                                                : selectedOrg
+                                                  ? `No repositories found for ${selectedOrg.login}`
+                                                  : 'No repositories found'}
                                         </div>
                                     ) : (
                                         <div
@@ -244,9 +259,10 @@ export const SetupGithub = () => {
                                             {filteredRepositories.map((repo: any) => (
                                                 <button
                                                     key={repo.id}
-                                                    onClick={() => handleRepositorySelect(repo.full_name)}
-                                                    className={`w-full text-left p-3 border-b last:border-b-0 hover:bg-secondary transition-colors ${selectedRepo?.id === repo.id ? 'bg-secondary' : ''
-                                                        }`}
+                                                    onClick={() =>
+                                                        handleRepositorySelect(repo.full_name)
+                                                    }
+                                                    className={`w-full text-left p-3 border-b last:border-b-0 hover:bg-secondary transition-colors ${selectedRepo?.id === repo.id ? 'bg-secondary' : ''}`}
                                                 >
                                                     <div className="flex items-center gap-2">
                                                         <div className="flex items-center gap-1">
@@ -255,9 +271,15 @@ export const SetupGithub = () => {
                                                             ) : (
                                                                 <Icons.Globe className="w-3 h-3 text-foreground-secondary" />
                                                             )}
-                                                            <span className="font-medium text-sm">{repo.owner.login}</span>
-                                                            <span className="text-foreground-secondary">/</span>
-                                                            <span className="text-sm">{repo.name}</span>
+                                                            <span className="font-medium text-sm">
+                                                                {repo.owner.login}
+                                                            </span>
+                                                            <span className="text-foreground-secondary">
+                                                                /
+                                                            </span>
+                                                            <span className="text-sm">
+                                                                {repo.name}
+                                                            </span>
                                                         </div>
                                                         {selectedRepo?.id === repo.id && (
                                                             <Icons.Check className="w-4 h-4 text-green-500 ml-auto" />
@@ -277,7 +299,8 @@ export const SetupGithub = () => {
 
                             {selectedRepo && (
                                 <div className="text-sm text-foreground-secondary">
-                                    Selected: <span className="font-medium">{selectedRepo.full_name}</span>
+                                    Selected:{' '}
+                                    <span className="font-medium">{selectedRepo.full_name}</span>
                                 </div>
                             )}
                         </div>
@@ -293,12 +316,16 @@ export const SetupGithub = () => {
                         <Icons.Gear className="w-4 h-4 mr-2" />
                         Configure
                     </Button>
-                    <Button className="px-3 py-2" onClick={nextStep} disabled={!selectedRepo || repositoryImport.isImporting}>
+                    <Button
+                        className="px-3 py-2"
+                        onClick={nextStep}
+                        disabled={!selectedRepo || repositoryImport.isImporting}
+                    >
                         <Icons.Download className="w-4 h-4 mr-2" />
                         <span>Import</span>
                     </Button>
                 </div>
-            </StepFooter >
+            </StepFooter>
         </>
     );
 };

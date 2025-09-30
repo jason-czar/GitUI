@@ -51,6 +51,7 @@ export const BaseRect: React.FC<RectProps> = ({
                     strokeLinecap="round"
                     strokeLinejoin="round"
                 />
+
                 {children}
             </svg>
         </div>

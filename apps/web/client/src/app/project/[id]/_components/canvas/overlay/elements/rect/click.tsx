@@ -115,7 +115,7 @@ export const ClickRect = ({
         const checkMarginAuto = (side: string) => {
             const marginSide = styles?.defined?.[`margin-${side}`];
             const margin = styles?.defined?.margin;
-            const isMarginNumber = marginSide && /^\d+/.test(marginSide)
+            const isMarginNumber = marginSide && /^\d+/.test(marginSide);
 
             if (isMarginNumber) {
                 return false;
@@ -129,6 +129,7 @@ export const ClickRect = ({
                 <defs>
                     <pattern id={patternId} patternUnits="userSpaceOnUse" width="20" height="20">
                         <rect width="20" height="20" fill={colors.blue[500]} fillOpacity="0.1" />
+
                         <line
                             x1="0"
                             y1="20"
@@ -147,6 +148,7 @@ export const ClickRect = ({
                             height={height + adjusted.top + adjusted.bottom}
                             fill="white"
                         />
+
                         <rect x="0" y="0" width={width} height={height} fill="black" />
                     </mask>
                 </defs>
@@ -228,6 +230,7 @@ export const ClickRect = ({
                 <defs>
                     <pattern id={patternId} patternUnits="userSpaceOnUse" width="20" height="20">
                         <rect width="20" height="20" fill={colors.green[500]} fillOpacity="0.1" />
+
                         <line
                             x1="0"
                             y1="20"
@@ -240,6 +243,7 @@ export const ClickRect = ({
                     </pattern>
                     <mask id={maskId}>
                         <rect x="0" y="0" width={width} height={height} fill="white" />
+
                         <rect
                             x={adjusted.left}
                             y={adjusted.top}

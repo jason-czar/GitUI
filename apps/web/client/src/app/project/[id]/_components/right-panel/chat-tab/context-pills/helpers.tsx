@@ -33,6 +33,7 @@ export function getContextIcon(context: MessageContext) {
             return (
                 <NodeIcon tagName={context.displayName} iconClass="w-3 h-3 ml-1 mr-2 flex-none" />
             );
+
         case MessageContextType.PROJECT:
             icon = Icons.Cube;
             break;
@@ -49,7 +50,7 @@ export function getContextIcon(context: MessageContext) {
 
 export function validateImageLimit(
     currentImages: MessageContext[],
-    additionalCount: number = 0
+    additionalCount: number = 0,
 ): {
     success: boolean;
     errorMessage?: string;

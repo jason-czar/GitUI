@@ -127,6 +127,7 @@ const UploadModal = observer(
                         {isUploading && (
                             <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm">
                                 <Icons.LoadingSpinner className="w-4 h-4 mr-2 animate-spin" />
+
                                 <span className="text-primary text-base font-medium">
                                     Uploading...
                                 </span>
@@ -180,6 +181,7 @@ const UploadModal = observer(
                                             strokeWidth="2"
                                             strokeLinecap="round"
                                         />
+
                                         <path
                                             d="M7 8L12 3L17 8"
                                             stroke="currentColor"
@@ -187,6 +189,7 @@ const UploadModal = observer(
                                             strokeLinecap="round"
                                             strokeLinejoin="round"
                                         />
+
                                         <path
                                             d="M20 21H4"
                                             stroke="currentColor"

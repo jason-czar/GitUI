@@ -33,7 +33,8 @@ export const FolderDropdownMenu = memo(
     }) => {
         const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
-        const { handleRenameFolder, handleDeleteFolder, handleMoveToFolder, moveState } = useFolderContext();
+        const { handleRenameFolder, handleDeleteFolder, handleMoveToFolder, moveState } =
+            useFolderContext();
 
         const handleOpenChange = useCallback(
             (isOpen: boolean) => {
@@ -95,6 +96,7 @@ export const FolderDropdownMenu = memo(
                             >
                                 <span className="flex w-full text-smallPlus items-center">
                                     <Icons.Pencil className="mr-2 h-4 w-4 text-foreground-secondary group-hover:text-foreground-active" />
+
                                     <span>Rename</span>
                                 </span>
                             </Button>
@@ -111,6 +113,7 @@ export const FolderDropdownMenu = memo(
                             >
                                 <span className="flex w-full text-smallPlus items-center">
                                     <Icons.Trash className="mr-2 h-4 w-4 text-foreground-secondary group-hover:text-foreground-active" />
+
                                     <span>Delete</span>
                                 </span>
                             </Button>
@@ -125,6 +128,7 @@ export const FolderDropdownMenu = memo(
                                     >
                                         <span className="flex w-full text-smallPlus items-center">
                                             <Icons.MoveToFolder className="mr-2 h-4 w-4 text-foreground-secondary" />
+
                                             <span>Move to Folder</span>
                                         </span>
                                     </DropdownMenuSubTrigger>

@@ -26,6 +26,7 @@ export const DnsRecords = observer(() => {
             {records.map((record, index) => (
                 <Fragment key={`${record.type}-${record.name}-${index}`}>
                     <RecordField value={record.type} className="col-span-1" copyable={false} />
+
                     <RecordField value={record.name} className="col-span-3" />
                     <RecordField value={record.value} className="col-span-3" />
                 </Fragment>

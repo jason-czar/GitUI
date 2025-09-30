@@ -4,7 +4,7 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuTrigger
+    DropdownMenuTrigger,
 } from '@onlook/ui/dropdown-menu';
 import { Icons } from '@onlook/ui/icons';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@onlook/ui/tooltip';
@@ -50,14 +50,14 @@ export const CodeControls = observer(() => {
                         <DropdownMenuContent align="start">
                             <DropdownMenuItem
                                 className="cursor-pointer"
-                                onClick={() => editorEngine.ide.fileModalOpen = true}
+                                onClick={() => (editorEngine.ide.fileModalOpen = true)}
                             >
                                 <Icons.FilePlus className="h-4 w-4 mr-2" />
                                 Create new file
                             </DropdownMenuItem>
                             <DropdownMenuItem
                                 className="cursor-pointer"
-                                onClick={() => editorEngine.ide.uploadModalOpen = true}
+                                onClick={() => (editorEngine.ide.uploadModalOpen = true)}
                             >
                                 <Icons.Upload className="h-4 w-4 mr-2" />
                                 Upload file
@@ -74,7 +74,7 @@ export const CodeControls = observer(() => {
                         <Button
                             variant="ghost"
                             size="icon"
-                            onClick={() => editorEngine.ide.folderModalOpen = true}
+                            onClick={() => (editorEngine.ide.folderModalOpen = true)}
                             className="p-2 w-fit h-fit hover:bg-background-onlook cursor-pointer"
                         >
                             <Icons.DirectoryPlus className="h-4 w-4" />
@@ -93,16 +93,18 @@ export const CodeControls = observer(() => {
                             onClick={saveFile}
                             disabled={!isDirty}
                             className={cn(
-                                "p-2 w-fit h-fit cursor-pointer",
+                                'p-2 w-fit h-fit cursor-pointer',
                                 isDirty
-                                    ? "text-teal-200 hover:text-teal-100 hover:bg-teal-500"
-                                    : "hover:bg-background-onlook hover:text-teal-200"
+                                    ? 'text-teal-200 hover:text-teal-100 hover:bg-teal-500'
+                                    : 'hover:bg-background-onlook hover:text-teal-200',
                             )}
                         >
-                            <Icons.Save className={cn(
-                                "h-4 w-4",
-                                isDirty && "text-teal-200 group-hover:text-teal-100"
-                            )} />
+                            <Icons.Save
+                                className={cn(
+                                    'h-4 w-4',
+                                    isDirty && 'text-teal-200 group-hover:text-teal-100',
+                                )}
+                            />
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent side="bottom" hideArrow>
@@ -116,4 +118,4 @@ export const CodeControls = observer(() => {
             <UploadModal basePath={basePath} />
         </>
     );
-}); 
+});

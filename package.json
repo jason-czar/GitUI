@@ -1,13 +1,13 @@
 {
-    "name": "@onlook/repo",
+    "name": "@gitui/repo",
     "version": "0.0.0",
-    "description": "Onlook Monorepo",
-    "homepage": "https://onlook.com",
+    "description": "GitUI Monorepo",
+    "homepage": "https://gitui.dev",
     "license": "Apache-2.0",
     "private": true,
     "author": {
-        "name": "Onlook",
-        "email": "contact@onlook.com"
+        "name": "GitUI",
+        "email": "contact@gitui.dev"
     },
     "workspaces": [
         "packages/*",
@@ -39,14 +39,17 @@
         "docker:up": "docker compose up -d",
         "docker:down": "docker compose down",
         "docker:logs": "docker compose logs -f",
-        "docker:restart": "docker compose down && docker compose up -d --build"
+        "docker:restart": "docker compose down && docker compose up -d --build",
+        "deploy:staging": "vercel --prod",
+        "deploy:preview": "vercel",
+        "postdeploy": "bun scripts/postdeploy.ts"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/onlook-dev/onlook.git"
+        "url": "git+https://github.com/jason-czar/GitUI.git"
     },
     "bugs": {
-        "url": "https://github.com/onlook-dev/onlook/issues"
+        "url": "https://github.com/jason-czar/GitUI/issues"
     },
     "devDependencies": {
         "husky": "^9.1.6"

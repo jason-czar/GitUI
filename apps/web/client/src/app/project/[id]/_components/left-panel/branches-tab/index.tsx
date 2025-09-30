@@ -8,7 +8,6 @@ import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import { BranchManagement } from './branch-management';
 
-
 export const BranchesTab = observer(() => {
     const editorEngine = useEditorEngine();
     const { branches } = editorEngine;
@@ -19,7 +18,9 @@ export const BranchesTab = observer(() => {
 
         try {
             // Find a frame that belongs to this branch
-            const branchFrame = editorEngine.frames.getAll().find(frameData => frameData.frame.branchId === branchId);
+            const branchFrame = editorEngine.frames
+                .getAll()
+                .find((frameData) => frameData.frame.branchId === branchId);
             if (branchFrame) {
                 // Select the frame, which will trigger the reaction to update the active branch
                 editorEngine.frames.select([branchFrame.frame]);
@@ -37,8 +38,13 @@ export const BranchesTab = observer(() => {
         editorEngine.state.branchTab = BranchTabValue.MANAGE;
     };
 
-    if (editorEngine.state.branchTab === BranchTabValue.MANAGE && editorEngine.state.manageBranchId) {
-        const manageBranch = branches.allBranches.find(b => b.id === editorEngine.state.manageBranchId);
+    if (
+        editorEngine.state.branchTab === BranchTabValue.MANAGE &&
+        editorEngine.state.manageBranchId
+    ) {
+        const manageBranch = branches.allBranches.find(
+            (b) => b.id === editorEngine.state.manageBranchId,
+        );
         if (manageBranch) {
             return <BranchManagement branch={manageBranch} />;
         }
@@ -49,7 +55,9 @@ export const BranchesTab = observer(() => {
             <div className="flex items-center justify-between p-4 border-b">
                 <div className="flex items-center gap-2">
                     <h2 className="text-sm">Branches</h2>
-                    <span className="text-xs text-muted-foreground">({branches.allBranches.length})</span>
+                    <span className="text-xs text-muted-foreground">
+                        ({branches.allBranches.length})
+                    </span>
                 </div>
             </div>
 
@@ -63,10 +71,10 @@ export const BranchesTab = observer(() => {
                             <div
                                 key={branch.id}
                                 className={cn(
-                                    "group relative flex items-center gap-3 p-1 px-2 rounded-lg cursor-pointer transition-colors border",
+                                    'group relative flex items-center gap-3 p-1 px-2 rounded-lg cursor-pointer transition-colors border',
                                     isActive
-                                        ? "bg-accent text-foreground border-border"
-                                        : "border-transparent hover:bg-accent/50 text-foreground-secondary hover:text-foreground"
+                                        ? 'bg-accent text-foreground border-border'
+                                        : 'border-transparent hover:bg-accent/50 text-foreground-secondary hover:text-foreground',
                                 )}
                                 onClick={() => handleBranchSwitch(branch.id)}
                                 onMouseEnter={() => setHoveredBranchId(branch.id)}

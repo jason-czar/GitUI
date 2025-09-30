@@ -14,15 +14,15 @@ const MODE_TOGGLE_ITEMS: {
     mode: EditorMode;
     hotkey: Hotkey;
 }[] = [
-        {
-            mode: EditorMode.DESIGN,
-            hotkey: Hotkey.SELECT,
-        },
-        {
-            mode: EditorMode.PREVIEW,
-            hotkey: Hotkey.PREVIEW,
-        },
-    ];
+    {
+        mode: EditorMode.DESIGN,
+        hotkey: Hotkey.SELECT,
+    },
+    {
+        mode: EditorMode.PREVIEW,
+        hotkey: Hotkey.PREVIEW,
+    },
+];
 
 export const ModeToggle = observer(() => {
     const t = useTranslations();
@@ -60,7 +60,11 @@ export const ModeToggle = observer(() => {
                                         : 'text-foreground-secondary text-sm hover:text-foreground-hover hover:bg-transparent',
                                 )}
                             >
-                                {t(transKeys.editor.modes[item.mode.toLowerCase() as keyof typeof transKeys.editor.modes].name)}
+                                {t(
+                                    transKeys.editor.modes[
+                                        item.mode.toLowerCase() as keyof typeof transKeys.editor.modes
+                                    ].name,
+                                )}
                             </ToggleGroupItem>
                         </TooltipTrigger>
                         <TooltipContent side="bottom" className="mt-0" hideArrow>

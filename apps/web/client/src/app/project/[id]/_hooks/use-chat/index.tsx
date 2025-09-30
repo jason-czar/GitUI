@@ -120,7 +120,8 @@ export function useChat({ conversationId, projectId, initialMessages }: UseChatP
 
             // For resubmitted messages, we want to keep the previous context and refresh if possible
             const previousContext = message.metadata?.context ?? [];
-            const updatedContext = await editorEngine.chat.context.getRefreshedContext(previousContext);
+            const updatedContext =
+                await editorEngine.chat.context.getRefreshedContext(previousContext);
 
             message.metadata = {
                 ...message.metadata,

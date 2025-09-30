@@ -16,10 +16,7 @@ export function FAQDropdown({ faqs }: FAQDropdownProps) {
     return (
         <div className="flex flex-col gap-1 w-full">
             {faqs.map((faq, idx) => (
-                <div
-                    key={faq.question}
-                    className="px-0 py-6"
-                >
+                <div key={faq.question} className="px-0 py-6">
                     <button
                         className="flex items-center justify-between w-full text-left text-foreground-primary text-lg focus:outline-none cursor-pointer py-2"
                         onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
@@ -38,10 +35,12 @@ export function FAQDropdown({ faqs }: FAQDropdownProps) {
                         className={`overflow-hidden transition-all duration-300 ${openIndex === idx ? 'mt-4 opacity-100' : 'max-h-0 opacity-0'}`}
                         style={{ pointerEvents: openIndex === idx ? 'auto' : 'none' }}
                     >
-                        <p className="text-foreground-secondary text-regular leading-relaxed">{faq.answer}</p>
+                        <p className="text-foreground-secondary text-regular leading-relaxed">
+                            {faq.answer}
+                        </p>
                     </div>
                 </div>
             ))}
         </div>
     );
-} 
+}

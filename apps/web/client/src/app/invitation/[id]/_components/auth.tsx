@@ -14,19 +14,17 @@ export const HandleAuth = () => {
     const handleLogin = () => {
         const currentUrl = `${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
         router.push(`${Routes.LOGIN}?${getReturnUrlQueryParam(currentUrl)}`);
-    }
+    };
 
     return (
         <div className="flex justify-center items-center h-screen">
             <div className="flex flex-col items-center justify-center gap-4">
                 <div className="text-2xl">You must be logged in to accept this invitation</div>
-                <Button variant="outline"
-                    onClick={handleLogin}
-                >
+                <Button variant="outline" onClick={handleLogin}>
                     <Icons.OnlookLogo className="size-4" />
                     Login or Signup
                 </Button>
             </div>
         </div>
-    )
-}
+    );
+};

@@ -1,5 +1,10 @@
 import { Button } from '@onlook/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@onlook/ui/dropdown-menu';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@onlook/ui/dropdown-menu';
 import { Icons } from '@onlook/ui/icons';
 import { Tooltip, TooltipContent, TooltipPortal, TooltipTrigger } from '@onlook/ui/tooltip';
 import { cn } from '@onlook/ui/utils';
@@ -13,7 +18,6 @@ export const ActionButtons = ({
     handleImageEvent: (file: File, fileName: string) => Promise<void>;
     handleScreenshot: () => Promise<void>;
 }) => {
-
     const handleOpenFileDialog = (e: React.MouseEvent) => {
         e.preventDefault();
         const inputElement = document.createElement('input');

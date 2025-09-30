@@ -9,13 +9,7 @@ import {
     DialogTitle,
 } from '@onlook/ui/dialog';
 import { Icons } from '@onlook/ui/icons';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@onlook/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@onlook/ui/select';
 import { toast } from '@onlook/ui/sonner';
 import { isBinaryFile } from '@onlook/utility';
 import { observer } from 'mobx-react-lite';
@@ -26,10 +20,7 @@ interface UploadModalProps {
     onSuccess?: () => void;
 }
 
-export const UploadModal = observer(({
-    basePath,
-    onSuccess,
-}: UploadModalProps) => {
+export const UploadModal = observer(({ basePath, onSuccess }: UploadModalProps) => {
     const editorEngine = useEditorEngine();
     const files = editorEngine.activeSandbox.files;
     const open = editorEngine.ide.uploadModalOpen;
@@ -41,7 +32,7 @@ export const UploadModal = observer(({
 
     const availableDirectories = useMemo(() => {
         const directories = new Set<string>();
-        files.forEach(file => {
+        files.forEach((file) => {
             const parts = file.split('/');
             for (let i = 1; i < parts.length; i++) {
                 directories.add(parts.slice(0, i).join('/'));
@@ -107,7 +98,10 @@ export const UploadModal = observer(({
                 let success: boolean;
                 if (isBinaryFile(file.name)) {
                     const content = await file.arrayBuffer();
-                    success = await editorEngine.activeSandbox.writeBinaryFile(finalPath, new Uint8Array(content));
+                    success = await editorEngine.activeSandbox.writeBinaryFile(
+                        finalPath,
+                        new Uint8Array(content),
+                    );
                 } else {
                     const content = await file.text();
                     success = await editorEngine.activeSandbox.writeFile(finalPath, content);
@@ -117,25 +111,28 @@ export const UploadModal = observer(({
             }
 
             // Check if all uploads succeeded
-            const failedCount = uploadResults.filter(result => !result).length;
+            const failedCount = uploadResults.filter((result) => !result).length;
 
             if (failedCount === 0) {
                 editorEngine.activeSandbox.listAllFiles();
 
                 const fileCount = selectedFiles.length;
-                const fileText = fileCount === 1 ? selectedFiles[0]?.name ?? 'file' : `${fileCount} files`;
+                const fileText =
+                    fileCount === 1 ? (selectedFiles[0]?.name ?? 'file') : `${fileCount} files`;
                 toast(`Successfully uploaded ${fileText}!`);
 
                 editorEngine.ide.uploadModalOpen = false;
                 onSuccess?.();
             } else if (failedCount === selectedFiles.length) {
                 // All uploads failed
-                toast('Failed to upload files', { description: 'All uploads failed. Please try again.' });
+                toast('Failed to upload files', {
+                    description: 'All uploads failed. Please try again.',
+                });
             } else {
                 // Some uploads failed
                 const successCount = selectedFiles.length - failedCount;
                 toast(`Partially uploaded files`, {
-                    description: `${successCount} uploaded successfully, ${failedCount} failed. Please try again for the failed files.`
+                    description: `${successCount} uploaded successfully, ${failedCount} failed. Please try again for the failed files.`,
                 });
 
                 // Refresh file list even for partial success
@@ -143,14 +140,16 @@ export const UploadModal = observer(({
             }
         } catch (error) {
             console.error('Error uploading files:', error);
-            toast('Failed to upload files', { description: 'Upload process encountered an error. Please try again.' });
+            toast('Failed to upload files', {
+                description: 'Upload process encountered an error. Please try again.',
+            });
         } finally {
             setIsUploading(false);
         }
     };
 
     const removeFile = (index: number) => {
-        setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+        setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
     };
 
     const reset = () => {
@@ -168,7 +167,7 @@ export const UploadModal = observer(({
     }, [open]);
 
     return (
-        <Dialog open={open} onOpenChange={(isOpen) => editorEngine.ide.uploadModalOpen = isOpen}>
+        <Dialog open={open} onOpenChange={(isOpen) => (editorEngine.ide.uploadModalOpen = isOpen)}>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Upload Files</DialogTitle>
@@ -181,7 +180,7 @@ export const UploadModal = observer(({
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="root">/ (root)</SelectItem>
-                                    {availableDirectories.map(dir => (
+                                    {availableDirectories.map((dir) => (
                                         <SelectItem key={dir} value={dir}>
                                             /{dir}/
                                         </SelectItem>
@@ -202,6 +201,7 @@ export const UploadModal = observer(({
                             className="hidden"
                             onChange={handleFileSelect}
                         />
+
                         <Button
                             variant="ghost"
                             onClick={() => fileInputRef.current?.click()}
@@ -218,7 +218,10 @@ export const UploadModal = observer(({
                             <label className="text-sm font-medium">Selected Files</label>
                             <div className="max-h-32 overflow-y-auto space-y-1">
                                 {selectedFiles.map((file, index) => (
-                                    <div key={index} className="flex items-center justify-between bg-background-secondary p-2 rounded text-sm">
+                                    <div
+                                        key={index}
+                                        className="flex items-center justify-between bg-background-secondary p-2 rounded text-sm"
+                                    >
                                         <span className="truncate">{file.name}</span>
                                         <Button
                                             variant="ghost"
@@ -237,7 +240,7 @@ export const UploadModal = observer(({
                 <DialogFooter>
                     <Button
                         variant="ghost"
-                        onClick={() => editorEngine.ide.uploadModalOpen = false}
+                        onClick={() => (editorEngine.ide.uploadModalOpen = false)}
                         disabled={isUploading}
                     >
                         Cancel
@@ -250,9 +253,8 @@ export const UploadModal = observer(({
                         {isUploading
                             ? 'Uploading...'
                             : selectedFiles.length === 0
-                                ? 'Upload files'
-                                : `Upload ${selectedFiles.length} files`
-                        }
+                              ? 'Upload files'
+                              : `Upload ${selectedFiles.length} files`}
                     </Button>
                 </DialogFooter>
             </DialogContent>

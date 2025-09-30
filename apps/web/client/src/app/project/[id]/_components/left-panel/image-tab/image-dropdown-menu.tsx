@@ -1,10 +1,19 @@
-import type { FolderNode, ImageContentData } from "@onlook/models";
-import { Button } from "@onlook/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@onlook/ui/dropdown-menu";
-import { Icons } from "@onlook/ui/icons";
-import { memo, useCallback, useMemo, useState } from "react";
-import { rootDir } from "./folder";
-import { FolderDropdown } from "./folder-dropdown/folder-dropdown";
+import type { FolderNode, ImageContentData } from '@onlook/models';
+import { Button } from '@onlook/ui/button';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuTrigger,
+} from '@onlook/ui/dropdown-menu';
+import { Icons } from '@onlook/ui/icons';
+import { memo, useCallback, useMemo, useState } from 'react';
+import { rootDir } from './folder';
+import { FolderDropdown } from './folder-dropdown/folder-dropdown';
 
 export const ImageDropdownMenu = memo(
     ({
@@ -51,8 +60,7 @@ export const ImageDropdownMenu = memo(
 
         return (
             <div
-                className={`absolute right-2 top-2 ${isVisible ? 'opacity-100' : 'opacity-0'
-                    } group-hover:opacity-100 transition-opacity duration-300`}
+                className={`absolute right-2 top-2 ${isVisible ? 'opacity-100' : 'opacity-0'} group-hover:opacity-100 transition-opacity duration-300`}
             >
                 <DropdownMenu onOpenChange={handleOpenChange}>
                     <DropdownMenuTrigger asChild>
@@ -79,6 +87,7 @@ export const ImageDropdownMenu = memo(
                             >
                                 <span className="flex w-full text-smallPlus items-center">
                                     <Icons.Pencil className="mr-2 h-4 w-4 text-foreground-secondary group-hover:text-foreground-active" />
+
                                     <span>Rename</span>
                                 </span>
                             </Button>
@@ -92,6 +101,7 @@ export const ImageDropdownMenu = memo(
                             >
                                 <span className="flex w-full text-smallPlus items-center">
                                     <Icons.Trash className="mr-2 h-4 w-4 text-foreground-secondary group-hover:text-foreground-active" />
+
                                     <span>Delete</span>
                                 </span>
                             </Button>
@@ -105,6 +115,7 @@ export const ImageDropdownMenu = memo(
                             >
                                 <span className="flex w-full text-smallPlus items-center">
                                     <Icons.DirectoryOpen className="mr-2 h-4 w-4 text-foreground-secondary group-hover:text-foreground-active" />
+
                                     <span>Open Folder</span>
                                 </span>
                             </Button>
@@ -117,6 +128,7 @@ export const ImageDropdownMenu = memo(
                             >
                                 <span className="flex w-full text-smallPlus items-center">
                                     <Icons.MoveToFolder className="mr-2 h-4 w-4 text-foreground-secondary" />
+
                                     <span>Move to Folder</span>
                                 </span>
                             </DropdownMenuSubTrigger>

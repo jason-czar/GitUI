@@ -33,4 +33,4 @@ export function useHostingType(type: DeploymentType) {
         refetch,
         cancel,
     };
-} 
+}

@@ -21,20 +21,23 @@ export const SubscriptionModal = observer(() => {
 
     const getSubscriptionChangeMessage = () => {
         let message = '';
-        if (subscription?.scheduledChange?.scheduledAction === ScheduledSubscriptionAction.PRICE_CHANGE && subscription.scheduledChange.price) {
+        if (
+            subscription?.scheduledChange?.scheduledAction ===
+                ScheduledSubscriptionAction.PRICE_CHANGE &&
+            subscription.scheduledChange.price
+        ) {
             message = `Your ${subscription.scheduledChange.price.monthlyMessageLimit} messages a month plan starts on ${subscription.scheduledChange.scheduledChangeAt.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
-        } else if (subscription?.scheduledChange?.scheduledAction === ScheduledSubscriptionAction.CANCELLATION) {
+        } else if (
+            subscription?.scheduledChange?.scheduledAction ===
+            ScheduledSubscriptionAction.CANCELLATION
+        ) {
             message = `Your subscription will end on ${subscription.scheduledChange.scheduledChangeAt.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
         }
 
         if (message) {
-            return (
-                <div className="text-foreground-secondary/80 text-balance">
-                    {message}
-                </div>
-            );
+            return <div className="text-foreground-secondary/80 text-balance">{message}</div>;
         }
-    }
+    };
 
     return (
         <AnimatePresence>
@@ -57,7 +60,7 @@ export const SubscriptionModal = observer(() => {
                         <div className="absolute inset-0 bg-background/50" />
                         <Button
                             variant="ghost"
-                            onClick={() => state.isSubscriptionModalOpen = false}
+                            onClick={() => (state.isSubscriptionModalOpen = false)}
                             className="fixed top-8 right-10 text-foreground-secondary"
                         >
                             <Icons.CrossL className="h-4 w-4" />
@@ -75,20 +78,16 @@ export const SubscriptionModal = observer(() => {
                                             <h1 className="text-title2 text-foreground-primary">
                                                 {subscription?.product.type === ProductType.PRO
                                                     ? t(transKeys.pricing.titles.proMember)
-                                                    : t(transKeys.pricing.titles.choosePlan)
-                                                }
-                                            </h1 >
+                                                    : t(transKeys.pricing.titles.choosePlan)}
+                                            </h1>
                                             {getSubscriptionChangeMessage()}
-                                        </div >
+                                        </div>
                                     </motion.div>
                                     <div className="flex gap-4">
-                                        <FreeCard
-                                            delay={0.1}
-                                        />
-                                        <ProCard
-                                            delay={0.2}
-                                        />
-                                    </div >
+                                        <FreeCard delay={0.1} />
+
+                                        <ProCard delay={0.2} />
+                                    </div>
                                     <motion.div
                                         className="flex flex-col gap-2 text-center"
                                         initial={{ opacity: 0, y: 5 }}

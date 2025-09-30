@@ -192,6 +192,7 @@ export const VersionRow = observer(
                                         disabled={isCheckingOut}
                                     >
                                         <Icons.CounterClockwiseClock className="h-4 w-4 mr-2" />
+
                                         {isCheckingOut ? 'Restoring...' : 'Restore'}
                                     </Button>
                                 </TooltipTrigger>

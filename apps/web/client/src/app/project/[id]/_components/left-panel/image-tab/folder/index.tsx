@@ -46,7 +46,10 @@ const Folder = observer(() => {
     const [childFolders, setChildFolders] = useState<FolderNode[]>([]);
 
     const folders = useMemo(
-        () => editorEngine.activeSandbox.directories.filter((dir) => dir.startsWith(rootDir.fullPath)),
+        () =>
+            editorEngine.activeSandbox.directories.filter((dir) =>
+                dir.startsWith(rootDir.fullPath),
+            ),
         [editorEngine.activeSandbox.directories, rootDir.fullPath],
     );
 
@@ -154,6 +157,7 @@ const Folder = observer(() => {
                                 {folderPath.map((pathItem, index) => (
                                     <div key={index} className="flex items-center gap-1">
                                         <Icons.ChevronRight className="h-3 w-3 text-gray-400" />
+
                                         <button
                                             onClick={() => handleBreadcrumbClick(index)}
                                             className="hover:text-white transition-colors whitespace-nowrap"
@@ -166,6 +170,7 @@ const Folder = observer(() => {
                                 {currentFolder && currentFolder !== rootDir && (
                                     <div className="flex items-center gap-1">
                                         <Icons.ChevronRight className="h-3 w-3 text-gray-400" />
+
                                         <span className="font-medium text-white whitespace-nowrap">
                                             {currentFolder.name}
                                         </span>

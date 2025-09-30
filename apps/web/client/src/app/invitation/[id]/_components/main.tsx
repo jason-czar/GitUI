@@ -16,11 +16,19 @@ export function Main({ invitationId }: { invitationId: string }) {
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const token = useSearchParams().get('token');
-    const { data: invitation, isLoading: loadingInvitation, error: getInvitationError } = api.invitation.getWithoutToken.useQuery({
+    const {
+        data: invitation,
+        isLoading: loadingInvitation,
+        error: getInvitationError,
+    } = api.invitation.getWithoutToken.useQuery({
         id: invitationId,
     });
 
-    const { mutate: acceptInvitation, isPending: isAcceptingInvitation, error: acceptInvitationError } = api.invitation.accept.useMutation({
+    const {
+        mutate: acceptInvitation,
+        isPending: isAcceptingInvitation,
+        error: acceptInvitationError,
+    } = api.invitation.accept.useMutation({
         onSuccess: () => {
             if (invitation?.projectId) {
                 router.push(`${Routes.PROJECT}/${invitation.projectId}`);
@@ -37,7 +45,7 @@ export function Main({ invitationId }: { invitationId: string }) {
         await supabase.auth.signOut();
         const currentUrl = `${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
         router.push(`${Routes.LOGIN}?${getReturnUrlQueryParam(currentUrl)}`);
-    }
+    };
 
     const error = getInvitationError || acceptInvitationError;
 
@@ -63,9 +71,7 @@ export function Main({ invitationId }: { invitationId: string }) {
                         <Icons.ExclamationTriangle className="h-6 w-6" />
                         <div className="text-2xl">Error accepting invitation</div>
                     </div>
-                    <div className="text-md">
-                        {error.message}
-                    </div>
+                    <div className="text-md">{error.message}</div>
                     <div className="flex justify-center gap-4">
                         <Button
                             type="button"
@@ -77,10 +83,7 @@ export function Main({ invitationId }: { invitationId: string }) {
                             <Icons.ArrowLeft className="h-4 w-4" />
                             Back to home
                         </Button>
-                        <Button
-                            type="button"
-                            onClick={handleReAuthenticate}
-                        >
+                        <Button type="button" onClick={handleReAuthenticate}>
                             Log in with different account
                         </Button>
                     </div>
@@ -114,7 +117,8 @@ export function Main({ invitationId }: { invitationId: string }) {
         );
     }
 
-    const inviter = invitation.inviter.firstName ?? invitation.inviter.displayName ?? invitation.inviter.email;
+    const inviter =
+        invitation.inviter.firstName ?? invitation.inviter.displayName ?? invitation.inviter.email;
 
     return (
         <div className="flex flex-row w-full">

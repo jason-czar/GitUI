@@ -24,7 +24,11 @@ export default function GitHubInstallCallbackPage() {
         const setupAction = searchParams.get('setup_action');
         const stateParam = searchParams.get('state');
 
-        console.log('GitHub installation callback:', { installationId, setupAction, state: stateParam });
+        console.log('GitHub installation callback:', {
+            installationId,
+            setupAction,
+            state: stateParam,
+        });
 
         if (!installationId) {
             setState('error');
@@ -67,7 +71,7 @@ export default function GitHubInstallCallbackPage() {
                     setMessage(error.message);
                     console.error('GitHub App installation callback failed:', error);
                 },
-            }
+            },
         );
     }, []);
 
@@ -79,7 +83,7 @@ export default function GitHubInstallCallbackPage() {
         title,
         description,
         isError = false,
-        actions
+        actions,
     }: {
         indicatorColor: string;
         indicatorIcon: React.ComponentType<{ className?: string }>;
@@ -95,9 +99,11 @@ export default function GitHubInstallCallbackPage() {
                 <motion.div
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
                 >
-                    <div className={`relative w-16 h-16 rounded-full ${indicatorColor} flex items-center justify-center mb-2`}>
+                    <div
+                        className={`relative w-16 h-16 rounded-full ${indicatorColor} flex items-center justify-center mb-2`}
+                    >
                         {indicatorAnimated && (
                             <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-white/30 animate-spin" />
                         )}
@@ -105,17 +111,19 @@ export default function GitHubInstallCallbackPage() {
                     </div>
                 </motion.div>
             ) : (
-                <div className={`relative w-16 h-16 rounded-full ${indicatorColor} flex items-center justify-center mb-2`}>
+                <div
+                    className={`relative w-16 h-16 rounded-full ${indicatorColor} flex items-center justify-center mb-2`}
+                >
                     {indicatorAnimated && (
                         <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-white/30 animate-spin" />
                     )}
                     <IndicatorIcon className="w-8 h-8 text-white" />
                 </div>
             )}
-            <CardTitle className="text-xl text-foreground-primary">
-                {title}
-            </CardTitle>
-            <CardDescription className={`max-w-sm ${isError ? 'text-gray-400' : 'text-foreground-secondary/90'}`}>
+            <CardTitle className="text-xl text-foreground-primary">{title}</CardTitle>
+            <CardDescription
+                className={`max-w-sm ${isError ? 'text-gray-400' : 'text-foreground-secondary/90'}`}
+            >
                 {description}
             </CardDescription>
             {actions}
@@ -189,7 +197,9 @@ export default function GitHubInstallCallbackPage() {
                                                     </Button>
                                                     <Button
                                                         variant="outline"
-                                                        onClick={() => router.push(Routes.IMPORT_GITHUB)}
+                                                        onClick={() =>
+                                                            router.push(Routes.IMPORT_GITHUB)
+                                                        }
                                                         className="w-full"
                                                     >
                                                         Return to Import

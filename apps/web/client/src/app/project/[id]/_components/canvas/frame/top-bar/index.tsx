@@ -59,16 +59,16 @@ export const TopBar = observer(
             mouseDownRef.current = {
                 x: e.clientX,
                 y: e.clientY,
-                time: Date.now()
+                time: Date.now(),
             };
 
-            const selectedFrames = editorEngine.frames.selected.map(frameData => frameData.frame);
+            const selectedFrames = editorEngine.frames.selected.map((frameData) => frameData.frame);
             const framesToMove = selectedFrames.length > 0 ? selectedFrames : [frame];
 
             createMouseMoveHandler(e, {
                 editorEngine,
                 selectedFrames: framesToMove,
-                clearElements
+                clearElements,
             });
         };
 
@@ -97,8 +97,8 @@ export const TopBar = observer(
             const currentTime = Date.now();
             const timeDiff = currentTime - mouseDownRef.current.time;
             const distance = Math.sqrt(
-                Math.pow(e.clientX - mouseDownRef.current.x, 2) + 
-                Math.pow(e.clientY - mouseDownRef.current.y, 2)
+                Math.pow(e.clientX - mouseDownRef.current.x, 2) +
+                    Math.pow(e.clientY - mouseDownRef.current.y, 2),
             );
 
             // Don't register click if it was a long hold (>200ms) or significant movement (>5px)
@@ -186,10 +186,22 @@ export const TopBar = observer(
                         </Button>
                     </HoverOnlyTooltip>
                     <BranchDisplay frame={frame} />
-                    <span className={cn("ml-1.25 mb-0.5", isSelected ? "text-teal-700" : "text-foreground-secondary/50")}>·</span>
+                    <span
+                        className={cn(
+                            'ml-1.25 mb-0.5',
+                            isSelected ? 'text-teal-700' : 'text-foreground-secondary/50',
+                        )}
+                    >
+                        ·
+                    </span>
                     <PageSelector frame={frame} />
                 </div>
-                <HoverOnlyTooltip content="Preview in new tab" side="top" hideArrow className="mb-1">
+                <HoverOnlyTooltip
+                    content="Preview in new tab"
+                    side="top"
+                    hideArrow
+                    className="mb-1"
+                >
                     <Link
                         className={cn(
                             'absolute right-1 top-1/2 -translate-y-1/2 transition-opacity duration-300',
@@ -203,11 +215,16 @@ export const TopBar = observer(
                             pointerEvents: shouldShowExternalLink ? 'auto' : 'none',
                         }}
                     >
-                        <Button variant="ghost" size="icon" className="rounded-lg hover:!bg-transparent focus:!bg-transparent active:!bg-transparent">
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="rounded-lg hover:!bg-transparent focus:!bg-transparent active:!bg-transparent"
+                        >
                             <Icons.ExternalLink />
                         </Button>
                     </Link>
                 </HoverOnlyTooltip>
             </div>
         );
-    });
+    },
+);

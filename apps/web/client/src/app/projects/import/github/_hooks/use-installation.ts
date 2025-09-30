@@ -1,6 +1,7 @@
 'use client';
 
 import { api } from '@/trpc/react';
+import { createClient } from '@/utils/supabase/client';
 import { useEffect, useState } from 'react';
 
 export interface GitHubAppInstallation {
@@ -14,43 +15,48 @@ export interface GitHubAppInstallation {
 }
 
 export const useGitHubAppInstallation: () => GitHubAppInstallation = () => {
-    const generateInstallationUrl = api.github.generateInstallationUrl.useMutation();
-    const { data: installationId, refetch: checkInstallation, isFetching: isChecking, error: checkInstallationError } = api.github.checkGitHubAppInstallation.useQuery(undefined, {
+    // GitUI: Use OAuth connection check instead of GitHub App installation
+    const { data: oauthConnection, refetch: checkConnection, isFetching: isChecking, error: checkConnectionError } = api.github.checkOAuthConnection.useQuery(undefined, {
         refetchOnWindowFocus: true,
     });
     const [error, setError] = useState<string | null>(null);
-    const hasInstallation = !!installationId;
+    const hasInstallation = !!oauthConnection?.connected;
 
     useEffect(() => {
-        setError(checkInstallationError?.message || null);
-    }, [checkInstallationError]);
+        setError(checkConnectionError?.message || null);
+    }, [checkConnectionError]);
 
     const clearError = () => {
         setError(null);
     };
 
-    const redirectToInstallation = async (redirectUrl?: string) => {
+    const redirectToInstallation = async (_redirectUrl?: string) => {
         try {
-            const finalRedirectUrl = redirectUrl;
-            const result = await generateInstallationUrl.mutateAsync({
-                redirectUrl: finalRedirectUrl,
+            // GitUI: Use Supabase GitHub OAuth for consistency
+            const supabase = createClient();
+            const { error } = await supabase.auth.signInWithOAuth({
+                provider: 'github',
+                options: {
+                    scopes: 'repo read:user user:email',
+                    redirectTo: `${window.location.origin}/projects/import/github`,
+                }
             });
-
-            if (result?.url) {
-                window.open(result.url, '_blank');
+            
+            if (error) {
+                console.error('Error initiating GitHub OAuth:', error);
             }
         } catch (error) {
-            console.error('Error generating GitHub App installation URL:', error);
+            console.error('Error redirecting to GitHub OAuth:', error);
         }
     };
 
     return {
         hasInstallation,
-        installationId: installationId || null,
+        installationId: oauthConnection?.username || null,
         isChecking,
         error,
         redirectToInstallation,
-        refetch: checkInstallation,
+        refetch: checkConnection,
         clearError,
     };
 };

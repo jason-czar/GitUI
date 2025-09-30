@@ -1,18 +1,18 @@
 {
-    "productName": "Onlook",
-    "name": "@onlook/web-client",
+    "productName": "GitUI",
+    "name": "@gitui/web-client",
     "version": "0.1.0",
     "private": true,
-    "homepage": "https://onlook.com",
-    "description": "The first-ever devtool for designers",
+    "homepage": "https://gitui.dev",
+    "description": "Visual editor for GitHub repositories with live preview and PR workflow",
     "license": "Apache-2.0",
     "author": {
-        "name": "Onlook",
-        "email": "contact@onlook.com"
+        "name": "GitUI",
+        "email": "contact@gitui.dev"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/onlook-dev/onlook.git"
+        "url": "https://github.com/jason-czar/GitUI.git"
     },
     "type": "module",
     "scripts": {

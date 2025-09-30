@@ -28,7 +28,9 @@ export function useGitHubStats() {
                 setFormatted(formatStarCount(repoData.stargazers_count));
 
                 // Contributors (use the Link header for pagination)
-                const contribResponse = await fetch('https://api.github.com/repos/onlook-dev/onlook/contributors?per_page=1&anon=true');
+                const contribResponse = await fetch(
+                    'https://api.github.com/repos/onlook-dev/onlook/contributors?per_page=1&anon=true',
+                );
                 const linkHeader = contribResponse.headers.get('Link');
                 if (linkHeader) {
                     const match = linkHeader.match(/&page=(\d+)>; rel="last"/);
@@ -38,7 +40,11 @@ export function useGitHubStats() {
                 } else {
                     // fallback: count the single returned contributor
                     const contribData = await contribResponse.json();
-                    setContributors(Array.isArray(contribData) ? contribData.length : DEFAULT_CONTRIBUTORS_COUNT);
+                    setContributors(
+                        Array.isArray(contribData)
+                            ? contribData.length
+                            : DEFAULT_CONTRIBUTORS_COUNT,
+                    );
                 }
             } catch (error) {
                 console.error('Failed to fetch GitHub stats:', error);
@@ -56,7 +62,12 @@ export function useGitHubStats() {
 export function GitHubButton() {
     const { formatted } = useGitHubStats();
     return (
-        <a href="https://github.com/onlook-dev/onlook" className="flex items-center gap-1.5 text-small hover:opacity-80" target="_blank" rel="noopener noreferrer">
+        <a
+            href="https://github.com/onlook-dev/onlook"
+            className="flex items-center gap-1.5 text-small hover:opacity-80"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
             <Icons.GitHubLogo className="h-5 w-5" />
             <span className="transition-all duration-300 hidden sm:block">{formatted}</span>
         </a>

@@ -1,12 +1,9 @@
-import type { Branch } from "@onlook/models";
-import {
-    DropdownMenuItem,
-    DropdownMenuLabel,
-} from "@onlook/ui/dropdown-menu";
-import { Icons } from "@onlook/ui/icons";
-import { ScrollArea } from "@onlook/ui/scroll-area";
-import { timeAgo } from "@onlook/utility";
-import { useMemo, useState } from "react";
+import type { Branch } from '@onlook/models';
+import { DropdownMenuItem, DropdownMenuLabel } from '@onlook/ui/dropdown-menu';
+import { Icons } from '@onlook/ui/icons';
+import { ScrollArea } from '@onlook/ui/scroll-area';
+import { timeAgo } from '@onlook/utility';
+import { useMemo, useState } from 'react';
 
 interface BranchListProps {
     branches: Branch[];
@@ -19,16 +16,16 @@ export function BranchList({
     branches,
     activeBranch,
     onBranchSwitch,
-    showSearch = true
+    showSearch = true,
 }: BranchListProps) {
-    const [searchQuery, setSearchQuery] = useState("");
+    const [searchQuery, setSearchQuery] = useState('');
 
     const filteredBranches = useMemo(() => {
         if (!showSearch || !searchQuery) {
             return branches;
         }
-        return branches.filter(branch =>
-            branch.name.toLowerCase().includes(searchQuery.toLowerCase())
+        return branches.filter((branch) =>
+            branch.name.toLowerCase().includes(searchQuery.toLowerCase()),
         );
     }, [branches, searchQuery, showSearch]);
 
@@ -54,7 +51,8 @@ export function BranchList({
                                 <span className="truncate font-medium">{branch.name}</span>
                             </div>
                             <span className="text-xs text-muted-foreground whitespace-nowrap ml-2">
-                                {timeAgo(branch.updatedAt)}{showSearch ? '' : ' ago'}
+                                {timeAgo(branch.updatedAt)}
+                                {showSearch ? '' : ' ago'}
                             </span>
                         </DropdownMenuItem>
                     ))}

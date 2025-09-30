@@ -26,9 +26,7 @@ export default function LoginPage() {
                 </div>
                 <div className="space-y-8">
                     <div className="space-y-4">
-                        <h1 className="text-title1 leading-tight">
-                            {t(transKeys.welcome.title)}
-                        </h1>
+                        <h1 className="text-title1 leading-tight">{t(transKeys.welcome.title)}</h1>
                         <p className="text-foreground-onlook text-regular">
                             {t(transKeys.welcome.description)}
                         </p>
@@ -46,8 +44,7 @@ export default function LoginPage() {
                             className="text-gray-300 hover:text-gray-50 underline transition-colors duration-200"
                         >
                             {t(transKeys.welcome.terms.privacy)}
-                        </Link>
-                        {' '}
+                        </Link>{' '}
                         {t(transKeys.welcome.terms.and)}{' '}
                         <Link
                             href="https://onlook.com/terms-of-service"

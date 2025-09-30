@@ -22,82 +22,91 @@ interface ChatMessagesProps {
     error?: Error;
 }
 
-export const ChatMessages = observer(({
-    messages: baseMessages,
-    onEditMessage,
-    isStreaming,
-    error,
-}: ChatMessagesProps) => {
-    const editorEngine = useEditorEngine();
-    const t = useTranslations();
-    const { messages, streamedMessage }: { messages: ChatMessage[], streamedMessage: ChatMessage | null } = useMemo(() => {
-        if (isStreaming) {
-            const lastAssistantMessage = baseMessages[baseMessages.length - 1];
-            if (lastAssistantMessage && lastAssistantMessage.role === 'assistant') {
-                return {
-                    messages: baseMessages.slice(0, -1),
-                    streamedMessage: lastAssistantMessage,
-                };
+export const ChatMessages = observer(
+    ({ messages: baseMessages, onEditMessage, isStreaming, error }: ChatMessagesProps) => {
+        const editorEngine = useEditorEngine();
+        const t = useTranslations();
+        const {
+            messages,
+            streamedMessage,
+        }: { messages: ChatMessage[]; streamedMessage: ChatMessage | null } = useMemo(() => {
+            if (isStreaming) {
+                const lastAssistantMessage = baseMessages[baseMessages.length - 1];
+                if (lastAssistantMessage && lastAssistantMessage.role === 'assistant') {
+                    return {
+                        messages: baseMessages.slice(0, -1),
+                        streamedMessage: lastAssistantMessage,
+                    };
+                }
             }
-        }
-        return {
-            messages: baseMessages,
-            streamedMessage: null,
-        };
-    }, [baseMessages, isStreaming]);
+            return {
+                messages: baseMessages,
+                streamedMessage: null,
+            };
+        }, [baseMessages, isStreaming]);
 
-    const renderMessage = useCallback(
-        (message: ChatMessage, index: number) => {
-            let messageNode;
-            switch (message.role) {
-                case 'assistant':
-                    messageNode = <AssistantMessage key={message.id} message={message} isStreaming={isStreaming} />;
-                    break;
-                case 'user':
-                    messageNode = (
-                        <UserMessage
-                            key={message.id}
-                            onEditMessage={onEditMessage}
-                            message={message}
-                        />
-                    );
-                    break;
-                case 'system':
-                    messageNode = null;
-                    break;
-                default:
-                    assertNever(message.role);
-            }
-            return <div key={`message-${message.id}-${index}`}>{messageNode}</div>;
-        },
-        [onEditMessage],
-    );
+        const renderMessage = useCallback(
+            (message: ChatMessage, index: number) => {
+                let messageNode;
+                switch (message.role) {
+                    case 'assistant':
+                        messageNode = (
+                            <AssistantMessage
+                                key={message.id}
+                                message={message}
+                                isStreaming={isStreaming}
+                            />
+                        );
 
-    if (!messages || messages.length === 0) {
-        return (
-            !editorEngine.elements.selected.length && (
-                <div className="flex-1 flex flex-col items-center justify-center text-foreground-tertiary/80 h-full">
-                    <Icons.EmptyState className="size-32" />
-                    <p className="text-center text-regularPlus text-balance max-w-[300px]">
-                        {t(transKeys.editor.panels.edit.tabs.chat.emptyState)}
-                    </p>
-                </div>
-            )
+                        break;
+                    case 'user':
+                        messageNode = (
+                            <UserMessage
+                                key={message.id}
+                                onEditMessage={onEditMessage}
+                                message={message}
+                            />
+                        );
+
+                        break;
+                    case 'system':
+                        messageNode = null;
+                        break;
+                    default:
+                        assertNever(message.role);
+                }
+                return <div key={`message-${message.id}-${index}`}>{messageNode}</div>;
+            },
+            [onEditMessage],
         );
-    }
 
-    return (
-        <ChatMessageList
-            contentKey={`${messages.map((m) => m.id).join('|')}${isStreaming ? `|${messages?.[messages.length - 1]?.id ?? ''}` : ''}`}
-        >
-            {messages.map((message, index) => renderMessage(message, index))}
-            {streamedMessage && <StreamMessage message={streamedMessage} />}
-            {error && <ErrorMessage error={error} />}
-            {isStreaming && <div className="flex w-full h-full flex-row items-center gap-2 px-4 my-2 text-small content-start text-foreground-secondary">
-                <Icons.LoadingSpinner className="animate-spin" />
-                <p>Thinking ...</p>
-            </div>}
-        </ChatMessageList>
-    );
-},
+        if (!messages || messages.length === 0) {
+            return (
+                !editorEngine.elements.selected.length && (
+                    <div className="flex-1 flex flex-col items-center justify-center text-foreground-tertiary/80 h-full">
+                        <Icons.EmptyState className="size-32" />
+                        <p className="text-center text-regularPlus text-balance max-w-[300px]">
+                            {t(transKeys.editor.panels.edit.tabs.chat.emptyState)}
+                        </p>
+                    </div>
+                )
+            );
+        }
+
+        return (
+            <ChatMessageList
+                contentKey={`${messages.map((m) => m.id).join('|')}${isStreaming ? `|${messages?.[messages.length - 1]?.id ?? ''}` : ''}`}
+            >
+                {messages.map((message, index) => renderMessage(message, index))}
+                {streamedMessage && <StreamMessage message={streamedMessage} />}
+                {error && <ErrorMessage error={error} />}
+                {isStreaming && (
+                    <div className="flex w-full h-full flex-row items-center gap-2 px-4 my-2 text-small content-start text-foreground-secondary">
+                        <Icons.LoadingSpinner className="animate-spin" />
+                        <p>Thinking ...</p>
+                    </div>
+                )}
+            </ChatMessageList>
+        );
+    },
 );

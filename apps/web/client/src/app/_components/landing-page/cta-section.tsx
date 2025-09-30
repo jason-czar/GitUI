@@ -12,7 +12,13 @@ interface CTASectionProps {
     showSubtext?: boolean;
 }
 
-export function CTASection({ href, onClick, ctaText = "Craft a website\nfor free today", buttonText = "Get Started", showSubtext = true }: CTASectionProps = {}) {
+export function CTASection({
+    href,
+    onClick,
+    ctaText = 'Craft a website\nfor free today',
+    buttonText = 'Get Started',
+    showSubtext = true,
+}: CTASectionProps = {}) {
     const router = useRouter();
 
     const handleGetStartedClick = () => {
@@ -30,9 +36,9 @@ export function CTASection({ href, onClick, ctaText = "Craft a website\nfor free
             // Default behavior: scroll to hero section on homepage
             const heroSection = document.getElementById('hero');
             if (heroSection) {
-                heroSection.scrollIntoView({ 
+                heroSection.scrollIntoView({
                     behavior: 'smooth',
-                    block: 'start'
+                    block: 'start',
                 });
             }
         }
@@ -55,9 +61,9 @@ export function CTASection({ href, onClick, ctaText = "Craft a website\nfor free
                     ))}
                 </h2>
                 <div className="flex flex-row items-center justify-end gap-3 w-full">
-                    <Button 
-                        variant="secondary" 
-                        size="lg" 
+                    <Button
+                        variant="secondary"
+                        size="lg"
                         className="p-6 cursor-pointer hover:bg-foreground-primary hover:text-background-primary transition-colors"
                         onClick={href === '/' ? handleHomepageNavigation : handleGetStartedClick}
                     >
@@ -65,11 +71,12 @@ export function CTASection({ href, onClick, ctaText = "Craft a website\nfor free
                     </Button>
                     {showSubtext && (
                         <span className="text-foreground-tertiary text-regular text-left ml-0 ">
-                            No credit card required.<br /> Cancel anytime.
+                            No credit card required.
+                            <br /> Cancel anytime.
                         </span>
                     )}
                 </div>
             </div>
         </div>
     );
-}  
+}

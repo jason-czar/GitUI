@@ -88,7 +88,9 @@ export const CurrentUserAvatar = ({ className }: { className?: string }) => {
             <DropdownMenuContent className="w-72 p-0">
                 <div className="flex items-center gap-2 p-3 select-none">
                     <div className="flex flex-col">
-                        <span className="text-smallPlus">{user?.firstName ?? user?.displayName}</span>
+                        <span className="text-smallPlus">
+                            {user?.firstName ?? user?.displayName}
+                        </span>
                         <span className="text-mini text-foreground-secondary">{user?.email}</span>
                     </div>
                 </div>

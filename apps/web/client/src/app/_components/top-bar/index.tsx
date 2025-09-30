@@ -35,16 +35,24 @@ export const TopBar = () => {
         <div className="w-full max-w-6xl mx-auto flex items-center justify-between p-4 h-12 text-small text-foreground-secondary select-none">
             <div className="flex items-center gap-8 mt-0 text-regular text-foreground-secondary">
                 {LINKS.map((link) => (
-                    <a href={link.href} key={link.href} className={cn(
-                        'hover:opacity-80',
-                        currentPath === link.href && 'text-foreground-primary',
-                        link.hidden && 'hidden',
-                        link.href === Routes.HOME && 'py-4 pr-2',
-                    )}>
+                    <a
+                        href={link.href}
+                        key={link.href}
+                        className={cn(
+                            'hover:opacity-80',
+                            currentPath === link.href && 'text-foreground-primary',
+                            link.hidden && 'hidden',
+                            link.href === Routes.HOME && 'py-4 pr-2',
+                        )}
+                    >
                         {link.child}
                     </a>
                 ))}
-                <a href={ExternalRoutes.DOCS} target="_blank" className="text-regular hover:underline">
+                <a
+                    href={ExternalRoutes.DOCS}
+                    target="_blank"
+                    className="text-regular hover:underline"
+                >
                     Docs
                 </a>
                 <GitHubButton />

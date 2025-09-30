@@ -10,8 +10,8 @@ import { timeAgo } from '@onlook/utility';
 
 export function SquareProjectCard({
     project,
-    searchQuery = "",
-    HighlightText
+    searchQuery = '',
+    HighlightText,
 }: {
     project: Project;
     searchQuery?: string;
@@ -42,7 +42,10 @@ export function SquareProjectCard({
         };
     }, [project.metadata?.previewImg]);
 
-    const lastUpdated = useMemo(() => timeAgo(project.metadata.updatedAt), [project.metadata.updatedAt]);
+    const lastUpdated = useMemo(
+        () => timeAgo(project.metadata.updatedAt),
+        [project.metadata.updatedAt],
+    );
 
     return (
         <div
@@ -56,13 +59,27 @@ export function SquareProjectCard({
                 }
             }}
         >
-            <div className={`w-full aspect-[4/2.8] rounded-lg overflow-hidden relative shadow-sm transition-all duration-300`}>
+            <div
+                className={`w-full aspect-[4/2.8] rounded-lg overflow-hidden relative shadow-sm transition-all duration-300`}
+            >
                 {img ? (
-                    <img src={img} alt={project.name} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                    <img
+                        src={img}
+                        alt={project.name}
+                        className="absolute inset-0 w-full h-full object-cover"
+                        loading="lazy"
+                    />
                 ) : (
                     <>
                         <div className="absolute inset-0 w-full h-full bg-gradient-to-t from-gray-800/40 via-gray-500/40 to-gray-400/40" />
-                        <div className="absolute inset-0 rounded-lg border-[0.5px] border-gray-500/70" style={{ maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)' }} />
+
+                        <div
+                            className="absolute inset-0 rounded-lg border-[0.5px] border-gray-500/70"
+                            style={{
+                                maskImage:
+                                    'linear-gradient(to bottom, black 60%, transparent 100%)',
+                            }}
+                        />
                     </>
                 )}
 
@@ -92,14 +109,14 @@ export function SquareProjectCard({
                         <span>{lastUpdated} ago</span>
                     </div>
                     {/* {project.metadata?.description && (
-                        <div className="text-white/70 text-xs line-clamp-1 drop-shadow-lg">
-                            {HighlightText ? (
-                                <HighlightText text={project.metadata.description} searchQuery={searchQuery} />
-                            ) : (
-                                project.metadata.description
-                            )}
-                        </div>
-                    )} */}
+            <div className="text-white/70 text-xs line-clamp-1 drop-shadow-lg">
+            {HighlightText ? (
+            <HighlightText text={project.metadata.description} searchQuery={searchQuery} />
+            ) : (
+            project.metadata.description
+            )}
+            </div>
+            )} */}
                 </div>
             </div>
         </div>

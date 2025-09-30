@@ -27,7 +27,14 @@ export const RenameImageModal = () => {
     };
 
     return (
-        <AlertDialog open={!!renameState.imageToRename && !!renameState.newImageName && renameState.newImageName !== renameState.imageToRename} onOpenChange={handleClose}>
+        <AlertDialog
+            open={
+                !!renameState.imageToRename &&
+                !!renameState.newImageName &&
+                renameState.newImageName !== renameState.imageToRename
+            }
+            onOpenChange={handleClose}
+        >
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>Rename Image</AlertDialogTitle>
@@ -36,10 +43,18 @@ export const RenameImageModal = () => {
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <Button variant={'ghost'} onClick={handleClose} disabled={renameState.isLoading}>
+                    <Button
+                        variant={'ghost'}
+                        onClick={handleClose}
+                        disabled={renameState.isLoading}
+                    >
                         Cancel
                     </Button>
-                    <Button variant={'default'} onClick={handleRename} disabled={renameState.isLoading}>
+                    <Button
+                        variant={'default'}
+                        onClick={handleRename}
+                        disabled={renameState.isLoading}
+                    >
                         {renameState.isLoading ? (
                             <>
                                 <Icons.Reload className="w-4 h-4 animate-spin mr-2" />

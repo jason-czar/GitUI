@@ -49,21 +49,22 @@ export const InviteMemberInput = ({ projectId }: { projectId: string }) => {
                     placeholder="Add email address"
                     className="flex-1"
                 />
+
                 {/* <Select
-                    value={selectedRole}
-                    onValueChange={(value) => setSelectedRole(value as ProjectRole)}
-                >
-                    <SelectTrigger className="w-22 text-xs border-0 p-2 rounded-tl-none rounded-bl-none focus:ring-0 bg-transparent absolute right-0">
-                        <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value={ProjectRole.ADMIN}>
-                            <div className="flex flex-col">
-                                <span>Admin</span>
-                            </div>
-                        </SelectItem>
-                    </SelectContent>
-                </Select> */}
+          value={selectedRole}
+          onValueChange={(value) => setSelectedRole(value as ProjectRole)}
+          >
+          <SelectTrigger className="w-22 text-xs border-0 p-2 rounded-tl-none rounded-bl-none focus:ring-0 bg-transparent absolute right-0">
+          <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+          <SelectItem value={ProjectRole.ADMIN}>
+          <div className="flex flex-col">
+          <span>Admin</span>
+          </div>
+          </SelectItem>
+          </SelectContent>
+          </Select> */}
             </div>
             <Button type="submit" disabled={!email || isLoading}>
                 Invite
