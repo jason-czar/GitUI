@@ -286,9 +286,22 @@ export const sandboxRouter = createTRPCRouter({
                 }
 
                 // Detect the development server port
-                let detectedPort = 3000; // default
+                // Common ports: Next.js (3000), Vite (5173), React dev server (3000), Express (5000), etc.
+                let detectedPort = 3000; // default fallback
                 
-                // Check package.json scripts for port configuration
+                // First, check for framework-specific defaults
+                const allDeps = { ...packageJson.dependencies, ...packageJson.devDependencies };
+                if (allDeps.vite) {
+                    detectedPort = 5173; // Vite default
+                } else if (allDeps.next) {
+                    detectedPort = 3000; // Next.js default
+                } else if (allDeps.express) {
+                    detectedPort = 5000; // Express common default
+                } else if (allDeps['react-scripts']) {
+                    detectedPort = 3000; // Create React App default
+                }
+                
+                // Check package.json scripts for port configuration (this can override framework defaults)
                 const scripts = packageJson.scripts || {};
                 const devScript = scripts.dev || scripts.start || scripts['dev:server'];
                 
