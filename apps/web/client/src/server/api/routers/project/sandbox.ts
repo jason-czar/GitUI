@@ -296,7 +296,10 @@ export const sandboxRouter = createTRPCRouter({
                     // Look for port in dev script
                     const portMatch = devScript.match(/--port[=\s]+(\d+)|port[=\s]+(\d+)|-p[=\s]+(\d+)/i);
                     if (portMatch) {
-                        detectedPort = parseInt(portMatch[1] || portMatch[2] || portMatch[3]);
+                        const port = portMatch[1] || portMatch[2] || portMatch[3];
+                        if (port) {
+                            detectedPort = parseInt(port);
+                        }
                     }
                 }
 
@@ -316,15 +319,17 @@ export const sandboxRouter = createTRPCRouter({
                         if (config?.file && config.file.type === 'text') {
                             const portMatch = (config.file.content as string).match(/port:\s*(\d+)|PORT:\s*(\d+)/);
                             if (portMatch) {
-                                detectedPort = parseInt(portMatch[1] || portMatch[2]);
-                                break;
+                                const port = portMatch[1] || portMatch[2];
+                                if (port) {
+                                    detectedPort = parseInt(port);
+                                    break;
+                                }
                             }
                         }
                     } catch {
                         // Ignore file not found errors
                     }
                 }
-
                 console.log(`GitUI: Detected development server port: ${detectedPort}`);
 
                 return {
