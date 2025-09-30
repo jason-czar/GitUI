@@ -33,7 +33,7 @@ function getProvider({
 }
 
 // Helper function to restart the development server after dependency installation
-async function restartDevServer(provider: any, scripts: any, packageManager: string) {
+async function restartDevServer(provider: any, scripts: any, packageManager: string): Promise<number | null> {
     try {
         console.log('GitUI: Attempting to restart development server...');
         
@@ -56,7 +56,7 @@ async function restartDevServer(provider: any, scripts: any, packageManager: str
                         args: { command: cmd }
                     });
                     console.log(`GitUI: Successfully started dev server with: ${cmd}`);
-                    return;
+                    break;
                 } catch {
                     console.log(`GitUI: Command failed: ${cmd}, trying next...`);
                 }
@@ -81,12 +81,68 @@ async function restartDevServer(provider: any, scripts: any, packageManager: str
         }
         
         // Give the server a moment to start
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        
+        // Try to detect the actual running port by checking common ports
+        console.log('GitUI: Detecting actual running port...');
+        const actualPort = await detectRunningPort(provider);
+        if (actualPort) {
+            console.log(`GitUI: Detected server running on port ${actualPort}`);
+            return actualPort;
+        }
+        
+        return null;
         
     } catch (error) {
         console.warn('GitUI: Failed to restart development server:', error);
         // Don't throw - this is not critical enough to fail the whole process
+        return null;
     }
+}
+
+// Helper function to detect the actual running port after server restart
+async function detectRunningPort(provider: any): Promise<number | null> {
+    // Common development server ports to check
+    const commonPorts = [5000, 3000, 5173, 4000, 8000, 3001, 5001];
+    
+    for (const port of commonPorts) {
+        try {
+            // Try to make a simple HTTP request to check if port is active
+            const result = await provider.runCommand({
+                args: { command: `curl -s -o /dev/null -w "%{http_code}" http://localhost:${port} || echo "000"` }
+            });
+            
+            // If we get any HTTP response (even 404), the port is active
+            if (result.output && !result.output.includes('000') && !result.output.includes('Connection refused')) {
+                console.log(`GitUI: Found active server on port ${port}`);
+                return port;
+            }
+        } catch {
+            // Port check failed, continue to next port
+        }
+    }
+    
+    // Alternative approach: check for process listening on ports
+    try {
+        const result = await provider.runCommand({
+            args: { command: `netstat -tlnp 2>/dev/null | grep LISTEN | grep -E ':(3000|5000|5173|4000|8000)' | head -1` }
+        });
+        
+        if (result.output) {
+            // Extract port from netstat output
+            const portMatch = result.output.match(/:(\d+)\s/);
+            if (portMatch) {
+                const port = parseInt(portMatch[1]);
+                console.log(`GitUI: Found server listening on port ${port} via netstat`);
+                return port;
+            }
+        }
+    } catch {
+        // Netstat check failed
+    }
+    
+    console.log('GitUI: Could not detect running port, using default');
+    return null;
 }
 
 export const sandboxRouter = createTRPCRouter({
@@ -294,6 +350,22 @@ export const sandboxRouter = createTRPCRouter({
                 const devDeps = packageJson.devDependencies || {};
                 const deps = packageJson.dependencies || {};
                 
+                // Detect the development server port FIRST
+                // Common ports: Next.js (3000), Vite (5173), React dev server (3000), Express (5000), etc.
+                let detectedPort = 3000; // default fallback
+                
+                // First, check for framework-specific defaults
+                const allDeps = { ...packageJson.dependencies, ...packageJson.devDependencies };
+                if (allDeps.vite) {
+                    detectedPort = 5173; // Vite default
+                } else if (allDeps.next) {
+                    detectedPort = 3000; // Next.js default
+                } else if (allDeps.express) {
+                    detectedPort = 5000; // Express common default
+                } else if (allDeps['react-scripts']) {
+                    detectedPort = 3000; // Create React App default
+                }
+                
                 // Check what dependencies need to be installed
                 const requiredDevDeps = [];
                 if (!devDeps.typescript && !deps.typescript) {
@@ -339,28 +411,18 @@ export const sandboxRouter = createTRPCRouter({
                         
                         // After installing dependencies, restart the dev server
                         console.log(`GitUI: Restarting development server after dependency installation`);
-                        await restartDevServer(provider, packageJson.scripts || {}, packageManager);
+                        const actualPort = await restartDevServer(provider, packageJson.scripts || {}, packageManager);
+                        
+                        // If we detected a different port, update our detected port
+                        if (actualPort && actualPort !== detectedPort) {
+                            console.log(`GitUI: Server switched to port ${actualPort} after dependency installation (was ${detectedPort})`);
+                            detectedPort = actualPort;
+                        }
                         
                     } catch (error) {
                         console.warn('GitUI: Failed to install dependencies:', error);
                         // Don't fail the whole process if dependency installation fails
                     }
-                }
-
-                // Detect the development server port
-                // Common ports: Next.js (3000), Vite (5173), React dev server (3000), Express (5000), etc.
-                let detectedPort = 3000; // default fallback
-                
-                // First, check for framework-specific defaults
-                const allDeps = { ...packageJson.dependencies, ...packageJson.devDependencies };
-                if (allDeps.vite) {
-                    detectedPort = 5173; // Vite default
-                } else if (allDeps.next) {
-                    detectedPort = 3000; // Next.js default
-                } else if (allDeps.express) {
-                    detectedPort = 5000; // Express common default
-                } else if (allDeps['react-scripts']) {
-                    detectedPort = 3000; // Create React App default
                 }
                 
                 // Check package.json scripts for port configuration (this can override framework defaults)
