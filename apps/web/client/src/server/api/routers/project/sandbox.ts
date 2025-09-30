@@ -182,16 +182,16 @@ async function analyzeProject(provider: any): Promise<ProjectAnalysis> {
     let type: ProjectAnalysis['type'] = 'unknown';
     let framework = 'Unknown';
     
-    if (deps.react || fileNames.some(f => f.includes('jsx') || f.includes('tsx'))) {
+    if (deps.react || fileNames.some((f: string) => f.includes('jsx') || f.includes('tsx'))) {
         type = 'react';
         if (deps.next) framework = 'Next.js';
         else if (deps.gatsby) framework = 'Gatsby';
         else if (deps['react-scripts']) framework = 'Create React App';
         else framework = 'React';
-    } else if (deps.vue || fileNames.some(f => f.endsWith('.vue'))) {
+    } else if (deps.vue || fileNames.some((f: string) => f.endsWith('.vue'))) {
         type = 'vue';
         framework = deps.nuxt ? 'Nuxt.js' : 'Vue.js';
-    } else if (deps.svelte || fileNames.some(f => f.endsWith('.svelte'))) {
+    } else if (deps.svelte || fileNames.some((f: string) => f.endsWith('.svelte'))) {
         type = 'svelte';
         framework = deps['@sveltejs/kit'] ? 'SvelteKit' : 'Svelte';
     } else if (deps['@angular/core']) {
@@ -200,7 +200,7 @@ async function analyzeProject(provider: any): Promise<ProjectAnalysis> {
     } else if (deps.express || deps.fastify || deps.koa) {
         type = 'node';
         framework = 'Node.js';
-    } else if (fileNames.some(f => f.endsWith('.html'))) {
+    } else if (fileNames.some((f: string) => f.endsWith('.html'))) {
         type = 'vanilla';
         framework = 'Vanilla JavaScript';
     }
@@ -224,7 +224,7 @@ async function analyzeProject(provider: any): Promise<ProjectAnalysis> {
     else if (fileNames.includes('yarn.lock')) packageManager = 'yarn';
     
     // Check for TypeScript and Tailwind
-    const hasTypeScript = !!(deps.typescript || fileNames.some(f => f.endsWith('.ts') || f.endsWith('.tsx')));
+    const hasTypeScript = !!(deps.typescript || fileNames.some((f: string) => f.endsWith('.ts') || f.endsWith('.tsx')));
     const hasTailwind = !!(deps.tailwindcss || fileNames.includes('tailwind.config.js'));
     
     // Find entry point
