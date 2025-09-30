@@ -451,7 +451,7 @@ export const NewSelectFolder = () => {
                     </div>
                     {config.showError && (
                         <p className={`${config.textColor} text-sm`}>
-                            This is not a NextJS Project
+                            {validation?.error ?? 'This project is not compatible with GitUI'}
                         </p>
                     )}
                 </div>
