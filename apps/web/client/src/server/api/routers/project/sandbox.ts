@@ -32,6 +32,63 @@ function getProvider({
     }
 }
 
+// Helper function to restart the development server after dependency installation
+async function restartDevServer(provider: any, scripts: any, packageManager: string) {
+    try {
+        console.log('GitUI: Attempting to restart development server...');
+        
+        // Determine the dev command to run
+        const devCommand = scripts.dev || scripts.start || scripts['dev:server'];
+        
+        if (!devCommand) {
+            console.log('GitUI: No dev script found, trying common commands...');
+            // Try common development commands based on package manager
+            const fallbackCommands = [
+                `${packageManager} run dev`,
+                `${packageManager} run start`,
+                `${packageManager} start`
+            ];
+            
+            for (const cmd of fallbackCommands) {
+                try {
+                    console.log(`GitUI: Trying command: ${cmd}`);
+                    await provider.runBackgroundCommand({
+                        args: { command: cmd }
+                    });
+                    console.log(`GitUI: Successfully started dev server with: ${cmd}`);
+                    return;
+                } catch {
+                    console.log(`GitUI: Command failed: ${cmd}, trying next...`);
+                }
+            }
+        } else {
+            // Use the dev script from package.json - simplified approach
+            const runCommand = `${packageManager} run dev`;
+            
+            try {
+                await provider.runBackgroundCommand({
+                    args: { command: runCommand }
+                });
+                console.log(`GitUI: Successfully restarted dev server with: ${runCommand}`);
+            } catch {
+                console.log(`GitUI: Failed to restart with dev script, trying start...`);
+                // Fallback to start command
+                await provider.runBackgroundCommand({
+                    args: { command: `${packageManager} run start` }
+                });
+                console.log(`GitUI: Successfully started dev server with start command`);
+            }
+        }
+        
+        // Give the server a moment to start
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+    } catch (error) {
+        console.warn('GitUI: Failed to restart development server:', error);
+        // Don't throw - this is not critical enough to fail the whole process
+    }
+}
+
 export const sandboxRouter = createTRPCRouter({
     start: protectedProcedure
         .input(
@@ -279,6 +336,11 @@ export const sandboxRouter = createTRPCRouter({
                             args: { command }
                         });
                         console.log(`GitUI: Dependency installation result:`, result.output);
+                        
+                        // After installing dependencies, restart the dev server
+                        console.log(`GitUI: Restarting development server after dependency installation`);
+                        await restartDevServer(provider, packageJson.scripts || {}, packageManager);
+                        
                     } catch (error) {
                         console.warn('GitUI: Failed to install dependencies:', error);
                         // Don't fail the whole process if dependency installation fails
