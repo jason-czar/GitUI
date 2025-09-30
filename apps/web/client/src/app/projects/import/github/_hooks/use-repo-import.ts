@@ -53,6 +53,28 @@ export const useRepositoryImport = () => {
                 branch: selectedRepo.default_branch,
             });
 
+            // Setup dependencies and detect port
+            console.log(`GitUI: Setting up dependencies for ${selectedRepo.full_name}`);
+            let finalPreviewUrl = previewUrl;
+            try {
+                const setupResult = await clientApi.sandbox.setupDependencies.mutate({
+                    sandboxId,
+                });
+                
+                if (setupResult.success && setupResult.detectedPort && setupResult.detectedPort !== 3000) {
+                    // Update preview URL with detected port
+                    finalPreviewUrl = previewUrl.replace(':3000', `:${setupResult.detectedPort}`);
+                    console.log(`GitUI: Updated preview URL to use port ${setupResult.detectedPort}: ${finalPreviewUrl}`);
+                }
+                
+                if (setupResult.installedDependencies && setupResult.installedDependencies.length > 0) {
+                    console.log(`GitUI: Installed dependencies: ${setupResult.installedDependencies.join(', ')}`);
+                }
+            } catch (error) {
+                console.warn('GitUI: Failed to setup dependencies, continuing with default configuration:', error);
+                // Don't fail the import if dependency setup fails
+            }
+
             // Create project linked to repository
             const project = await clientApi.project.create.mutate({
                 project: {
@@ -62,7 +84,7 @@ export const useRepositoryImport = () => {
                 },
                 userId: user.id,
                 sandboxId,
-                sandboxUrl: previewUrl,
+                sandboxUrl: finalPreviewUrl,
             });
 
             if (!project) {
