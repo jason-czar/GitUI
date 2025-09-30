@@ -1,6 +1,6 @@
 import {
     ProcessedFileType,
-    type NextJsProjectValidation,
+    type ReactProjectValidation,
     type ProcessedFile,
 } from '@/app/projects/types';
 import { IGNORED_UPLOAD_DIRECTORIES, IGNORED_UPLOAD_FILES } from '@onlook/constants';
@@ -27,12 +27,12 @@ export const NewSelectFolder = () => {
         prevStep,
         nextStep,
         resetProjectData,
-        validateNextJsProject,
+        validateReactProject,
     } = useProjectCreation();
     const [isDragging, setIsDragging] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
     const [error, setError] = useState('');
-    const [validation, setValidation] = useState<NextJsProjectValidation | null>(null);
+    const [validation, setValidation] = useState<ReactProjectValidation | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const extractProjectName = (files: ProcessedFile[]): string | null => {
@@ -154,7 +154,7 @@ export const NewSelectFolder = () => {
             }
 
             // Validate the project
-            const validationResult = await validateNextJsProject(processedFiles);
+            const validationResult = await validateReactProject(processedFiles);
             setValidation(validationResult);
 
             setProjectData({
