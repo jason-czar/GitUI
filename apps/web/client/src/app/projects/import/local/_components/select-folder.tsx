@@ -315,8 +315,8 @@ export const NewSelectFolder = () => {
                 description: 'Your project is ready to import to Onlook',
             },
             invalid: {
-                title: "This project won't work with Onlook",
-                description: 'Onlook only works with NextJS + React + Tailwind projects',
+                title: "This project won't work with GitUI",
+                description: 'GitUI works with React + TypeScript + Tailwind projects (including NextJS, Vite, and Create React App)',
             },
         };
 

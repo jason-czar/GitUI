@@ -26,3 +26,13 @@ export interface NextJsProjectValidation {
     routerType?: 'app' | 'pages';
     error?: string;
 }
+
+// GitUI: Support for React + TypeScript + Tailwind projects (including NextJS)
+export interface ReactProjectValidation {
+    isValid: boolean;
+    projectType: 'nextjs' | 'react' | 'vite' | 'cra';
+    hasTypeScript: boolean;
+    hasTailwind: boolean;
+    routerType?: 'app' | 'pages' | 'react-router' | 'none';
+    error?: string;
+}

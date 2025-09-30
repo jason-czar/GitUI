@@ -3,11 +3,12 @@
 import {
     ProcessedFileType,
     type NextJsProjectValidation,
+    type ReactProjectValidation,
     type ProcessedFile,
 } from '@/app/projects/types';
 import { api } from '@/trpc/react';
 import { Routes } from '@/utils/constants';
-import { CodeProvider, createCodeProviderClient, Provider } from '@onlook/code-provider';
+import { CodeProvider, createCodeProviderClient, type Provider } from '@onlook/code-provider';
 import { NEXT_JS_FILE_EXTENSIONS, SandboxTemplates, Templates } from '@onlook/constants';
 import { RouterType } from '@onlook/models';
 import { generate, getAstFromContent, injectPreloadScript } from '@onlook/parser';
@@ -20,6 +21,14 @@ export interface Project {
     name: string;
     folderPath: string;
     files: ProcessedFile[];
+}
+
+// GitUI: Type for package.json structure
+interface PackageJson {
+    dependencies?: Record<string, string>;
+    devDependencies?: Record<string, string>;
+    scripts?: Record<string, string>;
+    [key: string]: unknown;
 }
 
 interface ProjectCreationContextValue {
@@ -41,6 +50,7 @@ interface ProjectCreationContextValue {
     retry: () => void;
     cancel: () => void;
     validateNextJsProject: (files: ProcessedFile[]) => Promise<NextJsProjectValidation>;
+    validateReactProject: (files: ProcessedFile[]) => Promise<ReactProjectValidation>;
 }
 
 const ProjectCreationContext = createContext<ProjectCreationContextValue | undefined>(undefined);
@@ -190,13 +200,13 @@ export const ProjectCreationProvider = ({ children, totalSteps }: ProjectCreatio
         }
 
         try {
-            const packageJson = JSON.parse(packageJsonFile.content as string);
-            const hasNext = packageJson.dependencies?.next || packageJson.devDependencies?.next;
+            const packageJson = JSON.parse(packageJsonFile.content as string) as PackageJson;
+            const hasNext = packageJson.dependencies?.next ?? packageJson.devDependencies?.next;
             if (!hasNext) {
                 return { isValid: false, error: 'Next.js not found in dependencies' };
             }
 
-            const hasReact = packageJson.dependencies?.react || packageJson.devDependencies?.react;
+            const hasReact = packageJson.dependencies?.react ?? packageJson.devDependencies?.react;
             if (!hasReact) {
                 return { isValid: false, error: 'React not found in dependencies' };
             }
@@ -228,8 +238,140 @@ export const ProjectCreationProvider = ({ children, totalSteps }: ProjectCreatio
             }
 
             return { isValid: true, routerType };
-        } catch (error) {
+        } catch {
             return { isValid: false, error: 'Invalid package.json format' };
+        }
+    };
+
+    // GitUI: New validation function for React + TypeScript + Tailwind projects
+    const validateReactProject = async (
+        files: ProcessedFile[],
+    ): Promise<ReactProjectValidation> => {
+        const packageJsonFile = files.find(
+            (f) => f.path.endsWith('package.json') && f.type === ProcessedFileType.TEXT,
+        );
+
+        if (!packageJsonFile) {
+            return { 
+                isValid: false, 
+                error: 'No package.json found',
+                projectType: 'react',
+                hasTypeScript: false,
+                hasTailwind: false
+            };
+        }
+
+        try {
+            const packageJson = JSON.parse(packageJsonFile.content as string) as PackageJson;
+            
+            // Check for React (required)
+            const hasReact = packageJson.dependencies?.react ?? packageJson.devDependencies?.react;
+            if (!hasReact) {
+                return { 
+                    isValid: false, 
+                    error: 'React not found in dependencies',
+                    projectType: 'react',
+                    hasTypeScript: false,
+                    hasTailwind: false
+                };
+            }
+
+            // Check for TypeScript
+            const hasTypeScript = !!(
+                packageJson.dependencies?.typescript ?? 
+                packageJson.devDependencies?.typescript ??
+                packageJson.dependencies?.['@types/react'] ??
+                packageJson.devDependencies?.['@types/react']
+            );
+
+            // Check for Tailwind CSS
+            const hasTailwind = !!(
+                packageJson.dependencies?.tailwindcss ?? 
+                packageJson.devDependencies?.tailwindcss
+            );
+
+            // Determine project type
+            let projectType: 'nextjs' | 'react' | 'vite' | 'cra' = 'react';
+            const hasNext = packageJson.dependencies?.next ?? packageJson.devDependencies?.next;
+            const hasVite = packageJson.dependencies?.vite ?? packageJson.devDependencies?.vite;
+            const hasReactScripts = packageJson.dependencies?.['react-scripts'] ?? packageJson.devDependencies?.['react-scripts'];
+
+            if (hasNext) {
+                projectType = 'nextjs';
+            } else if (hasVite) {
+                projectType = 'vite';
+            } else if (hasReactScripts) {
+                projectType = 'cra';
+            }
+
+            // Determine router type
+            let routerType: 'app' | 'pages' | 'react-router' | 'none' = 'none';
+
+            if (projectType === 'nextjs') {
+                // NextJS routing logic
+                const hasAppLayout = files.some((f) =>
+                    isTargetFile(f.path, {
+                        fileName: 'layout',
+                        targetExtensions: NEXT_JS_FILE_EXTENSIONS,
+                        potentialPaths: ['app', 'src/app'],
+                    }),
+                );
+
+                if (hasAppLayout) {
+                    routerType = 'app';
+                } else {
+                    const hasPagesDir = files.some(
+                        (f) => f.path.includes('pages/') || f.path.includes('src/pages/'),
+                    );
+                    if (hasPagesDir) {
+                        routerType = 'pages';
+                    }
+                }
+            } else {
+                // Check for React Router
+                const hasReactRouter = !!(
+                    packageJson.dependencies?.['react-router-dom'] ?? 
+                    packageJson.devDependencies?.['react-router-dom']
+                );
+                if (hasReactRouter) {
+                    routerType = 'react-router';
+                }
+            }
+
+            // Check for common React project structure
+            const hasValidStructure = files.some((f) => 
+                f.path.includes('src/') || 
+                f.path.includes('components/') ||
+                f.path.includes('app/') ||
+                f.path.includes('pages/')
+            );
+
+            if (!hasValidStructure) {
+                return {
+                    isValid: false,
+                    error: 'No valid React project structure found (missing src/, components/, app/, or pages/ directory)',
+                    projectType,
+                    hasTypeScript,
+                    hasTailwind,
+                    routerType
+                };
+            }
+
+            return { 
+                isValid: true, 
+                projectType, 
+                hasTypeScript, 
+                hasTailwind, 
+                routerType 
+            };
+        } catch {
+            return { 
+                isValid: false, 
+                error: 'Invalid package.json format',
+                projectType: 'react',
+                hasTypeScript: false,
+                hasTailwind: false
+            };
         }
     };
 
@@ -241,7 +383,7 @@ export const ProjectCreationProvider = ({ children, totalSteps }: ProjectCreatio
         } else {
             // This is the final step, so we should finalize the project
             setCurrentStep((prev) => prev + 1);
-            finalizeProject();
+            void finalizeProject();
         }
     };
 
@@ -266,7 +408,7 @@ export const ProjectCreationProvider = ({ children, totalSteps }: ProjectCreatio
 
     const retry = () => {
         setError(null);
-        finalizeProject();
+        void finalizeProject();
     };
 
     const cancel = () => {
@@ -289,6 +431,7 @@ export const ProjectCreationProvider = ({ children, totalSteps }: ProjectCreatio
         retry,
         cancel,
         validateNextJsProject,
+        validateReactProject,
     };
 
     return (

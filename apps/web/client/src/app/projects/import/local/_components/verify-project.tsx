@@ -1,30 +1,30 @@
 'use client';
 
-import { type NextJsProjectValidation } from '@/app/projects/types';
+import { type ReactProjectValidation } from '@/app/projects/types';
 import { Button } from '@onlook/ui/button';
 import { CardDescription, CardTitle } from '@onlook/ui/card';
 import { Icons } from '@onlook/ui/icons';
 import { motion } from 'motion/react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { StepContent, StepFooter, StepHeader } from '../../steps';
 import { useProjectCreation } from '../_context';
 
 export const VerifyProject = () => {
-    const { projectData, prevStep, nextStep, isFinalizing, validateNextJsProject } =
+    const { projectData, prevStep, nextStep, isFinalizing, validateReactProject } =
         useProjectCreation();
-    const [validation, setValidation] = useState<NextJsProjectValidation | null>(null);
+    const [validation, setValidation] = useState<ReactProjectValidation | null>(null);
 
-    useEffect(() => {
-        validateProject();
-    }, [projectData]);
-
-    const validateProject = async () => {
+    const validateProject = useCallback(async () => {
         if (!projectData.files) {
             return;
         }
-        const validation = await validateNextJsProject(projectData.files);
+        const validation = await validateReactProject(projectData.files);
         setValidation(validation);
-    };
+    }, [projectData.files, validateReactProject]);
+
+    useEffect(() => {
+        void validateProject();
+    }, [validateProject]);
 
     const validProject = () => (
         <motion.div
@@ -66,7 +66,9 @@ export const VerifyProject = () => {
                     </div>
                     <Icons.ExclamationTriangle className="w-5 h-5 text-amber-200" />
                 </div>
-                <p className="text-amber-100 text-sm">This is not a NextJS Project</p>
+                <p className="text-amber-100 text-sm">
+                    {validation?.error ?? 'This project is not compatible with GitUI'}
+                </p>
             </div>
         </motion.div>
     );
@@ -92,9 +94,9 @@ export const VerifyProject = () => {
         } else {
             return (
                 <>
-                    <CardTitle>{"This project won't work with Onlook"}</CardTitle>
+                    <CardTitle>{"This project won't work with GitUI"}</CardTitle>
                     <CardDescription>
-                        {'Onlook only works with NextJS + React + Tailwind projects'}
+                        {'GitUI works with React + TypeScript + Tailwind projects (including NextJS, Vite, and Create React App)'}
                     </CardDescription>
                 </>
             );
