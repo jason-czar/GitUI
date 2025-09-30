@@ -207,11 +207,10 @@ export class CodesandboxProvider extends Provider {
             } catch (fallbackError) {
                 console.warn('GitUI: Fallback 1 failed, trying final approach:', fallbackError);
 
-                // Fallback 2: Try with 'main' as default branch
+                // Fallback 2: Try without branch specification (let CodeSandbox use default)
                 createPromise = sdk.sandboxes.create({
                     source: 'git',
                     url: input.repoUrl,
-                    branch: 'main', // Default to 'main' branch
                 });
             }
         }
