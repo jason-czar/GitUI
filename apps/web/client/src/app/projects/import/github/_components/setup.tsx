@@ -60,7 +60,7 @@ export const SetupGithub = () => {
 
             for (const pattern of patterns) {
                 const match = cleanUrl.match(pattern);
-                if (match) {
+                if (match && match[1] && match[2]) {
                     return {
                         owner: match[1],
                         repo: match[2].replace(/\.git$/, '')
