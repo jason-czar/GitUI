@@ -92,16 +92,22 @@ export const SetupGithub = () => {
 
         // Create a mock repository object for URL-based selection
         const mockRepo = {
-            id: `${parsed.owner}/${parsed.repo}`,
+            id: Math.floor(Math.random() * 1000000), // Generate a random ID for URL-based imports
             name: parsed.repo,
             full_name: `${parsed.owner}/${parsed.repo}`,
-            owner: { login: parsed.owner },
+            owner: { 
+                login: parsed.owner,
+                avatar_url: `https://github.com/${parsed.owner}.png` // Default GitHub avatar URL
+            },
             private: false, // We don't know this from URL alone
-            description: null,
-            html_url: url.includes('github.com') ? url : `https://github.com/${parsed.owner}/${parsed.repo}`
+            description: undefined,
+            default_branch: 'main', // Default to 'main' branch
+            clone_url: `https://github.com/${parsed.owner}/${parsed.repo}.git`,
+            html_url: url.includes('github.com') ? url : `https://github.com/${parsed.owner}/${parsed.repo}`,
+            updated_at: new Date().toISOString() // Use current timestamp
         };
 
-        setSelectedRepo(mockRepo as any);
+        setSelectedRepo(mockRepo);
     };
 
     // Handle search toggle
