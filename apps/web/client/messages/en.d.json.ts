@@ -86,7 +86,7 @@ declare const messages: {
         }
     },
     "welcome": {
-        "title": "Welcome to Onlook",
+        "title": "Welcome to GitUI",
         "titleReturn": "Welcome back to Onlook",
         "description": "A next-generation visual code editor that lets designers and product managers craft web experiences with AI.",
         "alpha": "Alpha",
