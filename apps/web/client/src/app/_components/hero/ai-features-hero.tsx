@@ -44,7 +44,7 @@ export function AiFeaturesHero() {
                     transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
                     style={{ willChange: 'opacity, filter', transform: 'translateZ(0)' }}
                 >
-                    Onlook's AI doesn't just generate code—it understands your React components,
+                    GitUI's AI doesn't just generate code—it understands your React components,
                     Tailwind patterns, and project architecture to create production-ready
                     components that fit seamlessly into your existing codebase.
                 </motion.p>

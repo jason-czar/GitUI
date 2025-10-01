@@ -19,17 +19,17 @@ import RB2BLoader from '@/components/rb2b-loader';
 const isProduction = env.NODE_ENV === 'production';
 
 export const metadata: Metadata = {
-    title: 'Onlook – Cursor for Designers',
+    title: 'GitUI – Cursor for Designers',
     description:
-        'The power of Cursor for your own website. Onlook lets you edit your React website and write your changes back to code in real-time. Iterate and experiment with AI.',
+        'The power of Cursor for your own website. GitUI lets you edit your React website and write your changes back to code in real-time. Iterate and experiment with AI.',
     icons: [{ rel: 'icon', url: '/favicon.ico' }],
     openGraph: {
         url: 'https://onlook.com/',
         type: 'website',
-        siteName: 'Onlook',
-        title: 'Onlook – Cursor for Designers',
+        siteName: 'GitUI',
+        title: 'GitUI – Cursor for Designers',
         description:
-            'The power of Cursor for your own website. Onlook lets you edit your React website and write your changes back to code in real-time. Iterate and experiment with AI.',
+            'The power of Cursor for your own website. GitUI lets you edit your React website and write your changes back to code in real-time. Iterate and experiment with AI.',
         images: [
             {
                 url: 'https://framerusercontent.com/images/ScnnNT7JpmUya7afqGAets8.png',
@@ -40,9 +40,9 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         site: '@onlookdev',
         creator: '@onlookdev',
-        title: 'Onlook – Cursor for Designers',
+        title: 'GitUI – Cursor for Designers',
         description:
-            'The power of Cursor for your own website. Onlook lets you edit your React website and write your changes back to code in real-time. Iterate and experiment with AI.',
+            'The power of Cursor for your own website. GitUI lets you edit your React website and write your changes back to code in real-time. Iterate and experiment with AI.',
         images: [
             {
                 url: 'https://framerusercontent.com/images/ScnnNT7JpmUya7afqGAets8.png',

@@ -31,7 +31,7 @@ export function Footer() {
                                     href={ExternalRoutes.DOCS}
                                     target="_blank"
                                     className="hover:underline"
-                                    title="View Onlook documentation"
+                                    title="View GitUI documentation"
                                 >
                                     Docs
                                 </a>
@@ -50,7 +50,7 @@ export function Footer() {
                                     href={ExternalRoutes.BLOG}
                                     target="_blank"
                                     className="hover:underline"
-                                    title="Read the Onlook blog"
+                                    title="Read the GitUI blog"
                                 >
                                     Blog
                                 </a>
@@ -60,7 +60,7 @@ export function Footer() {
                                 <a
                                     href="mailto:contact@onlook.com"
                                     className="hover:underline"
-                                    title="Contact Onlook support"
+                                    title="Contact GitUI support"
                                 >
                                     Contact
                                 </a>
@@ -84,7 +84,7 @@ export function Footer() {
                                     href={ExternalRoutes.GITHUB}
                                     target="_blank"
                                     className="hover:underline"
-                                    title="View Onlook on GitHub"
+                                    title="View GitUI on GitHub"
                                 >
                                     GitHub Repo
                                 </a>
@@ -93,7 +93,7 @@ export function Footer() {
                                 <a
                                     href="/features"
                                     className="hover:underline"
-                                    title="View Onlook features"
+                                    title="View GitUI features"
                                 >
                                     Features
                                 </a>
@@ -129,7 +129,7 @@ export function Footer() {
                                 <a
                                     href="/pricing"
                                     className="hover:underline"
-                                    title="View Onlook pricing"
+                                    title="View GitUI pricing"
                                 >
                                     Pricing
                                 </a>
@@ -143,7 +143,7 @@ export function Footer() {
                                 href={ExternalRoutes.X}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                title="Follow Onlook on X"
+                                title="Follow GitUI on X"
                             >
                                 <Icons.SocialX className="w-6 h-6 text-foreground-secondary hover:text-foreground-primary transition-colors" />
                             </a>
@@ -151,7 +151,7 @@ export function Footer() {
                                 href={ExternalRoutes.LINKEDIN}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                title="Connect with Onlook on LinkedIn"
+                                title="Connect with GitUI on LinkedIn"
                             >
                                 <Icons.SocialLinkedIn className="w-6 h-6 text-foreground-secondary hover:text-foreground-primary transition-colors" />
                             </a>
@@ -159,7 +159,7 @@ export function Footer() {
                                 href={ExternalRoutes.SUBSTACK}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                title="Subscribe to Onlook on Substack"
+                                title="Subscribe to GitUI on Substack"
                             >
                                 <Icons.SocialSubstack className="w-6 h-6 text-foreground-secondary hover:text-foreground-primary transition-colors" />
                             </a>
@@ -167,7 +167,7 @@ export function Footer() {
                                 href={ExternalRoutes.YOUTUBE}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                title="Watch Onlook on YouTube"
+                                title="Watch GitUI on YouTube"
                             >
                                 <Icons.SocialYoutube className="w-6 h-6 text-foreground-secondary hover:text-foreground-primary transition-colors" />
                             </a>
@@ -175,7 +175,7 @@ export function Footer() {
                                 href={ExternalRoutes.GITHUB}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                title="View Onlook on GitHub"
+                                title="View GitUI on GitHub"
                             >
                                 <Icons.GitHubLogo className="w-5.5 h-5.5 text-foreground-secondary hover:text-foreground-primary transition-colors" />
                             </a>
@@ -183,7 +183,7 @@ export function Footer() {
                                 href={ExternalRoutes.DISCORD}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                title="Join the Onlook Discord community"
+                                title="Join the GitUI Discord community"
                             >
                                 <Icons.DiscordLogo className="w-6 h-6 text-foreground-secondary hover:text-foreground-primary transition-colors" />
                             </a>

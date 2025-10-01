@@ -44,7 +44,7 @@ export function FeaturesHero() {
                     transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
                     style={{ willChange: 'opacity, filter', transform: 'translateZ(0)' }}
                 >
-                    Code as you design. Build React applications visually while Onlook writes
+                    Code as you design. Build React applications visually while GitUI writes
                     reliable code you can trust, exactly where it needs to go.
                 </motion.h2>
                 <motion.div

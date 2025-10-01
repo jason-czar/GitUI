@@ -20,7 +20,7 @@ export function BenefitsSection() {
                             AI for UI design
                         </p>
                         <p className="text-foreground-secondary text-regular mb-8 text-balance max-w-xl">
-                            Prompt Onlook's AI to build, design, and experiment with your ideas. Go
+                            Prompt GitUI's AI to build, design, and experiment with your ideas. Go
                             beyond pretty pixels and make your frontend interactive. The AI
                             understands your React components and Tailwind patterns, generating code
                             that fits your project's architecture.
@@ -42,8 +42,8 @@ export function BenefitsSection() {
                         </p>
                         <p className="text-foreground-secondary text-regular mb-8 text-balance max-w-xl">
                             Edit React components directly in the browser. Drag, drop, and style
-                            elements visually while Onlook updates your actual code files in
-                            real-time. Your existing build process stays intact. Onlook works with
+                            elements visually while GitUI updates your actual code files in
+                            real-time. Your existing build process stays intact. GitUI works with
                             your setup, not against it.
                         </p>
                         {/* Removed hidden CTA to avoid unused icon JSX in this client file */}
@@ -62,7 +62,7 @@ export function BenefitsSection() {
                             Style Without Writing CSS
                         </p>
                         <p className="text-foreground-secondary text-regular mb-6 text-balance max-w-xl">
-                            Adjust layouts, change colors, modify text, and more. Onlook generates
+                            Adjust layouts, change colors, modify text, and more. GitUI generates
                             clean Tailwind classes that match your design decisions.
                         </p>
                         <div className="grid grid-cols-2 gap-8 mb-8 text-foreground-secondary text-regular">
