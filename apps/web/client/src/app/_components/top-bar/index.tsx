@@ -48,14 +48,14 @@ export const TopBar = () => {
                         {link.child}
                     </a>
                 ))}
-                <a
+                {/* <a
                     href={ExternalRoutes.DOCS}
                     target="_blank"
                     className="text-regular hover:underline"
                 >
                     Docs
                 </a>
-                <GitHubButton />
+                <GitHubButton /> */}
             </div>
             <AuthButton />
         </div>
