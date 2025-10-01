@@ -34,7 +34,7 @@ export function Hero() {
             <UnicornBackground />
             <div className="w-full h-full flex flex-col items-center justify-center mb-42 gap-10 pt-12">
                 <div className="flex flex-col gap-3 items-center relative z-20 pt-8 pb-2">
-                    {!isShortScreen && (
+                    {/* {!isShortScreen && (
                         <motion.div
                             className="flex flex-col gap-3 items-center relative z-20 pt-4 pb-2 mb-6"
                             initial={{ opacity: 0, y: -10 }}
@@ -51,7 +51,7 @@ export function Hero() {
                                 <Icons.ArrowRight className="w-4 h-4" />
                             </a>
                         </motion.div>
-                    )}
+                    )} */}
                     <motion.h1
                         className="text-6xl font-light leading-tight text-center !leading-[0.9]"
                         initial={{ opacity: 0, filter: 'blur(4px)' }}
