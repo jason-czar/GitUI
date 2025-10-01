@@ -1,6 +1,12 @@
 import { CodeProvider, createCodeProviderClient, getStaticCodeProvider } from '@onlook/code-provider';
 import { getSandboxPreviewUrl } from '@onlook/constants';
 import { shortenUuid } from '@onlook/utility/src/id';
+import { 
+    detectProjectType, 
+    generateConfigFiles as generateCodeSandboxConfigFiles, 
+    validateCodeSandboxConfig,
+    generatePreviewUrl 
+} from '@onlook/utility';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../../trpc';
@@ -608,6 +614,77 @@ async function startDevelopmentServer(provider: any, analysis: ProjectAnalysis) 
     }
 }
 
+// Apply CodeSandbox configuration for consistent preview URLs
+async function applyCodeSandboxConfiguration(sandboxId: string, userId: string) {
+    console.log(`GitUI: Applying CodeSandbox configuration for sandbox ${sandboxId}`);
+    
+    const provider = await getProvider({
+        sandboxId,
+        userId,
+    });
+
+    try {
+        // Step 1: Read package.json to detect project type
+        let packageJson: any = {};
+        try {
+            const packageFile = await provider.readFile({ args: { path: './package.json' } });
+            if (packageFile?.file?.type === 'text') {
+                packageJson = JSON.parse(packageFile.file.content);
+            }
+        } catch (error) {
+            console.log('GitUI: No package.json found, using default configuration');
+        }
+
+        // Step 2: Detect project type using our utility
+        const projectType = detectProjectType(packageJson);
+        console.log(`GitUI: Detected project type: ${projectType.type} (${projectType.hasTypeScript ? 'TypeScript' : 'JavaScript'})`);
+
+        // Step 3: Generate configuration files
+        const configFiles = generateCodeSandboxConfigFiles(projectType, packageJson);
+        console.log(`GitUI: Generated ${Object.keys(configFiles).length} configuration files`);
+
+        // Step 4: Write configuration files to sandbox
+        for (const [filePath, content] of Object.entries(configFiles)) {
+            try {
+                await provider.writeFile({
+                    args: {
+                        path: `./${filePath}`,
+                        content: content
+                    }
+                });
+                console.log(`GitUI: Created ${filePath}`);
+            } catch (error) {
+                console.warn(`GitUI: Failed to create ${filePath}:`, error);
+            }
+        }
+
+        // Step 5: Validate configuration
+        const validation = validateCodeSandboxConfig(configFiles);
+        if (!validation.isValid) {
+            console.warn('GitUI: CodeSandbox configuration validation failed:', validation.issues);
+        } else {
+            console.log('GitUI: CodeSandbox configuration validation passed');
+        }
+
+        if (validation.suggestions.length > 0) {
+            console.log('GitUI: Configuration suggestions:', validation.suggestions);
+        }
+
+        return {
+            success: true,
+            projectType,
+            filesCreated: Object.keys(configFiles),
+            validation
+        };
+
+    } catch (error) {
+        console.error('GitUI: Failed to apply CodeSandbox configuration:', error);
+        throw error;
+    } finally {
+        await provider.destroy();
+    }
+}
+
 export const sandboxRouter = createTRPCRouter({
     start: protectedProcedure
         .input(
@@ -745,6 +822,16 @@ export const sandboxRouter = createTRPCRouter({
                     const previewUrl = getSandboxPreviewUrl(sandbox.id, DEFAULT_PORT);
 
                     console.log(`GitUI: Successfully created sandbox ${sandbox.id}`);
+                    
+                    // Apply CodeSandbox configuration for consistent preview URLs
+                    try {
+                        await applyCodeSandboxConfiguration(sandbox.id, 'system');
+                        console.log(`GitUI: Applied CodeSandbox configuration for ${sandbox.id}`);
+                    } catch (configError) {
+                        console.warn(`GitUI: Failed to apply CodeSandbox configuration:`, configError);
+                        // Don't fail the whole process if configuration fails
+                    }
+                    
                     return {
                         sandboxId: sandbox.id,
                         previewUrl,

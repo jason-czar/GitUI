@@ -1,6 +1,7 @@
 export * from './assert';
 export * from './autolayout';
 export * from './clone';
+export * from './codesandbox-config';
 export * from './color';
 export * from './domain';
 export * from './email';
