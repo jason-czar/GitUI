@@ -17,7 +17,7 @@ export class StateManager {
     canvasPanning = false;
     isDragSelecting = false;
 
-    editorMode: EditorMode = EditorMode.DESIGN;
+    editorMode: EditorMode = EditorMode.PREVIEW;
     leftPanelTab: LeftPanelTabValue | null = null;
     rightPanelTab: EditorTabValue = EditorTabValue.CHAT;
     brandTab: BrandTabValue | null = null;
