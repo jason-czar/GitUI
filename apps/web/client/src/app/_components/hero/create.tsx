@@ -270,7 +270,7 @@ export const Create = observer(
                     <div
                         className={cn(
                             'flex flex-col gap-3 rounded p-0 transition-colors duration-200 cursor-text',
-                            'backdrop-blur-sm bg-background-secondary/80',
+                            'backdrop-blur-sm bg-background-secondary/0',
                             '[&[data-dragging-image=true]]:bg-teal-500/40',
                             isDragging && 'bg-teal-500/40 cursor-copy',
                         )}
