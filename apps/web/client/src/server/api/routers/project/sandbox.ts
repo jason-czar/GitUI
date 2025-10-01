@@ -197,9 +197,14 @@ async function analyzeProject(provider: any): Promise<ProjectAnalysis> {
     } else if (deps['@angular/core']) {
         type = 'angular';
         framework = 'Angular';
-    } else if (deps.express || deps.fastify || deps.koa) {
+    } else if (deps.express || deps.fastify || deps.koa || deps.hapi || deps.restify) {
         type = 'node';
-        framework = 'Node.js';
+        if (deps.express) framework = 'Express.js';
+        else if (deps.fastify) framework = 'Fastify';
+        else if (deps.koa) framework = 'Koa.js';
+        else if (deps.hapi) framework = 'Hapi.js';
+        else if (deps.restify) framework = 'Restify';
+        else framework = 'Node.js';
     } else if (fileNames.some((f: string) => f.endsWith('.html'))) {
         type = 'vanilla';
         framework = 'Vanilla JavaScript';
@@ -252,7 +257,16 @@ async function analyzeProject(provider: any): Promise<ProjectAnalysis> {
     
     if (hasTypeScript && !deps.typescript) {
         missingDependencies.push('typescript', '@types/node');
+        // Add tsx for TypeScript execution in Node.js/Express projects
+        if (type === 'node' || type === 'unknown') {
+            missingDependencies.push('tsx');
+        }
         if (type === 'react') missingDependencies.push('@types/react', '@types/react-dom');
+    }
+    
+    // For Node.js/Express projects, ensure tsx is available for TypeScript execution
+    if (type === 'node' && hasTypeScript && !deps.tsx) {
+        missingDependencies.push('tsx');
     }
     
     if (buildTool === 'none' && type !== 'vanilla') {
@@ -285,15 +299,37 @@ async function installMissingDependencies(provider: any, analysis: ProjectAnalys
     
     console.log(`GitUI: Installing missing dependencies: ${analysis.missingDependencies.join(', ')}`);
     
+    // Separate dev dependencies from regular dependencies
+    const devDeps = analysis.missingDependencies.filter(dep => 
+        dep.includes('@types/') || dep === 'typescript' || dep === 'tsx'
+    );
+    const regularDeps = analysis.missingDependencies.filter(dep => !devDeps.includes(dep));
+    
     const installCmd = analysis.packageManager === 'npm' ? 'npm install' :
                       analysis.packageManager === 'yarn' ? 'yarn add' :
                       analysis.packageManager === 'pnpm' ? 'pnpm add' :
                       'bun add';
     
-    const command = `${installCmd} ${analysis.missingDependencies.join(' ')}`;
+    const devInstallCmd = analysis.packageManager === 'npm' ? 'npm install -D' :
+                         analysis.packageManager === 'yarn' ? 'yarn add -D' :
+                         analysis.packageManager === 'pnpm' ? 'pnpm add -D' :
+                         'bun add -D';
     
     try {
-        await provider.runCommand({ args: { command } });
+        // Install regular dependencies first
+        if (regularDeps.length > 0) {
+            const command = `${installCmd} ${regularDeps.join(' ')}`;
+            await provider.runCommand({ args: { command } });
+            console.log(`GitUI: Installed regular dependencies: ${regularDeps.join(', ')}`);
+        }
+        
+        // Install dev dependencies
+        if (devDeps.length > 0) {
+            const devCommand = `${devInstallCmd} ${devDeps.join(' ')}`;
+            await provider.runCommand({ args: { command: devCommand } });
+            console.log(`GitUI: Installed dev dependencies: ${devDeps.join(', ')}`);
+        }
+        
         return { installed: analysis.missingDependencies, message: 'Dependencies installed successfully' };
     } catch (error) {
         return { installed: [], message: `Failed to install dependencies: ${error}` };
@@ -393,6 +429,27 @@ async function optimizeBuildScripts(provider: any, analysis: ProjectAnalysis) {
             if (!packageJson.scripts.preview) {
                 packageJson.scripts.preview = 'vite preview';
                 changes.push('Added preview script');
+            }
+        } else if (analysis.type === 'node' && analysis.hasTypeScript) {
+            // For Node.js/Express TypeScript projects, ensure proper dev script with tsx
+            if (!packageJson.scripts.dev) {
+                // Look for main entry point
+                const mainFile = packageJson.main || 'server/index.ts' || 'src/index.ts' || 'index.ts';
+                packageJson.scripts.dev = `NODE_ENV=development tsx ${mainFile}`;
+                changes.push('Added TypeScript dev script with tsx');
+            } else if (packageJson.scripts.dev && !packageJson.scripts.dev.includes('tsx') && analysis.hasTypeScript) {
+                // Update existing dev script to use tsx for TypeScript
+                const currentDev = packageJson.scripts.dev;
+                if (currentDev.includes('node ') && currentDev.includes('.ts')) {
+                    packageJson.scripts.dev = currentDev.replace('node ', 'tsx ');
+                    changes.push('Updated dev script to use tsx for TypeScript');
+                }
+            }
+            
+            if (!packageJson.scripts.start) {
+                const mainFile = packageJson.main || 'server/index.js' || 'src/index.js' || 'index.js';
+                packageJson.scripts.start = `node ${mainFile}`;
+                changes.push('Added start script');
             }
         }
         
