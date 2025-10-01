@@ -29,6 +29,32 @@ import { ZodError } from 'zod';
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
     const supabase = await createClient();
+    
+    // Development auto-login: Mock user session when in development mode
+    if (process.env.NODE_ENV === 'development') {
+        const mockUser = {
+            id: 'fdeb390e-fb00-40f1-9971-7920400830c1',
+            email: 'dev@gitui.com',
+            user_metadata: {
+                name: 'Development User',
+                avatarUrl: 'https://github.com/identicons/dev.png',
+            },
+            aud: 'authenticated',
+            role: 'authenticated',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            app_metadata: {},
+            email_confirmed_at: new Date().toISOString(),
+        } as User;
+
+        return {
+            db,
+            supabase,
+            user: mockUser,
+            ...opts,
+        };
+    }
+
     const {
         data: { user },
         error,
