@@ -1,11 +1,9 @@
 'use client';
 
-import { useGetBackground } from '@/hooks/use-get-background';
 import { transKeys } from '@/i18n/keys';
 import { LocalForageKeys, Routes } from '@/utils/constants';
 import { Icons } from '@onlook/ui/icons';
 import { useTranslations } from 'next-intl';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { DevLoginButton, GithubLoginButton, GoogleLoginButton } from '../_components/login-button';
@@ -13,7 +11,6 @@ import { DevLoginButton, GithubLoginButton, GoogleLoginButton } from '../_compon
 export default function LoginPage() {
     const isDev = process.env.NODE_ENV === 'development';
     const t = useTranslations();
-    const backgroundUrl = useGetBackground('login');
     const returnUrl = useSearchParams().get(LocalForageKeys.RETURN_URL);
 
     return (
@@ -58,15 +55,6 @@ export default function LoginPage() {
                 <div className="flex flex-row space-x-1 text-small text-gray-600">
                     <p>{t(transKeys.welcome.version, { version: '1.0.0' })}</p>
                 </div>
-            </div>
-            <div className="hidden w-full md:block m-6">
-                <Image
-                    className="w-full h-full object-cover rounded-xl"
-                    src={backgroundUrl}
-                    alt="Onlook dunes dark"
-                    width={1000}
-                    height={1000}
-                />
             </div>
         </div>
     );
