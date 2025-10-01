@@ -52,7 +52,7 @@ export function Hero() {
                             </a>
                         </motion.div>
                     )} */}
-                    <motion.h1
+                    {/* <motion.h1
                         className="text-6xl font-light leading-tight text-center !leading-[0.9]"
                         initial={{ opacity: 0, filter: 'blur(4px)' }}
                         animate={{ opacity: 1, filter: 'blur(0px)' }}
@@ -79,7 +79,7 @@ export function Hero() {
                         that lets designers and product managers craft
                         <br />
                         web experiences with AI
-                    </motion.p>
+                    </motion.p> */}
                     <HighDemand />
                     <CreateError />
                 </div>
