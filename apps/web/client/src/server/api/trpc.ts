@@ -9,11 +9,13 @@
 
 import { createClient } from '@/utils/supabase/server';
 import { db } from '@onlook/db/src/client';
+import { users } from '@onlook/db';
 import type { User } from '@supabase/supabase-js';
 import { initTRPC, TRPCError } from '@trpc/server';
 import superjson from 'superjson';
 import type { SetRequiredDeep } from 'type-fest';
 import { ZodError } from 'zod';
+import { eq } from 'drizzle-orm';
 
 /**
  * 1. CONTEXT
@@ -32,12 +34,38 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
     
     // Development auto-login: Mock user session when in development mode
     if (process.env.NODE_ENV === 'development') {
+        const userId = 'fdeb390e-fb00-40f1-9971-7920400830c1';
+        const userEmail = 'jasoncz122@yahoo.com';
+        
+        // Ensure user exists in database for development
+        try {
+            const existingUser = await db.query.users.findFirst({
+                where: eq(users.id, userId),
+            });
+
+            if (!existingUser) {
+                // Create the user if it doesn't exist
+                await db.insert(users).values({
+                    id: userId,
+                    email: userEmail,
+                    firstName: 'Jason',
+                    lastName: 'Czarnecki',
+                    displayName: 'Jason Czarnecki',
+                    avatarUrl: 'https://github.com/jasoncz122.png',
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                }).onConflictDoNothing();
+            }
+        } catch (error) {
+            console.warn('Development: Failed to ensure user exists in database:', error);
+        }
+
         const mockUser = {
-            id: 'fdeb390e-fb00-40f1-9971-7920400830c1',
-            email: 'dev@gitui.com',
+            id: userId,
+            email: userEmail,
             user_metadata: {
-                name: 'Development User',
-                avatarUrl: 'https://github.com/identicons/dev.png',
+                name: 'Jason Czarnecki',
+                avatarUrl: 'https://github.com/jasoncz122.png',
             },
             aud: 'authenticated',
             role: 'authenticated',
